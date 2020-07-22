@@ -1,0 +1,303 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class RoomManager : MonoBehaviour {
+
+    public static RoomManager rm;
+    public Node[,] roomArray;
+
+    [Header("Floor Settings")]
+    [Tooltip("Size of each room plus the connectors")]
+    public float nodeLength = 120f;
+    [Tooltip("Numbers used to generate the size of the floor in X and Z space")]
+    public int min, max;
+    [Space(10)]
+    [HideInInspector]
+    public int xLength, yLength;
+
+    [Header("Room Settings")]
+    [Tooltip("Rooms that can be used during generation in place of a node")]
+    public List<GameObject> potentialRoomSpawns;
+    [Tooltip("Rooms that have already been generated")]
+    public List<Node> createdRooms;
+    [Tooltip("Debug spawn object")]
+    public GameObject testObject;
+
+    [Header("Current Room")]
+    [Tooltip("The current room the player is in")]
+    public Room currentRoom;
+
+    private List<Node> endRoomNodes;
+
+    [System.Serializable]
+    public class Node {
+        public int xPos;
+        public int yPos;
+        public bool isTaken = false;
+        public bool isValid = true;
+        public GameObject room;
+    }
+
+    private void Awake() {
+        if(rm == null) {
+            rm = this;
+        }else if(rm != this) {
+            Destroy(this);
+        }
+    }
+
+    void Start() {
+        CreateFloorLayout();
+    }
+
+    public void ChangeRoom(Room r) {
+        currentRoom = r;
+        currentRoom.AddGates();
+        currentRoom.ActivateMonsters();
+    }
+
+    public void DefeatMonster(GameObject monster) {
+        currentRoom.DefeatMonster(monster);
+    }
+
+    void CreateFloorLayout() {
+
+        //generate size
+        xLength = Random.Range(min, max);
+        yLength = Random.Range(min, max);
+        roomArray = new Node[xLength, yLength];
+        createdRooms = new List<Node>();
+
+        //generate initial room / min
+        int minNumberOfRooms = Random.Range(20, 30);
+        int initialX = Random.Range(0, xLength - 1);
+        int initialY = Random.Range(0, yLength - 1);
+
+
+        //generate nodes
+        for(int u = 0; u < xLength; u++) {
+            for(int y = 0; y < yLength; y++) {
+                Node temp = new Node {
+                    xPos = u,
+                    yPos = y
+                };
+                roomArray[u, y] = temp;
+                //GameObject mmm = Instantiate(testObject);
+                //mmm.transform.position = new Vector3(u * nodeLength, 0, y * nodeLength);
+                //mmm.name = "X: " + u.ToString() + ", Y: " + y.ToString();
+            }
+        }
+
+        //initial room
+        GameObject r = Instantiate(potentialRoomSpawns[0]);
+        r.transform.position = new Vector3(initialX * nodeLength, 0, initialY * nodeLength);
+        GameManager.gm.playerMovement.Warp(new Vector3(r.transform.position.x, 2, r.transform.position.z));
+        currentRoom = r.GetComponent<Room>();
+        createdRooms.Add(roomArray[initialX, initialY]);
+        roomArray[initialX, initialY].room = r;
+
+        //generate rooms
+        Node currentNode = roomArray[initialX, initialY];
+        currentNode.isTaken = true;
+        for (int i = 1; i < minNumberOfRooms;) {
+            i += GenerateDoors(currentNode);
+            currentNode = GetRandomEndNode();
+            if(currentNode == null) {
+                break;
+            }
+        }
+        SetEndNodeNeighbors();
+    }
+
+    void SetEndNodeNeighbors() {
+        foreach (Node n in createdRooms) {
+            SetAllNeighborsClosed(n);
+        }
+    }
+
+    void SetAllNeighborsClosed(Node n) {
+        Vector2[] toCheck = GetNeighborNodesPositions(n);
+        Room room = n.room.GetComponent<Room>();
+        for (int i = 0; i < 4; i++) {
+            if (!IsValidCoordinate((int)toCheck[i].x, (int)toCheck[i].y)) {
+                SetClosedNeighbor(n, room, (int)toCheck[i].x, (int)toCheck[i].y, true);
+            }else if (!roomArray[(int)toCheck[i].x, (int)toCheck[i].y].isTaken) {
+                SetClosedNeighbor(n, room, (int)toCheck[i].x, (int)toCheck[i].y, true);
+            }else {
+                SetClosedNeighbor(n, room, (int)toCheck[i].x, (int)toCheck[i].y, false);
+            }
+        }
+    }
+
+
+    int GenerateDoors(Node n) {
+        Vector2[] toCheck = GetNeighborNodesPositions(n);
+        List<Vector2> validRoomPositions = new List<Vector2>();
+        List<Vector2> invalidRoomPositions = new List<Vector2>();
+        endRoomNodes = new List<Node>();
+        Room room = n.room.GetComponent<Room>();
+
+        //Split valid and invalid rooms
+        for (int i = 0; i < 4; i++) {
+            if(!IsValidCoordinate((int)toCheck[i].x, (int)toCheck[i].y)) {
+                SetClosedNeighbor(n, room, (int)toCheck[i].x, (int)toCheck[i].y, true);
+                continue;
+            }
+            if(!roomArray[(int)toCheck[i].x, (int)toCheck[i].y].isValid) {
+                invalidRoomPositions.Add(toCheck[i]);
+            } else if (!roomArray[(int)toCheck[i].x, (int)toCheck[i].y].isTaken) {
+                validRoomPositions.Add(toCheck[i]);
+            }
+        }
+
+        //create random number of doors and their rooms
+        int doors = Mathf.FloorToInt((Random.Range(1, room.maxNeighbors) + Random.Range(1, room.maxNeighbors) + Random.Range(1, room.maxNeighbors)) / 3);
+        //int doors = 1;
+        List<GameObject> newRoomList = new List<GameObject>();
+        while(validRoomPositions.Count != 0) {
+            int randomRoomInt = Random.Range(0, validRoomPositions.Count - 1);
+            GameObject newRoom = GenerateRoom((int)validRoomPositions[randomRoomInt].x, (int)validRoomPositions[randomRoomInt].y);
+            newRoomList.Add(newRoom);
+            createdRooms.Add(roomArray[(int)validRoomPositions[randomRoomInt].x, (int)validRoomPositions[randomRoomInt].y]);
+            roomArray[(int)validRoomPositions[randomRoomInt].x, (int)validRoomPositions[randomRoomInt].y].isTaken = true;
+            roomArray[(int)validRoomPositions[randomRoomInt].x, (int)validRoomPositions[randomRoomInt].y].room = newRoom;
+            CheckEndNode(roomArray[(int)validRoomPositions[randomRoomInt].x, (int)validRoomPositions[randomRoomInt].y]);
+            validRoomPositions.RemoveAt(randomRoomInt);
+            doors--;
+            if(doors <= 0) {
+                break;
+            }
+        }
+        //add rooms to node neighbors
+        
+        room.neighbors = newRoomList.ToArray();
+
+        //add remaining potential spots to invalids
+        foreach(Vector2 v in validRoomPositions) {
+            invalidRoomPositions.Add(v);
+            roomArray[(int)v.x, (int)v.y].isValid = false;
+        }
+
+        //set node to not have doors to invalids
+        foreach(Vector2 v in invalidRoomPositions) {
+            SetClosedNeighbor(n, room, (int)v.x, (int)v.y, true);
+            roomArray[(int)v.x, (int)v.y].isValid = false;
+        }
+
+        //Recheck end nodes
+        RecheckAllEndNodes();
+
+        return newRoomList.Count;
+    }
+
+
+    bool IsValidCoordinate(int x, int y) {
+        if ((x < 0 || x >= xLength) || (y < 0 || y >= yLength)) {
+            return false;
+        }
+        return true;
+    }
+
+    void RecheckAllEndNodes() {
+        foreach(Node n in new List<Node>(endRoomNodes)) {
+            CheckEndNode(n);
+        }
+    }
+
+    Node GetRandomEndNode() {
+        if(endRoomNodes.Count == 0) {
+            return null;
+        }
+        return endRoomNodes[Random.Range(0, endRoomNodes.Count - 1)];
+    }
+
+    bool CheckEndNode(Node n) {
+        Vector2[] neighbors = GetNeighborNodesPositions(n);
+        for(int i = 0; i < 4; i++) {
+            if (IsValidCoordinate((int)neighbors[i].x, (int)neighbors[i].y)) {
+                //print("Pair " + neighbors[i].x.ToString() + " " + neighbors[i].y.ToString());
+                Node b = roomArray[(int)neighbors[i].x, (int)neighbors[i].y];
+                if(!b.isTaken && b.isValid) {
+                    AddNodeEnd(n);
+                    return true;
+                }
+            }
+        }
+        RemoveNodeEnd(n);
+        return false;
+    }
+
+    bool RemoveNodeEnd(Node n) {
+        if (endRoomNodes.Contains(n)) {
+            endRoomNodes.Remove(n);
+            return true;
+        }
+        return false;
+    }
+
+    void AddNodeEnd(Node n) {
+        if (!endRoomNodes.Contains(n)) {
+            endRoomNodes.Add(n);
+        }
+    }
+
+
+    void SetClosedNeighbor(Node n, Room r, int x, int y, bool closed) {
+        int difX = x - n.xPos;
+        int difY = y - n.yPos;
+        //print("Before " + n.xPos.ToString() + ", " + n.yPos.ToString());
+        //print("Pair " + difX.ToString() + ", " + difY.ToString());
+        switch (difX) {
+
+            case -1:
+                r.blockers[3].SetActive(closed);
+                r.blockers[3].name = "West";
+                break;
+            case 0:
+                switch (difY) {
+                    case -1:
+                        r.blockers[2].SetActive(closed);
+                        r.blockers[2].name = "South";
+                        break;
+                    case 1:
+                        r.blockers[0].SetActive(closed);
+                        r.blockers[0].name = "North";
+                        break;
+                    default:
+                        print("Help me! 2");
+                        break;
+                }
+                break;
+            case 1:
+                r.blockers[1].SetActive(closed);
+                r.blockers[1].name = "East";
+                break;
+            default:
+                print("Help me!");
+                break;
+        }
+    }
+
+
+    GameObject GenerateRoom(int x, int y) {
+        GameObject r = Instantiate(potentialRoomSpawns[0]);
+        r.transform.position = new Vector3(x * nodeLength, 0, y * nodeLength);
+        return r;
+    }
+
+    Vector2[] GetNeighborNodesPositions(Node n) {
+        Vector2[] toCheck = new Vector2[4];
+        toCheck[0] = new Vector2(n.xPos, n.yPos + 1);
+        //toCheck[1] = new Vector2(n.xPos + 1, n.yPos + 1);
+        toCheck[1] = new Vector2(n.xPos + 1, n.yPos);
+        //toCheck[3] = new Vector2(n.xPos + 1, n.yPos - 1);
+        toCheck[2] = new Vector2(n.xPos, n.yPos - 1);
+        //toCheck[5] = new Vector2(n.xPos - 1, n.yPos - 1);
+        toCheck[3] = new Vector2(n.xPos - 1, n.yPos);
+        //toCheck[7] = new Vector2(n.xPos - 1, n.yPos + 1);
+        return toCheck;
+    }
+
+
+}
