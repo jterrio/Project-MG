@@ -1,0 +1,2 @@
+Player:
+ -any: ['Assets/Scripts/Player/*]
