@@ -1,2 +1,2 @@
 Player:
--any["Assets/Scripts/Player/*"]
+ -any: ['Assets/Scripts/Player/*']
