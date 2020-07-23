@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour {
 
     public static UIManager ui;
 
+    [Header("Loading Screen")]
     public Image loadBarFill;
     public RectTransform loadScreenPanel;
+
+    [Header("Main Menu")]
+    public RectTransform mainMenuPanel;
 
     private void Start() {
         if(ui == null) {
@@ -19,20 +22,12 @@ public class UIManager : MonoBehaviour {
         }
     }
 
-    public void LoadFarmLevel() {
-        StartCoroutine(LoadLevel("Sample"));
+    public void DisableMainMenuUI() {
+        mainMenuPanel.gameObject.SetActive(false);
     }
 
-    IEnumerator LoadLevel(string level) {
-        loadScreenPanel.gameObject.SetActive(true);
-        AsyncOperation a = SceneManager.LoadSceneAsync(level, LoadSceneMode.Single);
-        //a.allowSceneActivation = false;
-        while(a.progress < 0.9) {
-            loadBarFill.fillAmount = (a.progress / 1);
-            yield return null;
-        }
-        //a.allowSceneActivation = true;
-
+    public void EnableMainMenuUI() {
+        mainMenuPanel.gameObject.SetActive(true);
     }
 
 

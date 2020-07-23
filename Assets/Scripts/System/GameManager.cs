@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour {
     public GameObject player;
     [Tooltip("Reference to the players movement")]
     public PlayerMovement playerMovement;
+    [Tooltip("Reference to the players camera")]
+    public Camera playerCamera;
 
     private void Awake() {
         if(gm == null) {
@@ -18,6 +20,13 @@ public class GameManager : MonoBehaviour {
         }else if(gm != this) {
             Destroy(this);
         }
+        DontDestroyOnLoad(this);
+    }
+
+    public void FindPlayer() {
+        player = GameObject.FindGameObjectWithTag("Player");
+        playerMovement = player.GetComponent<PlayerMovement>();
+        playerCamera = player.GetComponentInChildren<Camera>();
     }
 
 }
