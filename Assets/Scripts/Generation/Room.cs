@@ -18,6 +18,7 @@ public class Room : MonoBehaviour {
     public GameObject floorBase;
     [Tooltip("Debug Object")]
     public GameObject testObject;
+    public GameObject floorGrass;
 
     [Header("Enemy Generation")]
     [Tooltip("Potential enemy spawns during generation")]
@@ -62,6 +63,9 @@ public class Room : MonoBehaviour {
                     position = new Vector3(firstNode.x + (nodeLength * i), firstNode.y, firstNode.z - (nodeLength * t))
                 };
                 roomArray[i, t] = n;
+                GameObject grass = Instantiate(floorGrass);
+                grass.transform.position = new Vector3(firstNode.x + (nodeLength * i), 0.3f, firstNode.z - (nodeLength * t));
+                grass.transform.localScale = new Vector3(0.7f, 1f, 0.7f);
             }
         }
     }
@@ -113,6 +117,7 @@ public class Room : MonoBehaviour {
     }
 
     public void ActivateMonsters() {
+        print("hello");
         foreach (GameObject m in monsters) {
             m.SetActive(true);
         }

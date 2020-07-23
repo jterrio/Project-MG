@@ -108,6 +108,8 @@ public class RoomManager : MonoBehaviour {
             }
         }
         SetEndNodeNeighbors();
+        currentRoom.DeactivateMonsters();
+        currentRoom.ClearRoom();
     }
 
     void SetEndNodeNeighbors() {
