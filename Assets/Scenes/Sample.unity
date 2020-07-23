@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1389745891}
-  m_IndirectSpecularColor: {r: 0.167882, g: 0.21073516, b: 0.28994164, a: 1}
+  m_IndirectSpecularColor: {r: 0.18135756, g: 0.22697668, b: 0.30737394, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -449,8 +449,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nodeLength: 120
-  min: 5
-  max: 30
+  min: 20
+  max: 20
+  minMin: 20
+  maxMin: 30
   xLength: 0
   yLength: 0
   potentialRoomSpawns:
@@ -764,6 +766,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 818243999}
   playerMovement: {fileID: 818244003}
+  playerCamera: {fileID: 0}
 --- !u!4 &1906214636
 Transform:
   m_ObjectHideFlags: 0

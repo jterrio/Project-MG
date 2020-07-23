@@ -25,6 +25,10 @@ public class Room : MonoBehaviour {
     public List<GameObject> potentialMonsterSpawns;
     [Tooltip("Enemies that were spawned during generation")]
     public List<GameObject> monsters;
+    [Tooltip("Determines if enemies spawn in this room, like a shop or spawn room")]
+    public bool specialRoom;
+    [Tooltip("Determines if this is a boss room")]
+    public bool bossRoom;
 
     [Header("Connectors")]
     [Tooltip("Doors that lead to other rooms")]
@@ -71,17 +75,28 @@ public class Room : MonoBehaviour {
     }
 
     void GenerateRoom() {
+        if(!specialRoom && !bossRoom) {
+            SpawnMonsters();
+        }else if (specialRoom) {
+            //spawn or shop
+        } else {
+            //boss
+        }
+    }
+
+    void SpawnMonsters() {
         int x = Random.Range(0, xLength - 1);
         int y = Random.Range(0, yLength - 1);
         roomArray[x, y].isTaken = true;
         int m = Random.Range(0, potentialMonsterSpawns.Count - 1);
         int c = Random.Range(3, 7);
-        for(int i = 0; i < c; i++) {
+        for (int i = 0; i < c; i++) {
             Vector3 spawnPoint = new Vector3(roomArray[x, y].position.x + Random.Range(-(nodeLength / 2), (nodeLength / 2)), roomArray[x, y].position.y, roomArray[x, y].position.z + Random.Range(-(nodeLength / 2), (nodeLength / 2)));
             GameObject monster = Instantiate(potentialMonsterSpawns[m]);
             monster.transform.position = spawnPoint;
             monsters.Add(monster);
         }
+
         if (RoomManager.rm.currentRoom != this) {
             DeactivateMonsters();
         }
@@ -117,7 +132,6 @@ public class Room : MonoBehaviour {
     }
 
     public void ActivateMonsters() {
-        print("hello");
         foreach (GameObject m in monsters) {
             m.SetActive(true);
         }

@@ -12,6 +12,8 @@ public class RoomManager : MonoBehaviour {
     public float nodeLength = 120f;
     [Tooltip("Numbers used to generate the size of the floor in X and Z space")]
     public int min, max;
+    [Tooltip("Numbers used for min and max generation of rooms")]
+    public int minMin, maxMin;
     [Space(10)]
     [HideInInspector]
     public int xLength, yLength;
@@ -70,7 +72,7 @@ public class RoomManager : MonoBehaviour {
         createdRooms = new List<Node>();
 
         //generate initial room / min
-        int minNumberOfRooms = Random.Range(20, 30);
+        int minNumberOfRooms = Random.Range(minMin, maxMin);
         int initialX = Random.Range(0, xLength - 1);
         int initialY = Random.Range(0, yLength - 1);
 
@@ -107,12 +109,13 @@ public class RoomManager : MonoBehaviour {
                 break;
             }
         }
-        SetEndNodeNeighbors();
+        ValidateNodeNeighbors();
         currentRoom.DeactivateMonsters();
         currentRoom.ClearRoom();
+        currentRoom.specialRoom = true;
     }
 
-    void SetEndNodeNeighbors() {
+    void ValidateNodeNeighbors() {
         foreach (Node n in createdRooms) {
             SetAllNeighborsClosed(n);
         }
@@ -124,10 +127,10 @@ public class RoomManager : MonoBehaviour {
         for (int i = 0; i < 4; i++) {
             if (!IsValidCoordinate((int)toCheck[i].x, (int)toCheck[i].y)) {
                 SetClosedNeighbor(n, room, (int)toCheck[i].x, (int)toCheck[i].y, true);
-            }else if (!roomArray[(int)toCheck[i].x, (int)toCheck[i].y].isTaken) {
-                SetClosedNeighbor(n, room, (int)toCheck[i].x, (int)toCheck[i].y, true);
-            }else {
+            }else if (roomArray[(int)toCheck[i].x, (int)toCheck[i].y].isTaken) {
                 SetClosedNeighbor(n, room, (int)toCheck[i].x, (int)toCheck[i].y, false);
+            }else {
+                SetClosedNeighbor(n, room, (int)toCheck[i].x, (int)toCheck[i].y, true);
             }
         }
     }
@@ -171,8 +174,9 @@ public class RoomManager : MonoBehaviour {
                 break;
             }
         }
+
+
         //add rooms to node neighbors
-        
         room.neighbors = newRoomList.ToArray();
 
         //add remaining potential spots to invalids
@@ -189,8 +193,16 @@ public class RoomManager : MonoBehaviour {
 
         //Recheck end nodes
         RecheckAllEndNodes();
-
         return newRoomList.Count;
+    }
+
+    void InvalidateCorners(Node n) {
+        Vector2[] corners = GetCornerNodesPositions(n);
+        for(int i = 0; i < corners.Length; i++) {
+            if (IsValidCoordinate((int)corners[i].x, (int)corners[i].y)) {
+                roomArray[(int)corners[i].x, (int)corners[i].y].isValid = false;
+            }
+        }
     }
 
 
@@ -298,6 +310,15 @@ public class RoomManager : MonoBehaviour {
         //toCheck[5] = new Vector2(n.xPos - 1, n.yPos - 1);
         toCheck[3] = new Vector2(n.xPos - 1, n.yPos);
         //toCheck[7] = new Vector2(n.xPos - 1, n.yPos + 1);
+        return toCheck;
+    }
+
+    Vector2[] GetCornerNodesPositions(Node n) {
+        Vector2[] toCheck = new Vector2[4];
+        toCheck[0] = new Vector2(n.xPos + 1, n.yPos + 1);
+        toCheck[1] = new Vector2(n.xPos + 1, n.yPos - 1);
+        toCheck[2] = new Vector2(n.xPos - 1, n.yPos - 1);
+        toCheck[3] = new Vector2(n.xPos - 1, n.yPos + 1);
         return toCheck;
     }
 
