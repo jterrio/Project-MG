@@ -128,6 +128,11 @@ public class RoomManager : MonoBehaviour {
             if (!IsValidCoordinate((int)toCheck[i].x, (int)toCheck[i].y)) {
                 SetClosedNeighbor(n, room, (int)toCheck[i].x, (int)toCheck[i].y, true);
             }else if (roomArray[(int)toCheck[i].x, (int)toCheck[i].y].isTaken) {
+                List<GameObject> newNeighbors = new List<GameObject>(room.neighbors);
+                if (!newNeighbors.Contains(roomArray[(int)toCheck[i].x, (int)toCheck[i].y].room)) {
+                    newNeighbors.Add(roomArray[(int)toCheck[i].x, (int)toCheck[i].y].room);
+                    room.neighbors = newNeighbors.ToArray();
+                }
                 SetClosedNeighbor(n, room, (int)toCheck[i].x, (int)toCheck[i].y, false);
             }else {
                 SetClosedNeighbor(n, room, (int)toCheck[i].x, (int)toCheck[i].y, true);
@@ -149,10 +154,11 @@ public class RoomManager : MonoBehaviour {
                 SetClosedNeighbor(n, room, (int)toCheck[i].x, (int)toCheck[i].y, true);
                 continue;
             }
-            if(!roomArray[(int)toCheck[i].x, (int)toCheck[i].y].isValid) {
-                invalidRoomPositions.Add(toCheck[i]);
-            } else if (!roomArray[(int)toCheck[i].x, (int)toCheck[i].y].isTaken) {
+            if(roomArray[(int)toCheck[i].x, (int)toCheck[i].y].isValid && !roomArray[(int)toCheck[i].x, (int)toCheck[i].y].isTaken) {
                 validRoomPositions.Add(toCheck[i]);
+                
+            } else {
+                invalidRoomPositions.Add(toCheck[i]);
             }
         }
 
@@ -297,6 +303,7 @@ public class RoomManager : MonoBehaviour {
     GameObject GenerateRoom(int x, int y) {
         GameObject r = Instantiate(potentialRoomSpawns[0]);
         r.transform.position = new Vector3(x * nodeLength, 0, y * nodeLength);
+        r.gameObject.name = "X: " + (x).ToString() + ", Y: " + (y).ToString();
         return r;
     }
 
