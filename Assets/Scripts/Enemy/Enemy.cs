@@ -53,4 +53,10 @@ public class Enemy : MonoBehaviour {
         RoomManager.rm.DefeatMonster(this.gameObject);
     }
 
+
+    protected void LookAt(GameObject g) {
+        Vector3 targetPos = new Vector3(g.transform.position.x, this.transform.position.y, g.transform.position.z);
+        transform.LookAt(targetPos);
+    }
+
 }

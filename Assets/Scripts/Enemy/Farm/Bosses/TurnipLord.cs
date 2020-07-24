@@ -6,19 +6,30 @@ public class TurnipLord : Enemy {
 
     //-7 + 7
     [Header("Boss Settings")]
+    [Tooltip("Boss Attack Stage")]
     public State state = State.GROW;
+    [Tooltip("Time the screen shakes before anything actually happens")]
     public float shakeBeforeRiseTime = 3f;
+    [Tooltip("How fast the boss rises and the battle begins")]
     public float riseSpeed = 3f;
     private Coroutine harvestCoroutine;
     private List<Coroutine> vineCoroutines;
     private List<GameObject> spawnedVines;
+    [Header("Attack Settings")]
+    [Tooltip("Delay between stages of vine attack. Lower value means faster attacks")]
     public float vineAttackSpeed = 2f;
-    public float lastTimeAttacked = 0f;
+    private float lastTimeAttacked = 0f;
+    [Tooltip("Delay between stages between attack. Higher value means slower attacks")]
     public float timeBetweenAttacks = 5f;
+    [Tooltip("Delay between stages between spawning. Higher value means slower spawns")]
+    public float minionAttackSpeed = 1.5f;
+    private bool vineAttackDone = true;
+    private bool minionAttackDone = true;
 
     [Header("Boss References")]
     public GameObject vineObject;
     public GameObject minion;
+    public GameObject minionSpawnPoint;
 
     [Header("Camera Shake")]
     public float magnitude;
@@ -48,10 +59,11 @@ public class TurnipLord : Enemy {
             harvestCoroutine = StartCoroutine(Harvest());
         }
         if(state == State.READY) {
-            transform.LookAt(GameManager.gm.player.transform.position);
-
-            if(lastTimeAttacked + timeBetweenAttacks < Time.time) {
-                state = State.VINE;
+            //transform.LookAt(GameManager.gm.player.transform.position);
+            if(health / healthTotal > 0.45f) {
+                HighHPAttack();
+            } else {
+                LowHPAttack();
             }
         }
         if(state == State.VINE) {
@@ -59,16 +71,74 @@ public class TurnipLord : Enemy {
             VineAttack();
         }
         if(state == State.SPAWN) {
-
+            state = State.ISATTACKING;
+            SpawnAttack();
+        }
+        if(state == State.BOTH) {
+            state = State.ISATTACKING;
+            VineAttack();
+            SpawnAttack();
         }
         if(state == State.ISATTACKING) {
-            transform.LookAt(GameManager.gm.player.transform.position);
+            LookAt(GameManager.gm.player);
+            if (minionAttackDone && vineAttackDone) {
+                state = State.READY;
+            }
             return;
         }
     }
 
+
+    void HighHPAttack() {
+        if (lastTimeAttacked + timeBetweenAttacks < Time.time) {
+            int r = Random.Range(0, 9);
+            if (r < 4) {
+                state = State.VINE;
+            } else if (r < 8) {
+                state = State.SPAWN;
+            } else {
+                state = State.BOTH;
+            }
+        }
+    }
+
+    void LowHPAttack() {
+        if (lastTimeAttacked + timeBetweenAttacks < Time.time) {
+            int r = Random.Range(0, 9);
+            if(r < 2) {
+                state = State.VINE;
+            }else if(r < 4) {
+                state = State.SPAWN;
+            } else {
+                state = State.BOTH;
+            }
+        }
+    }
+
+    void SpawnAttack() {
+        minionAttackDone = false;
+        Coroutine m = StartCoroutine(SpawnAttackSpawn(Random.Range(3, 5)));
+        vineCoroutines.Add(m);
+    }
+
+    IEnumerator SpawnAttackSpawn(int n) {
+        int nCount = 0;
+        while (nCount < n) {
+            nCount++;
+            float randomAngle = Random.Range(0f, Mathf.PI * 2f);
+            Vector3 spawnPoint = minionSpawnPoint.transform.position + (new Vector3(Mathf.Sin(randomAngle), 0f, Mathf.Cos(randomAngle)).normalized * 10f);
+            GameObject m = Instantiate(minion);
+            m.transform.position = new Vector3(spawnPoint.x, m.GetComponent<Turnip>().growth, spawnPoint.z);
+            RoomManager.rm.currentRoom.monsters.Add(m);
+            yield return new WaitForSeconds(minionAttackSpeed);
+        }
+        lastTimeAttacked = Time.time;
+        minionAttackDone = true;
+    }
+
     void VineAttack() {
-        Coroutine c = StartCoroutine(VineAttackSpawn(Random.Range(3, 10)));
+        vineAttackDone = false;
+        Coroutine c = StartCoroutine(VineAttackSpawn(Random.Range(5, 20)));
         vineCoroutines.Add(c);
     }
 
@@ -80,8 +150,7 @@ public class TurnipLord : Enemy {
             yield return new WaitForSeconds(vineAttackSpeed / 3);
         }
         lastTimeAttacked = Time.time;
-        state = State.READY;
-        yield return null;
+        vineAttackDone = true;
     }
 
     IEnumerator SpawnVine() {
@@ -95,7 +164,7 @@ public class TurnipLord : Enemy {
             vChild.transform.localPosition = new Vector3(0, vChild.transform.localPosition.y + (vineAttackSpeed * Time.deltaTime), 0);
             yield return null;
         }
-        yield return new WaitForSeconds(vineAttackSpeed);
+        yield return new WaitForSeconds(vineAttackSpeed * 2);
         spawnedVines.Remove(v);
         Destroy(v);
     }
@@ -123,6 +192,8 @@ public class TurnipLord : Enemy {
             yield return null;
         }
         GameManager.gm.playerCamera.transform.localPosition = originalCamPos;
+        yield return new WaitForSeconds(shakeBeforeRiseTime / 2);
+        //play music
         healthBar.gameObject.SetActive(true);
         state = State.READY;
         yield return null;

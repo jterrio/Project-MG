@@ -66,6 +66,8 @@ public class LevelManager : MonoBehaviour {
             yield return null;
         }
         //a.allowSceneActivation = true;
+        RoomManager.rm.CreateFloorLayout();
+        GameManager.gm.currentFloor++;
         UIManager.ui.loadScreenPanel.gameObject.SetActive(false);
     }
 

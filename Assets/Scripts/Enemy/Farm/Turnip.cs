@@ -46,7 +46,7 @@ public class Turnip : Enemy {
             growState = State.GROW;
             transform.position = new Vector3(transform.position.x, transform.position.y - growth, transform.position.z);
         } else {
-            transform.LookAt(GameManager.gm.player.transform.position);
+            LookAt(GameManager.gm.player);
             transform.position += new Vector3(transform.forward.x, 0, transform.forward.z) * moveSpeed * Time.deltaTime;
         }
     }

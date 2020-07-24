@@ -14,6 +14,10 @@ public class GameManager : MonoBehaviour {
     [Tooltip("Reference to the players camera")]
     public Camera playerCamera;
 
+    [Header("Floor")]
+    [Tooltip("The number of the current floor the player is on")]
+    public int currentFloor = 0;
+
     private void Awake() {
         if(gm == null) {
             gm = this;

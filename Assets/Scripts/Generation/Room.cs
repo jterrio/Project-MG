@@ -126,10 +126,18 @@ public class Room : MonoBehaviour {
     }
 
     public void ClearRoom() {
+        if (bossRoom) {
+            ClearFloor();
+        }
         ClearTriggers();
         RemoveTriggers();
         RemoveGates();
         AccessNeighbors();
+    }
+
+    public void ClearFloor() {
+        GameObject f = Instantiate(RoomManager.rm.nextFloor);
+        f.gameObject.transform.position = new Vector3(floorBase.transform.position.x, 3f, floorBase.transform.position.z);
     }
 
     public void AccessNeighbors() {

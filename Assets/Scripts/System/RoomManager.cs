@@ -31,6 +31,7 @@ public class RoomManager : MonoBehaviour {
     [Header("Current Room")]
     [Tooltip("The current room the player is in")]
     public Room currentRoom;
+    public GameObject nextFloor;
 
     private List<Node> endRoomNodes;
 
@@ -46,13 +47,14 @@ public class RoomManager : MonoBehaviour {
     private void Awake() {
         if(rm == null) {
             rm = this;
+            rm.gameObject.name = "RoomManager-" + GameManager.gm.currentFloor.ToString();
         }else if(rm != this) {
             Destroy(this);
         }
     }
 
     void Start() {
-        CreateFloorLayout();
+        //CreateFloorLayout();
     }
 
     public void ChangeRoom(Room r) {
@@ -65,7 +67,7 @@ public class RoomManager : MonoBehaviour {
         currentRoom.DefeatMonster(monster);
     }
 
-    void CreateFloorLayout() {
+    public void CreateFloorLayout() {
 
         //generate size
         xLength = Random.Range(min, max);
