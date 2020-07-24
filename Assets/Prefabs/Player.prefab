@@ -26,13 +26,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5891472348953544372}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.89, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5006512735954252126}
-  m_Father: {fileID: 5891472349960707474}
-  m_RootOrder: 1
+  m_Father: {fileID: 4195361190147317540}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &5891472348953544374
 Camera:
@@ -223,7 +223,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5891472349296363624}
-  - {fileID: 5891472348953544369}
+  - {fileID: 4195361190147317540}
   - {fileID: 5891472350297163004}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -297,40 +297,37 @@ Transform:
   m_Father: {fileID: 5891472349960707474}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &652453835
-MonoBehaviour:
+--- !u!1 &6597551473197933357
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8296172668035744589}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2f2276bbe2359b45b8398e8e3333860, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fireRate: 10
-  magSize: 25
-  bulletsInMag: 0
-  reloadTime: 2
-  isReloading: 0
-  damage: 10
-  audioSource: {fileID: 284698452}
-  fireSounds:
-  - {fileID: 8300000, guid: e03d2e8734c76f146bb3d03a4921c3f5, type: 3}
-  - {fileID: 8300000, guid: bbd289371e5ab594eb7606d69617de40, type: 3}
-  - {fileID: 8300000, guid: 0ce4536e3610c6f438056d7e449e2e18, type: 3}
-  - {fileID: 8300000, guid: b440882675682f540a32aab22736af50, type: 3}
-  - {fileID: 8300000, guid: 8f5fcfde493537240b0265245ea2d666, type: 3}
-  emptySound: {fileID: 8300000, guid: ecbd5e3e7833b0d4e8364df23ab977dd, type: 3}
-  reloadSound:
-  - {fileID: 8300000, guid: 3334eaf006872ef439a16fa0bf0edcdb, type: 3}
-  - {fileID: 8300000, guid: 1f18686e0262f57489c652d422eebbcc, type: 3}
-  - {fileID: 8300000, guid: 5107fe4be4acde74c98537f651b8e865, type: 3}
-  range: 100
-  gunFlash: {fileID: 198234347405339132}
-  hitEffect: {fileID: 2300014961297877486, guid: 08d399ff7e702784d848277bbd2e8f28,
-    type: 3}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4195361190147317540}
+  m_Layer: 8
+  m_Name: CameraAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4195361190147317540
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6597551473197933357}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.89, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 5891472348953544369}
+  m_Father: {fileID: 5891472349960707474}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &284698452
 AudioSource:
   m_ObjectHideFlags: 0
@@ -427,6 +424,40 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &652453835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8296172668035744589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2f2276bbe2359b45b8398e8e3333860, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fireRate: 10
+  magSize: 25
+  bulletsInMag: 0
+  reloadTime: 2
+  isReloading: 0
+  damage: 10
+  audioSource: {fileID: 284698452}
+  fireSounds:
+  - {fileID: 8300000, guid: e03d2e8734c76f146bb3d03a4921c3f5, type: 3}
+  - {fileID: 8300000, guid: bbd289371e5ab594eb7606d69617de40, type: 3}
+  - {fileID: 8300000, guid: 0ce4536e3610c6f438056d7e449e2e18, type: 3}
+  - {fileID: 8300000, guid: b440882675682f540a32aab22736af50, type: 3}
+  - {fileID: 8300000, guid: 8f5fcfde493537240b0265245ea2d666, type: 3}
+  emptySound: {fileID: 8300000, guid: ecbd5e3e7833b0d4e8364df23ab977dd, type: 3}
+  reloadSound:
+  - {fileID: 8300000, guid: 3334eaf006872ef439a16fa0bf0edcdb, type: 3}
+  - {fileID: 8300000, guid: 1f18686e0262f57489c652d422eebbcc, type: 3}
+  - {fileID: 8300000, guid: 5107fe4be4acde74c98537f651b8e865, type: 3}
+  range: 100
+  gunFlash: {fileID: 198234347405339132}
+  hitEffect: {fileID: 2300014961297877486, guid: 08d399ff7e702784d848277bbd2e8f28,
+    type: 3}
 --- !u!1001 &1062991014
 PrefabInstance:
   m_ObjectHideFlags: 0

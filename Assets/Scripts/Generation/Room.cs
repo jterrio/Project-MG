@@ -16,6 +16,7 @@ public class Room : MonoBehaviour {
     [Header("References")]
     [Tooltip("Reference to size of the floor space for calculations and spawning")]
     public GameObject floorBase;
+    public GameObject walls;
     [Tooltip("Debug Object")]
     public GameObject testObject;
     public GameObject floorGrass;
@@ -25,12 +26,16 @@ public class Room : MonoBehaviour {
     public List<GameObject> potentialMonsterSpawns;
     [Tooltip("Enemies that were spawned during generation")]
     public List<GameObject> monsters;
+    [Tooltip("Bosses that can be spawned in a boss room")]
+    public List<GameObject> bosses;
     [Tooltip("Determines if enemies spawn in this room, like a shop or spawn room")]
     public bool specialRoom;
     [Tooltip("Determines if this is a boss room")]
     public bool bossRoom;
 
     [Header("Connectors")]
+    [Tooltip("The entire connector")]
+    public GameObject[] connectors;
     [Tooltip("Doors that lead to other rooms")]
     public GameObject[] gates;
     [Tooltip("Entrance triggers for entering a new room")]
@@ -68,6 +73,7 @@ public class Room : MonoBehaviour {
                 };
                 roomArray[i, t] = n;
                 GameObject grass = Instantiate(floorGrass);
+                grass.transform.parent = walls.transform;
                 grass.transform.position = new Vector3(firstNode.x + (nodeLength * i), 0.3f, firstNode.z - (nodeLength * t));
                 grass.transform.localScale = new Vector3(0.7f, 1f, 0.7f);
             }
@@ -80,7 +86,7 @@ public class Room : MonoBehaviour {
         }else if (specialRoom) {
             //spawn or shop
         } else {
-            //boss
+            SpawnBoss();
         }
     }
 
@@ -93,6 +99,7 @@ public class Room : MonoBehaviour {
         for (int i = 0; i < c; i++) {
             Vector3 spawnPoint = new Vector3(roomArray[x, y].position.x + Random.Range(-(nodeLength / 2), (nodeLength / 2)), roomArray[x, y].position.y, roomArray[x, y].position.z + Random.Range(-(nodeLength / 2), (nodeLength / 2)));
             GameObject monster = Instantiate(potentialMonsterSpawns[m]);
+            monster.transform.parent = this.gameObject.transform;
             monster.transform.position = spawnPoint;
             monsters.Add(monster);
         }
@@ -100,6 +107,14 @@ public class Room : MonoBehaviour {
         if (RoomManager.rm.currentRoom != this) {
             DeactivateMonsters();
         }
+    }
+
+    void SpawnBoss() {
+        GameObject boss = Instantiate(bosses[0]);
+        boss.transform.parent = this.gameObject.transform;
+        boss.transform.position = roomArray[xLength / 2, yLength / 2].position;
+        monsters.Add(boss);
+        DeactivateMonsters();
     }
 
     public void DefeatMonster(GameObject monster) {

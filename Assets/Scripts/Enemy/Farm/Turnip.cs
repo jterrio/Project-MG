@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Turnip : MonoBehaviour {
+public class Turnip : Enemy {
 
     private State growState = State.GROW;
     public float range = 10f;
@@ -15,7 +15,8 @@ public class Turnip : MonoBehaviour {
         FEAST
     }
 
-    void Update() {
+    new void Update() {
+        base.Update();
         switch (growState) {
             case State.GROW:
                 DetectGrow();

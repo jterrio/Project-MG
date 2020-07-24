@@ -21,6 +21,8 @@ public class RoomManager : MonoBehaviour {
     [Header("Room Settings")]
     [Tooltip("Rooms that can be used during generation in place of a node")]
     public List<GameObject> potentialRoomSpawns;
+    [Tooltip("Boss rooms that can be used during generation in place of a node")]
+    public List<GameObject> potentialBossRoomSpawns;
     [Tooltip("Rooms that have already been generated")]
     public List<Node> createdRooms;
     [Tooltip("Debug spawn object")]
@@ -109,6 +111,47 @@ public class RoomManager : MonoBehaviour {
                 break;
             }
         }
+
+        //generate special rooms
+
+        //generate boss
+        List<Vector2> potentialBossLoc = new List<Vector2>();
+        foreach(Node n in createdRooms) {
+            if(roomArray[initialX, initialY] == n) {
+                continue;
+            }
+            Vector2[] neighbors = GetNeighborNodesPositions(n);
+            for(int i = 0; i < neighbors.Length; i++) {
+                if (!IsValidCoordinate((int)neighbors[i].x, (int)neighbors[i].y)) {
+                    continue;
+                }
+                if(roomArray[(int)neighbors[i].x, (int)neighbors[i].y].isTaken) {
+                    continue;
+                }
+                int nCount = 0;
+                Vector2[] nextNeighbors = GetNeighborNodesPositions(roomArray[(int)neighbors[i].x, (int)neighbors[i].y]);
+                for (int t = 0; t < nextNeighbors.Length; t++) {
+                    if (IsValidCoordinate((int)neighbors[t].x, (int)neighbors[t].y)) {
+                        if(roomArray[(int)neighbors[t].x, (int)neighbors[t].y].isTaken) {
+                            nCount++;
+                        }
+                    }
+                }
+                if (nCount == 1) {
+                    potentialBossLoc.Add(new Vector2(neighbors[i].x, neighbors[i].y));
+                }
+            }
+        }
+        int bossSpawn = Random.Range(0, potentialBossLoc.Count - 1);
+        GameObject boss = Instantiate(potentialBossRoomSpawns[0]);
+        boss.gameObject.name = "BOSS";
+        boss.transform.position = new Vector3(potentialBossLoc[bossSpawn].x * nodeLength, 0, potentialBossLoc[bossSpawn].y * nodeLength);
+        roomArray[(int)potentialBossLoc[bossSpawn].x, (int)potentialBossLoc[bossSpawn].y].isTaken = true;
+        boss.GetComponent<Room>().bossRoom = true;
+        createdRooms.Add(roomArray[(int)potentialBossLoc[bossSpawn].x, (int)potentialBossLoc[bossSpawn].y]);
+        roomArray[(int)potentialBossLoc[bossSpawn].x, (int)potentialBossLoc[bossSpawn].y].room = boss;
+
+
         ValidateNodeNeighbors();
         currentRoom.DeactivateMonsters();
         currentRoom.ClearRoom();
@@ -271,16 +314,19 @@ public class RoomManager : MonoBehaviour {
         switch (difX) {
 
             case -1:
+                r.connectors[3].SetActive(!closed);
                 r.blockers[3].SetActive(closed);
                 r.blockers[3].name = "West";
                 break;
             case 0:
                 switch (difY) {
                     case -1:
+                        r.connectors[2].SetActive(!closed);
                         r.blockers[2].SetActive(closed);
                         r.blockers[2].name = "South";
                         break;
                     case 1:
+                        r.connectors[0].SetActive(!closed);
                         r.blockers[0].SetActive(closed);
                         r.blockers[0].name = "North";
                         break;
@@ -290,6 +336,7 @@ public class RoomManager : MonoBehaviour {
                 }
                 break;
             case 1:
+                r.connectors[1].SetActive(!closed);
                 r.blockers[1].SetActive(closed);
                 r.blockers[1].name = "East";
                 break;
