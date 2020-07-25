@@ -7299,21 +7299,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2321751230289999152, guid: abf7bf9c9eb200947871fc80d9a8ffbc,
-        type: 3}
-      propertyPath: m_Depth
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 2321751230289999152, guid: abf7bf9c9eb200947871fc80d9a8ffbc,
-        type: 3}
-      propertyPath: m_ClearFlags
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5777626269884214579, guid: abf7bf9c9eb200947871fc80d9a8ffbc,
-        type: 3}
-      propertyPath: m_Name
-      value: WeaponCamera
-      objectReference: {fileID: 0}
     - target: {fileID: 5891472349960707473, guid: abf7bf9c9eb200947871fc80d9a8ffbc,
         type: 3}
       propertyPath: m_Name
@@ -29065,6 +29050,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PlayerIconMinimap
+      objectReference: {fileID: 0}
+    - target: {fileID: 7778456808393078342, guid: 21f2efccffaedbb4f8bcc648352408b5,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 21f2efccffaedbb4f8bcc648352408b5, type: 3}

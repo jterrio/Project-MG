@@ -10,7 +10,7 @@ public class Gun : MonoBehaviour {
     [Tooltip("Bullets per magazine")]
     public int magSize = 25;
     public int bulletsInMag;
-    public int reloadTime = 5;
+    public float reloadTime = 5;
     private float reloadTimeCounter;
     private Coroutine reloadCoroutine;
     public bool isReloading = false;

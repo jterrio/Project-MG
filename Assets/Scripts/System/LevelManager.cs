@@ -66,14 +66,16 @@ public class LevelManager : MonoBehaviour {
             yield return null;
         }
         //a.allowSceneActivation = true;
-        RoomManager.rm.CreateFloorLayout();
-        GameManager.gm.currentFloor++;
-        UIManager.ui.loadScreenPanel.gameObject.SetActive(false);
     }
 
 
     private void OnLevelWasLoaded(int level) {
+        print("Level " + level.ToString() + " was loaded!");
         GameManager.gm.FindPlayer();
+
+        RoomManager.rm.CreateFloorLayout();
+        GameManager.gm.currentFloor++;
+        UIManager.ui.loadScreenPanel.gameObject.SetActive(false);
     }
 
 }

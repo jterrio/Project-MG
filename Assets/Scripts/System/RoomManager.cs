@@ -44,12 +44,12 @@ public class RoomManager : MonoBehaviour {
         public GameObject room;
     }
 
-    private void Start() {
+    private void Awake() {
         if(rm == null) {
             rm = this;
             rm.gameObject.name = "RoomManager-" + GameManager.gm.currentFloor.ToString();
         }else if(rm != this) {
-            Destroy(this.gameObject.transform.parent.gameObject);
+            Destroy(this);
         }
     }
 
@@ -355,25 +355,6 @@ public class RoomManager : MonoBehaviour {
                 print("Help me!");
                 break;
         }
-    }
-
-    public Vector3 GetRoomForMinimap() {
-        Vector3 v = new Vector3(-99999f, -99999f, -99999f);
-        float d = 99999f;
-        if(createdRooms == null) {
-            return Vector3.zero;
-        }
-        if(createdRooms.Count <= 1) {
-            return Vector3.zero;
-        }
-        foreach(Node n in createdRooms) {
-            float t = Vector3.Distance(n.room.transform.position, GameManager.gm.player.transform.position);
-            if (t < d){
-                v = n.room.transform.position;
-                d = t;
-            }
-        }
-        return v;
     }
 
 
