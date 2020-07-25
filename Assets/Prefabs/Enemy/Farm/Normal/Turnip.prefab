@@ -275,6 +275,7 @@ GameObject:
   - component: {fileID: 7428941775176541551}
   - component: {fileID: 7428941775176541548}
   - component: {fileID: 8488169513072433889}
+  - component: {fileID: 4145299404008834569}
   m_Layer: 0
   m_Name: Turnip
   m_TagString: Untagged
@@ -315,6 +316,10 @@ MonoBehaviour:
   health: 50
   healthBar: {fileID: 2140272113}
   healthBarFill: {fileID: 783283281}
+  timeToDisplay: 3
+  alwaysDisplay: 0
+  audioSource: {fileID: 0}
+  audioClips: []
   range: 20
   growth: 1
   moveSpeed: 15
@@ -331,6 +336,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.2589426, y: 3.6716645, z: 1.2865467}
   m_Center: {x: -0.029806137, y: 0.27445757, z: 0.0007791519}
+--- !u!54 &4145299404008834569
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7428941775176541546}
+  serializedVersion: 2
+  m_Mass: 0.5
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &8995130959311934648
 GameObject:
   m_ObjectHideFlags: 0

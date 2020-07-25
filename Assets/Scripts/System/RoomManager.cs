@@ -44,17 +44,22 @@ public class RoomManager : MonoBehaviour {
         public GameObject room;
     }
 
-    private void Awake() {
+    private void Start() {
         if(rm == null) {
             rm = this;
             rm.gameObject.name = "RoomManager-" + GameManager.gm.currentFloor.ToString();
         }else if(rm != this) {
-            Destroy(this);
+            Destroy(this.gameObject.transform.parent.gameObject);
         }
     }
 
-    void Start() {
-        //CreateFloorLayout();
+    Vector3 GetAveragePosition() {
+        Vector3 v = new Vector3();
+        foreach(Node n in createdRooms) {
+            v += n.room.transform.position;
+        }
+        v /= createdRooms.Count;
+        return v;
     }
 
     public void ChangeRoom(Room r) {
@@ -153,7 +158,11 @@ public class RoomManager : MonoBehaviour {
         createdRooms.Add(roomArray[(int)potentialBossLoc[bossSpawn].x, (int)potentialBossLoc[bossSpawn].y]);
         roomArray[(int)potentialBossLoc[bossSpawn].x, (int)potentialBossLoc[bossSpawn].y].room = boss;
 
+        //Camera
+        GameManager.gm.mm.c.gameObject.transform.position = GetAveragePosition() + new Vector3(0, 50f, 0);
+        GameManager.gm.mm.c.orthographicSize = 100 * (createdRooms.Count / 2);
 
+        //Validation
         ValidateNodeNeighbors();
         currentRoom.DeactivateMonsters();
         currentRoom.ClearRoom();
@@ -346,6 +355,25 @@ public class RoomManager : MonoBehaviour {
                 print("Help me!");
                 break;
         }
+    }
+
+    public Vector3 GetRoomForMinimap() {
+        Vector3 v = new Vector3(-99999f, -99999f, -99999f);
+        float d = 99999f;
+        if(createdRooms == null) {
+            return Vector3.zero;
+        }
+        if(createdRooms.Count <= 1) {
+            return Vector3.zero;
+        }
+        foreach(Node n in createdRooms) {
+            float t = Vector3.Distance(n.room.transform.position, GameManager.gm.player.transform.position);
+            if (t < d){
+                v = n.room.transform.position;
+                d = t;
+            }
+        }
+        return v;
     }
 
 

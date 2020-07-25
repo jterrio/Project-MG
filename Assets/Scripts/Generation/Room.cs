@@ -20,6 +20,7 @@ public class Room : MonoBehaviour {
     [Tooltip("Debug Object")]
     public GameObject testObject;
     public GameObject floorGrass;
+    public GameObject minimapObject;
 
     [Header("Enemy Generation")]
     [Tooltip("Potential enemy spawns during generation")]
@@ -129,10 +130,18 @@ public class Room : MonoBehaviour {
         if (bossRoom) {
             ClearFloor();
         }
+        SetMinimapExplored();
         ClearTriggers();
         RemoveTriggers();
         RemoveGates();
         AccessNeighbors();
+    }
+
+    public void SetMinimapExplored() {
+        GameManager.gm.mm.SetExplored(minimapObject);
+        for (int i = 0; i < neighbors.Length; i++) {
+            GameManager.gm.mm.SetUnexplored(neighbors[i].GetComponent<Room>().minimapObject);
+        }
     }
 
     public void ClearFloor() {

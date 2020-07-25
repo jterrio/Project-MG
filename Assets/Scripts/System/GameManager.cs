@@ -17,6 +17,9 @@ public class GameManager : MonoBehaviour {
     [Header("Floor")]
     [Tooltip("The number of the current floor the player is on")]
     public int currentFloor = 0;
+    [Tooltip("Minimap camera for the floor")]
+    public Minimap mm;
+    public GameObject playerMinimapObject;
 
     private void Awake() {
         if(gm == null) {
@@ -31,6 +34,9 @@ public class GameManager : MonoBehaviour {
         player = GameObject.FindGameObjectWithTag("Player");
         playerMovement = player.GetComponent<PlayerMovement>();
         playerCamera = player.GetComponentInChildren<Camera>();
+
+        //playerMinimapObject = Instantiate(playerMinimapObject);
+        mm = GameObject.FindGameObjectWithTag("Minimap").GetComponent<Minimap>();
     }
 
 }
