@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour {
         player = GameObject.FindGameObjectWithTag("Player");
         playerMovement = player.GetComponent<PlayerMovement>();
         playerCamera = player.GetComponentInChildren<Camera>();
+        p = player.GetComponent<Player>();
 
         //playerMinimapObject = Instantiate(playerMinimapObject);
         mm = GameObject.FindGameObjectWithTag("Minimap").GetComponent<Minimap>();
