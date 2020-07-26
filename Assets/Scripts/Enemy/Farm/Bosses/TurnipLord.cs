@@ -90,7 +90,7 @@ public class TurnipLord : Enemy {
 
 
     void HighHPAttack() {
-        if (lastTimeAttacked + timeBetweenAttacks < Time.time) {
+        if (lastTimeAttacked + (timeBetweenAttacks * GetHealthPercentage() * 2) < Time.time) {
             int r = Random.Range(0, 9);
             if (r < 4) {
                 state = State.VINE;
@@ -103,7 +103,7 @@ public class TurnipLord : Enemy {
     }
 
     void LowHPAttack() {
-        if (lastTimeAttacked + timeBetweenAttacks < Time.time) {
+        if (lastTimeAttacked + (timeBetweenAttacks * GetHealthPercentage() * 2) < Time.time) {
             int r = Random.Range(0, 9);
             if(r < 2) {
                 state = State.VINE;
@@ -117,20 +117,25 @@ public class TurnipLord : Enemy {
 
     void SpawnAttack() {
         minionAttackDone = false;
-        Coroutine m = StartCoroutine(SpawnAttackSpawn(Random.Range(3, 5)));
+        Coroutine m = StartCoroutine(SpawnAttackSpawn(Mathf.FloorToInt(Random.Range(3, 5) * (1/(GetHealthPercentage() + 0.01f)))));
         vineCoroutines.Add(m);
+    }
+
+    float GetHealthPercentage() {
+        return health / healthTotal;
     }
 
     IEnumerator SpawnAttackSpawn(int n) {
         int nCount = 0;
         while (nCount < n) {
+            audioSource.PlayOneShot(audioClips[2]);
             nCount++;
             float randomAngle = Random.Range(0f, Mathf.PI * 2f);
             Vector3 spawnPoint = minionSpawnPoint.transform.position + (new Vector3(Mathf.Sin(randomAngle), 0f, Mathf.Cos(randomAngle)).normalized * 10f);
             GameObject m = Instantiate(minion);
             m.transform.position = new Vector3(spawnPoint.x, m.GetComponent<Turnip>().growth, spawnPoint.z);
             RoomManager.rm.currentRoom.monsters.Add(m);
-            yield return new WaitForSeconds(minionAttackSpeed);
+            yield return new WaitForSeconds(minionAttackSpeed * GetHealthPercentage());
         }
         lastTimeAttacked = Time.time;
         minionAttackDone = true;
@@ -155,13 +160,16 @@ public class TurnipLord : Enemy {
 
     IEnumerator SpawnVine() {
         GameObject v = Instantiate(vineObject);
+        Vine vine = v.GetComponentInChildren<Vine>();
         spawnedVines.Add(v);
-        GameObject vChild = v.GetComponentInChildren<Vine>().vine;
+        GameObject vChild = vine.vine;
         v.transform.position = new Vector3(GameManager.gm.player.transform.position.x, 0, GameManager.gm.player.transform.position.z); ;
-        vChild.transform.localPosition = new Vector3(0, -0.35f, 0);
-        yield return new WaitForSeconds(vineAttackSpeed);
+        vChild.transform.localPosition = new Vector3(0, -0.4f, 0);
+        vine.audioSource.PlayOneShot(audioClips[3]);
+        yield return new WaitForSeconds(vineAttackSpeed * ((GetHealthPercentage() + 0.01f)));
+        vine.audioSource.PlayOneShot(audioClips[4]);
         while (vChild.transform.position.y < 0.1f) {
-            vChild.transform.localPosition = new Vector3(0, vChild.transform.localPosition.y + (vineAttackSpeed * Time.deltaTime), 0);
+            vChild.transform.localPosition = new Vector3(0, vChild.transform.localPosition.y + (vineAttackSpeed * Time.deltaTime * (1/(GetHealthPercentage() + 0.01f))), 0);
             yield return null;
         }
         yield return new WaitForSeconds(vineAttackSpeed * 2);

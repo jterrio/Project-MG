@@ -12,6 +12,7 @@ public class MouseLook : MonoBehaviour {
 
     private void Start() {
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     private void Update() {
@@ -22,7 +23,8 @@ public class MouseLook : MonoBehaviour {
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
         transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-        playerBody.Rotate(Vector3.up * mouseX);
+        GameManager.gm.playerRB.MoveRotation(Quaternion.Euler(new Vector3(GameManager.gm.playerRB.rotation.eulerAngles.x, GameManager.gm.playerRB.rotation.eulerAngles.y + mouseX, GameManager.gm.playerRB.rotation.eulerAngles.z)));
+        //playerBody.Rotate(Vector3.up * mouseX);
     }
 
 }

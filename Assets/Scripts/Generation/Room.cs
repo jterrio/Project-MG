@@ -126,6 +126,14 @@ public class Room : MonoBehaviour {
         }
     }
 
+    public void DefeatMonster(GameObject monster, float d) {
+        monsters.Remove(monster);
+        Destroy(monster, d);
+        if (monsters.Count == 0) {
+            ClearRoom();
+        }
+    }
+
     public void ClearRoom() {
         if (bossRoom) {
             ClearFloor();

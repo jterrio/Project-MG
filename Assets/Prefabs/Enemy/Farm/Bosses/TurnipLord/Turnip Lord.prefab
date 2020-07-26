@@ -159,7 +159,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65fe9f02ab2d7e349bfd64dd5e03a3c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthTotal: 1000
+  healthTotal: 10000
   health: 1000
   healthBar: {fileID: 4770236724709316523}
   healthBarFill: {fileID: 6019543731910362988}
@@ -169,12 +169,15 @@ MonoBehaviour:
   audioClips:
   - {fileID: 8300000, guid: 1f53ddc3a1650fe45bcac1984bb48734, type: 3}
   - {fileID: 8300000, guid: 327ecbb0ed2ac2a4c8c1144953300e58, type: 3}
+  - {fileID: 8300000, guid: f445502d562e8974aa455e1dfcaedd2a, type: 3}
+  - {fileID: 8300000, guid: 3ccb21be6809ab847b4adcfb92e9a16a, type: 3}
+  - {fileID: 8300000, guid: b0f62c228f9763b4eb68171142ee5a81, type: 3}
   rb: {fileID: 339961957839462484}
   state: 0
   shakeBeforeRiseTime: 3
   riseSpeed: 3
   vineAttackSpeed: 1
-  timeBetweenAttacks: 5
+  timeBetweenAttacks: 2.5
   minionAttackSpeed: 1.5
   vineObject: {fileID: 1101553798946899823, guid: 575c25e3842231d48a9992c8b721ebd4,
     type: 3}

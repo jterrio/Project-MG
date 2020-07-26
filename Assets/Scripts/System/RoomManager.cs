@@ -84,6 +84,10 @@ public class RoomManager : MonoBehaviour {
         currentRoom.DefeatMonster(monster);
     }
 
+    public void DefeatMonster(GameObject monster, float d) {
+        currentRoom.DefeatMonster(monster, d);
+    }
+
     public void CreateFloorLayout() {
 
         //generate size

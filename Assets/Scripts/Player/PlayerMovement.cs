@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
-    public CharacterController controller;
+    public Rigidbody rb;
 
     [Header("Speed Settings")]
     [Tooltip("Normal movement speed")]
     public float speed = 10f;
     [Tooltip("Gravity that affects the player")]
-    public float gravity = -10f;
+    public float fallMultiplier = -2.5f;
     [Tooltip("Height of jump")]
     public float jumpHeight = 5f;
 
@@ -21,47 +21,57 @@ public class PlayerMovement : MonoBehaviour {
     [Tooltip("Layer that detects the ground")]
     public LayerMask groundMask;
 
-    Vector3 velocity;
+    public ForceMode jumpForce;
+    public ForceMode fallForce;
+
+    private Vector3 move;
     bool isGrounded;
+
+    private void Start() {
+        rb.freezeRotation = true;
+    }
 
     void Update() {
         CheckGround();
         Move();
-        CheckJump();
-        ApplyMovement();
+
     }
 
     void Move() {
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
-        Vector3 move = transform.right * x + transform.forward * z;
-        controller.Move(move * speed * Time.deltaTime);
+        move = new Vector3(x, 0, z) * speed;
+        //controller.Move(move * speed * Time.deltaTime);
+    }
+
+    private void FixedUpdate() {
+        CheckJump();
+        rb.AddForce(rb.rotation * move, ForceMode.Impulse);
     }
 
 
     void CheckJump() {
         if (Input.GetButton("Jump") && isGrounded) {
-            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            Debug.Log("JUMP " + Time.time);
+            rb.AddForce(Vector3.up * jumpHeight, fallForce);
+            isGrounded = false;
+        }
+        if(rb.velocity.y < 0) {
+            Vector3 newGravity = new Vector3(0, -1 * Physics.gravity.y * (fallMultiplier - 1), 0);
+            rb.AddForce(newGravity, jumpForce);
         }
     }
 
     void CheckGround() {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
-
-        if (isGrounded && velocity.y < 0) {
-            velocity.y = -2f;
-        }
-    }
-
-    void ApplyMovement() {
-        velocity.y += gravity * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime);
     }
 
     public void Warp(Vector3 newPos) {
-        controller.enabled = false;
         transform.position = newPos;
-        controller.enabled = true;
+    }
+
+    private void OnDrawGizmos() {
+        Gizmos.DrawSphere(groundCheck.position, groundDistance);
     }
 
 }

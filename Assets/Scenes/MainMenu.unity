@@ -7407,6 +7407,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 817856b1513ee374f85ad4673792ee9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!54 &634728829 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 818244000, guid: abf7bf9c9eb200947871fc80d9a8ffbc,
+    type: 3}
+  m_PrefabInstance: {fileID: 634728823}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &651579358
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13641,9 +13647,13 @@ MonoBehaviour:
   p: {fileID: 634728827}
   playerMovement: {fileID: 634728824}
   playerCamera: {fileID: 634728826}
+  playerRB: {fileID: 634728829}
   currentFloor: 0
   mm: {fileID: 0}
   playerMinimapObject: {fileID: 1698413025}
+  enemyPlayerLayers:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!4 &916061372
 Transform:
   m_ObjectHideFlags: 0
