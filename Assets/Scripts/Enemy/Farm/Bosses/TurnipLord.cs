@@ -90,7 +90,7 @@ public class TurnipLord : Enemy {
 
 
     void HighHPAttack() {
-        if (lastTimeAttacked + (timeBetweenAttacks * GetHealthPercentage() * 2) < Time.time) {
+        if (lastTimeAttacked + (timeBetweenAttacks) < Time.time) {
             int r = Random.Range(0, 9);
             if (r < 4) {
                 state = State.VINE;
@@ -103,7 +103,7 @@ public class TurnipLord : Enemy {
     }
 
     void LowHPAttack() {
-        if (lastTimeAttacked + (timeBetweenAttacks * GetHealthPercentage() * 2) < Time.time) {
+        if (lastTimeAttacked + (timeBetweenAttacks) < Time.time) {
             int r = Random.Range(0, 9);
             if(r < 2) {
                 state = State.VINE;
@@ -166,12 +166,13 @@ public class TurnipLord : Enemy {
         v.transform.position = new Vector3(GameManager.gm.player.transform.position.x, 0, GameManager.gm.player.transform.position.z); ;
         vChild.transform.localPosition = new Vector3(0, -0.4f, 0);
         vine.audioSource.PlayOneShot(audioClips[3]);
-        yield return new WaitForSeconds(vineAttackSpeed * ((GetHealthPercentage() + 0.01f)));
+        yield return new WaitForSeconds(Mathf.Max(0.5f, vineAttackSpeed * ((GetHealthPercentage() + 0.01f))));
         vine.audioSource.PlayOneShot(audioClips[4]);
-        while (vChild.transform.position.y < 0.1f) {
-            vChild.transform.localPosition = new Vector3(0, vChild.transform.localPosition.y + (vineAttackSpeed * Time.deltaTime * (1/(GetHealthPercentage() + 0.01f))), 0);
+        while (vChild.transform.position.y < 0f) {
+            vChild.transform.localPosition = new Vector3(0, vChild.transform.localPosition.y + Mathf.Max(0.5f, vineAttackSpeed * ((GetHealthPercentage() + 0.01f))), 0);
             yield return null;
         }
+        vChild.transform.localPosition = new Vector3(0, 0f, 0);
         yield return new WaitForSeconds(vineAttackSpeed * 2);
         spawnedVines.Remove(v);
         Destroy(v);

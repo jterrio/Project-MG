@@ -8,7 +8,6 @@ public class Enemy : MonoBehaviour {
 
     [Header("Health")]
     public float healthTotal = 50f;
-    [HideInInspector]
     public float health = 50f;
 
     [Header("Health Bar References")]

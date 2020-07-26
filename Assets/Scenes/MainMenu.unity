@@ -13653,7 +13653,7 @@ MonoBehaviour:
   playerMinimapObject: {fileID: 1698413025}
   enemyPlayerLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4352
 --- !u!4 &916061372
 Transform:
   m_ObjectHideFlags: 0

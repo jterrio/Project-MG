@@ -9,6 +9,8 @@ public class Player : MonoBehaviour {
     public float healthTotal = 8f;
     public float healthCurrent = 8f;
     public AudioClip damageSound;
+    public float lastTimeTakenDMG;
+    public float invDMGSecs = 1f;
 
     [Header("References")]
     public TMPro.TextMeshProUGUI ammoCountText;
@@ -39,6 +41,10 @@ public class Player : MonoBehaviour {
     }
 
     public void TakeDamage(int d) {
+        if (lastTimeTakenDMG + invDMGSecs >= Time.time) {
+            return;
+        }
+        lastTimeTakenDMG = Time.time;
         audioSource.PlayOneShot(damageSound);
         healthCurrent -= d;
         UpdateHealth();

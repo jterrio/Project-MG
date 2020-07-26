@@ -9,7 +9,7 @@ public class Vine : MonoBehaviour
     public int vineDamage = 1;
 
 
-    private void OnTriggerEnter(Collider other) {
+    private void OnTriggerStay(Collider other) {
         if (other.gameObject.tag == "Player") {
             GameManager.gm.p.TakeDamage(vineDamage);
         }
