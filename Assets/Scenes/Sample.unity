@@ -846,10 +846,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nodeLength: 120
-  min: 5
-  max: 5
+  min: 3
+  max: 3
   minMin: 3
-  maxMin: 10
+  maxMin: 3
   xLength: 0
   yLength: 0
   potentialRoomSpawns:

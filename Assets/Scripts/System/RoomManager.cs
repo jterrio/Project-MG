@@ -34,6 +34,7 @@ public class RoomManager : MonoBehaviour {
     public GameObject nextFloor;
 
     private List<Node> endRoomNodes;
+    private bool debugMode = false;
 
     [System.Serializable]
     public class Node {
@@ -47,10 +48,21 @@ public class RoomManager : MonoBehaviour {
     private void Awake() {
         if(rm == null) {
             rm = this;
-            rm.gameObject.name = "RoomManager-" + GameManager.gm.currentFloor.ToString();
+            if (GameManager.gm != null) {
+                rm.gameObject.name = "RoomManager-" + GameManager.gm.currentFloor.ToString();
+            } else {
+                rm.gameObject.name = "Debug Mode";
+                debugMode = true;
+            }
         }else if(rm != this) {
             Destroy(this);
         }
+    }
+
+    void Start() {
+        if (debugMode) {
+            CreateFloorLayout();
+        }   
     }
 
     Vector3 GetAveragePosition() {
@@ -122,24 +134,45 @@ public class RoomManager : MonoBehaviour {
         //generate special rooms
 
         //generate boss
+        GetBossEndRoom(initialX, initialY);
+
+        //Camera
+        GameManager.gm.mm.c.gameObject.transform.position = GetAveragePosition() + new Vector3(0, 50f, 0);
+        GameManager.gm.mm.c.orthographicSize = 100 * (createdRooms.Count / 2);
+
+        //Validation
+        ValidateNodeNeighbors();
+        currentRoom.DeactivateMonsters();
+        currentRoom.ClearRoom();
+        currentRoom.specialRoom = true;
+    }
+
+    void ValidateNodeNeighbors() {
+        foreach (Node n in createdRooms) {
+            SetAllNeighborsClosed(n);
+        }
+    }
+
+
+    void GetBossEndRoom(int initialX, int initialY) {
         List<Vector2> potentialBossLoc = new List<Vector2>();
-        foreach(Node n in createdRooms) {
-            if(roomArray[initialX, initialY] == n) {
+        foreach (Node n in createdRooms) {
+            if (roomArray[initialX, initialY] == n) {
                 continue;
             }
             Vector2[] neighbors = GetNeighborNodesPositions(n);
-            for(int i = 0; i < neighbors.Length; i++) {
+            for (int i = 0; i < neighbors.Length; i++) {
                 if (!IsValidCoordinate((int)neighbors[i].x, (int)neighbors[i].y)) {
                     continue;
                 }
-                if(roomArray[(int)neighbors[i].x, (int)neighbors[i].y].isTaken) {
+                if (roomArray[(int)neighbors[i].x, (int)neighbors[i].y].isTaken) {
                     continue;
                 }
                 int nCount = 0;
                 Vector2[] nextNeighbors = GetNeighborNodesPositions(roomArray[(int)neighbors[i].x, (int)neighbors[i].y]);
                 for (int t = 0; t < nextNeighbors.Length; t++) {
-                    if (IsValidCoordinate((int)neighbors[t].x, (int)neighbors[t].y)) {
-                        if(roomArray[(int)neighbors[t].x, (int)neighbors[t].y].isTaken) {
+                    if (IsValidCoordinate((int)nextNeighbors[t].x, (int)nextNeighbors[t].y)) {
+                        if (roomArray[(int)nextNeighbors[t].x, (int)nextNeighbors[t].y].isTaken) {
                             nCount++;
                         }
                     }
@@ -157,22 +190,6 @@ public class RoomManager : MonoBehaviour {
         boss.GetComponent<Room>().bossRoom = true;
         createdRooms.Add(roomArray[(int)potentialBossLoc[bossSpawn].x, (int)potentialBossLoc[bossSpawn].y]);
         roomArray[(int)potentialBossLoc[bossSpawn].x, (int)potentialBossLoc[bossSpawn].y].room = boss;
-
-        //Camera
-        GameManager.gm.mm.c.gameObject.transform.position = GetAveragePosition() + new Vector3(0, 50f, 0);
-        GameManager.gm.mm.c.orthographicSize = 100 * (createdRooms.Count / 2);
-
-        //Validation
-        ValidateNodeNeighbors();
-        currentRoom.DeactivateMonsters();
-        currentRoom.ClearRoom();
-        currentRoom.specialRoom = true;
-    }
-
-    void ValidateNodeNeighbors() {
-        foreach (Node n in createdRooms) {
-            SetAllNeighborsClosed(n);
-        }
     }
 
     void SetAllNeighborsClosed(Node n) {
