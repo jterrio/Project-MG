@@ -9,11 +9,18 @@ public class Gun : MonoBehaviour {
     public float fireRate = 10f;
     [Tooltip("Bullets per magazine")]
     public int magSize = 25;
+    [Tooltip("Bullets in magazine")]
     public int bulletsInMag;
+    [Tooltip("Time to fully reload")]
     public float reloadTime = 5;
     private float reloadTimeCounter;
     private Coroutine reloadCoroutine;
+    [Tooltip("Is reloading")]
     public bool isReloading = false;
+    [Tooltip("Speed that bullets travel")]
+    public float bulletSpeed;
+    [Tooltip("Things that the bullet can hit")]
+    public LayerMask hitLayerMask;
 
     [Header("Fire Settings")]
     [Tooltip("Base damage per bullet")]
@@ -28,9 +35,12 @@ public class Gun : MonoBehaviour {
     [Tooltip("How far the projectile ")]
     public float range = 100f;
 
+    [Header("References")]
+    public GameObject bulletEmitter;
+    public GameObject bullet;
+
 
     public ParticleSystem gunFlash;
-    public GameObject hitEffect;
 
     private void Start() {
         bulletsInMag = magSize;
@@ -59,7 +69,21 @@ public class Gun : MonoBehaviour {
             bulletsInMag--;
             gunFlash.Play();
             audioSource.PlayOneShot(fireSounds[Random.Range(0, fireSounds.Length - 1)]);
+
             RaycastHit hit;
+            GameObject b = Instantiate(bullet);
+            b.transform.position = bulletEmitter.transform.position;
+            Vector3 v = Vector3.zero;
+            if(Physics.Raycast(GameManager.gm.playerCamera.transform.position, GameManager.gm.playerCamera.transform.forward, out hit, Mathf.Infinity, hitLayerMask)){
+                //print(hit.collider.gameObject.name);
+                v = hit.point;
+            } else {
+                v = GameManager.gm.playerCamera.transform.position + (GameManager.gm.playerCamera.transform.forward * 50f);
+            }
+            b.transform.LookAt(v);
+            b.GetComponent<Rigidbody>().AddForce(b.transform.forward * bulletSpeed);
+
+            /*
             if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, range)) {
                 Enemy e = hit.transform.GetComponentInParent<Enemy>();
                 if (e != null) {
@@ -72,7 +96,7 @@ public class Gun : MonoBehaviour {
                 GameObject g = Instantiate(hitEffect, hit.point, Quaternion.LookRotation(hit.normal));
                 Destroy(g, 2f);
 
-            }
+            }*/
         }
     }
 

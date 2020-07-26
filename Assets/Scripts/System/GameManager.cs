@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour {
     [Header("Player")]
     [Tooltip("Gameobject of the player")]
     public GameObject player;
+    [Tooltip("Reference to the players player")]
+    public Player p;
     [Tooltip("Reference to the players movement")]
     public PlayerMovement playerMovement;
     [Tooltip("Reference to the players camera")]
