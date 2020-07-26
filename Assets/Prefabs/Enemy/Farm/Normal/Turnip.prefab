@@ -320,6 +320,7 @@ MonoBehaviour:
   alwaysDisplay: 0
   audioSource: {fileID: 0}
   audioClips: []
+  rb: {fileID: 4145299404008834569}
   range: 20
   growth: 1
   moveSpeed: 15
@@ -346,12 +347,12 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 0.5
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  m_Constraints: 116
+  m_CollisionDetection: 3
 --- !u!1 &8995130959311934648
 GameObject:
   m_ObjectHideFlags: 0

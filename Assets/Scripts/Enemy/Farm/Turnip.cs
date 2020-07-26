@@ -30,6 +30,12 @@ public class Turnip : Enemy {
         }
     }
 
+    private void FixedUpdate() {
+        if(growState == State.FEAST) {
+            //TryFeast();
+        }
+    }
+
     void DetectGrow() {
         if(Vector3.Distance(GameManager.gm.player.transform.position, transform.position) <= range) {
             growState = State.HARVEST;
@@ -39,15 +45,18 @@ public class Turnip : Enemy {
     void Harvest() {
         transform.position = new Vector3(transform.position.x, transform.position.y + growth, transform.position.z);
         growState = State.FEAST;
+        EnableCollisions();
     }
 
     void TryFeast() {
         if (Vector3.Distance(GameManager.gm.player.transform.position, transform.position) > range * 1.5) {
             growState = State.GROW;
+            DisableCollisions();
             transform.position = new Vector3(transform.position.x, transform.position.y - growth, transform.position.z);
         } else {
             LookAt(GameManager.gm.player);
-            transform.position += new Vector3(transform.forward.x, 0, transform.forward.z) * moveSpeed * Time.deltaTime;
+            rb.MovePosition(transform.position + (new Vector3(transform.forward.x, 0, transform.forward.z) * moveSpeed * Time.fixedDeltaTime));
+            //transform.position += new Vector3(transform.forward.x, 0, transform.forward.z) * moveSpeed * Time.deltaTime;
         }
     }
 

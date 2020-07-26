@@ -25,8 +25,21 @@ public class Enemy : MonoBehaviour {
     public AudioSource audioSource;
     public AudioClip[] audioClips;
 
+    [Header("Movement")]
+    public Rigidbody rb;
+
     private void Start() {
         health = healthTotal;
+        DisableCollisions();
+    }
+
+
+    protected void DisableCollisions() {
+        rb.isKinematic = true;
+    }
+
+    protected void EnableCollisions() {
+        rb.isKinematic = false;
     }
 
     protected void Update() {
@@ -56,7 +69,8 @@ public class Enemy : MonoBehaviour {
 
     protected void LookAt(GameObject g) {
         Vector3 targetPos = new Vector3(g.transform.position.x, this.transform.position.y, g.transform.position.z);
-        transform.LookAt(targetPos);
+        //transform.LookAt(targetPos);
+        rb.rotation = Quaternion.LookRotation(targetPos - transform.position);
     }
 
 }

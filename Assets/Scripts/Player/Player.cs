@@ -5,6 +5,11 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
 
+    [Header("Health")]
+    public float healthTotal = 8f;
+    public float healthCurrent = 8f;
+
+    [Header("References")]
     public TMPro.TextMeshProUGUI ammoCountText;
     public PlayerMovement pm;
     public Gun gun;
