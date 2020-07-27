@@ -12,6 +12,8 @@ public class PlayerMovement : MonoBehaviour {
     public float fallMultiplier = -2.5f;
     [Tooltip("Height of jump")]
     public float jumpHeight = 5f;
+    [Tooltip("How long to hang into the air")]
+    public float airTime = 0.1f;
 
     [Header("Ground Settings")]
     [Tooltip("Point on bottom for detecting ground collision")]
@@ -53,12 +55,11 @@ public class PlayerMovement : MonoBehaviour {
     void CheckJump() {
         if (Input.GetButton("Jump") && isGrounded) {
             Debug.Log("JUMP " + Time.time);
-            rb.AddForce(Vector3.up * jumpHeight, fallForce);
+            rb.AddForce(Vector3.up * jumpHeight, jumpForce);
             isGrounded = false;
-        }
-        if(rb.velocity.y < 0) {
+        } else if(!isGrounded && rb.velocity.y <= airTime) {
             Vector3 newGravity = new Vector3(0, -1 * Physics.gravity.y * (fallMultiplier - 1), 0);
-            rb.AddForce(newGravity, jumpForce);
+            rb.AddForce(newGravity, fallForce);
         }
     }
 
