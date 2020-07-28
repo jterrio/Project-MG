@@ -32,7 +32,7 @@ public class Room : MonoBehaviour {
     public int maxPatch;
     [Range(0, 1)]
     [Tooltip("Threshold for spawning the environment per node. Higher means less will spawn")]
-    public float perlinThreshold;
+    public float envPerlinThreshold;
     [Tooltip("Potential environmental spawns during generation")]
     public GameObject envSpawn;
     [Tooltip("Environment that was spawned during generation")]
@@ -43,9 +43,17 @@ public class Room : MonoBehaviour {
     public int minBlockade;
     [Tooltip("Max environment that will spawn")]
     public int maxBlockade;
-    [Tooltip("Potential environmental spawns during generation")]
+    [Tooltip("Min length of a wall segment")]
+    public int minLength;
+    [Tooltip("Max length of a wall segment")]
+    public int maxLength;
+    [Tooltip("Threshold for spawning the walls per node. Higher means less will spawn")]
+    public float blockPerlinThreshold;
+    [Tooltip("Potential blockade spawns during generation")]
     public GameObject blockadeSpawn;
-    [Tooltip("Environment that was spawned during generation")]
+    [Tooltip("Potential blockade corner spawns during generation")]
+    public GameObject blockadeCornerSpawn;
+    [Tooltip("Blockades that was spawned during generation")]
     public List<GameObject> blockades;
 
 
@@ -116,6 +124,7 @@ public class Room : MonoBehaviour {
     void GenerateRoom() {
         SpawnEnvironment();
         if (!specialRoom && !bossRoom) {
+            SpawnBlockades();
             SpawnMonsters();
         }else if (specialRoom) {
             //spawn or shop
@@ -138,7 +147,7 @@ public class Room : MonoBehaviour {
                 continue;
             }
             hs.Add(new Vector2(x, y));
-            if (GameManager.gm.seed.ShouldSpawn(x, y, xLength, yLength, perlinThreshold)) {
+            if (GameManager.gm.seed.ShouldSpawn(x, y, xLength, yLength, envPerlinThreshold)) {
                 int r = Random.Range(minPatch, maxPatch);
                 for (int i = 0; i < r; i++) {
                     Vector3 spawnPoint = new Vector3(roomArray[x, y].position.x + Random.Range(-(nodeLength / 2), (nodeLength / 2)), 0.5f, roomArray[x, y].position.z + Random.Range(-(nodeLength / 2), (nodeLength / 2)));
@@ -152,6 +161,149 @@ public class Room : MonoBehaviour {
 
 
         }
+    }
+
+    void SpawnBlockades() {
+        int timeout = 0;
+        int blockToSpawn = Random.Range(minBlockade, maxBlockade);
+        HashSet<Vector2> hs = new HashSet<Vector2>();
+        while (blockades.Count < blockToSpawn && timeout < ((xLength - 1) * (yLength - 1))) {
+            int x = Random.Range(0, xLength - 1);
+            int y = Random.Range(0, yLength - 1);
+            if (hs.Contains(new Vector2(x, y))) {
+                timeout++;
+                continue;
+            }
+            hs.Add(new Vector2(x, y));
+            if (GameManager.gm.seed.ShouldSpawn(x, y, xLength, yLength, blockPerlinThreshold)) {
+                int r = Random.Range(minLength, maxLength);
+                int xCoord = x;
+                int yCoord = y;
+                GameObject wallParent = new GameObject();
+                wallParent.transform.parent = this.gameObject.transform;
+                wallParent.transform.position = Vector3.zero;
+                List<Vector2> validPath = new List<Vector2>();
+                validPath.Add(new Vector2(x, y));
+                for(int i = 0; i < r; i++) {
+                    List<Vector2> potPath = new List<Vector2>(GetNeighborNodesPositions(roomArray[xCoord, yCoord]));
+                    for(int t = 0; t < 4; t++) {
+                        int index = Random.Range(0, potPath.Count);
+                        if(IsValidCoordinate((int)potPath[index].x, (int)potPath[index].y) && !hs.Contains(new Vector2((int)potPath[index].x, (int)potPath[index].y))) {
+                            hs.Add(new Vector2((int)potPath[index].x, (int)potPath[index].y));
+                            validPath.Add(new Vector2((int)potPath[index].x, (int)potPath[index].y));
+                            xCoord = (int)potPath[index].x;
+                            yCoord = (int)potPath[index].y;
+                            break;
+                        }
+                    }
+                }
+                if(validPath.Count < 2) {
+                    timeout += 10;
+                    continue;
+                }
+
+                Vector2[] vPath = validPath.ToArray();
+                for(int u = 0; u < vPath.Length; u++) {
+                    if (u == 0) {
+                        GameObject wall = Instantiate(blockadeSpawn);
+                        wall.transform.parent = wallParent.transform;
+                        wall.transform.position = roomArray[(int)vPath[u].x, (int)vPath[u].y].position;
+                        blockades.Add(wall);
+                        int direction = GetDirection((int)vPath[u].x, (int)vPath[u].y, (int)vPath[u + 1].x, (int)vPath[u + 1].y);
+                        switch (direction) {
+                            case 0:
+                                wall.transform.Rotate(new Vector3(0f, 90f, 0f));
+                                break;
+                            case 2:
+                                wall.transform.Rotate(new Vector3(0f, 90f, 0f));
+                                break;
+                            default:
+                                break;
+                        }
+                    } else if (u == vPath.Length - 1) {
+                        GameObject wall = Instantiate(blockadeSpawn);
+                        wall.transform.parent = wallParent.transform;
+                        wall.transform.position = roomArray[(int)vPath[u].x, (int)vPath[u].y].position;
+                        blockades.Add(wall);
+                        int direction = GetDirection((int)vPath[u].x, (int)vPath[u].y, (int)vPath[u - 1].x, (int)vPath[u - 1].y);
+                        switch (direction) {
+                            case 0:
+                                wall.transform.Rotate(new Vector3(0f, 90f, 0f));
+                                break;
+                            case 2:
+                                wall.transform.Rotate(new Vector3(0f, 90f, 0f));
+                                break;
+                            default:
+                                break;
+                        }
+                    } else {
+                        int directionPast = GetDirection((int)vPath[u].x, (int)vPath[u].y, (int)vPath[u - 1].x, (int)vPath[u - 1].y);
+                        int directionFuture = GetDirection((int)vPath[u].x, (int)vPath[u].y, (int)vPath[u + 1].x, (int)vPath[u + 1].y);
+                        if ((directionPast + directionFuture) % 2 == 0) {
+                            //SameDirection
+                            GameObject wall = Instantiate(blockadeSpawn);
+                            wall.transform.parent = wallParent.transform;
+                            wall.transform.position = roomArray[(int)vPath[u].x, (int)vPath[u].y].position;
+                            blockades.Add(wall);
+                            wall.transform.rotation = blockades[blockades.Count - 2].transform.rotation;
+                        } else {
+                            //Different Direction
+                            GameObject wall = Instantiate(blockadeCornerSpawn);
+                            wall.transform.parent = wallParent.transform;
+                            wall.transform.position = roomArray[(int)vPath[u].x, (int)vPath[u].y].position;
+                            blockades.Add(wall);
+                            //wall.transform.Rotate(new Vector3(0f, 90f, 0f));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    int GetDirection(int x, int y, int xx, int yy) {
+        int difX = xx - x;
+        int difY = yy - y;
+        //print("Before " + n.xPos.ToString() + ", " + n.yPos.ToString());
+        //print("Pair " + difX.ToString() + ", " + difY.ToString());
+        switch (difX) {
+
+            case -1:
+                return 3;
+            case 0:
+                switch (difY) {
+                    case -1:
+                        return 2;
+                    case 1:
+                        return 0;
+                }
+                break;
+            case 1:
+                return 1;
+            default:
+                return 0;
+        }
+        return 0;
+    }
+
+    bool IsValidCoordinate(int x, int y) {
+        if ((x < 0 || x >= xLength) || (y < 0 || y >= yLength)) {
+            return false;
+        }
+        return true;
+    }
+
+    Vector2[] GetNeighborNodesPositions(Node n) {
+        Vector2[] toCheck = new Vector2[4];
+        toCheck[0] = new Vector2(n.xPos, n.yPos + 1);
+        //toCheck[1] = new Vector2(n.xPos + 1, n.yPos + 1);
+        toCheck[1] = new Vector2(n.xPos + 1, n.yPos);
+        //toCheck[3] = new Vector2(n.xPos + 1, n.yPos - 1);
+        toCheck[2] = new Vector2(n.xPos, n.yPos - 1);
+        //toCheck[5] = new Vector2(n.xPos - 1, n.yPos - 1);
+        toCheck[3] = new Vector2(n.xPos - 1, n.yPos);
+        //toCheck[7] = new Vector2(n.xPos - 1, n.yPos + 1);
+        return toCheck;
     }
 
     void SpawnMonsters() {

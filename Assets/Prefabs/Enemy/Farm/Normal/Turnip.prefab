@@ -333,7 +333,7 @@ MonoBehaviour:
   moveSpeed: 15
   explodeDistance: 5
   explosionDmgDistance: 10
-  explosionTotalDistance: 15
+  explosionTotalDistance: 25
   timeToExplode: 0.5
   explosionForce: 250
   explosionDMG: 2

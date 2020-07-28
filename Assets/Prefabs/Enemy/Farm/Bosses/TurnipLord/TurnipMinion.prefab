@@ -252,10 +252,10 @@ MonoBehaviour:
   moveSpeed: 25
   explodeDistance: 5
   explosionDmgDistance: 7.5
-  explosionTotalDistance: 12.5
+  explosionTotalDistance: 20
   timeToExplode: 0.5
   explosionForce: 250
-  explosionDMG: 2
+  explosionDMG: 1
   explosionEffect: {fileID: 6844693084871691095, guid: e600028e3b69bfc4ab44ff7d0a22db57,
     type: 3}
 --- !u!65 &1863153620713049529
