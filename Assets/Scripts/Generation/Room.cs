@@ -238,7 +238,7 @@ public class Room : MonoBehaviour {
                         }
                     } else {
                         int directionPast = GetDirection((int)vPath[u].x, (int)vPath[u].y, (int)vPath[u - 1].x, (int)vPath[u - 1].y);
-                        int directionFuture = GetDirection((int)vPath[u].x, (int)vPath[u].y, (int)vPath[u + 1].x, (int)vPath[u + 1].y);
+                        int directionFuture = GetDirection((int)vPath[u + 1].x, (int)vPath[u + 1].y,(int)vPath[u].x, (int)vPath[u].y);
                         if ((directionPast + directionFuture) % 2 == 0) {
                             //SameDirection
                             GameObject wall = Instantiate(blockadeSpawn);
@@ -252,7 +252,26 @@ public class Room : MonoBehaviour {
                             wall.transform.parent = wallParent.transform;
                             wall.transform.position = roomArray[(int)vPath[u].x, (int)vPath[u].y].position;
                             blockades.Add(wall);
-                            //wall.transform.Rotate(new Vector3(0f, 90f, 0f));
+                            if(directionFuture + directionPast == 1) {
+                                //1
+                                //wall.transform.rotation = wall.transform.rotation * Quaternion.AngleAxis(180f, Vector3.up);
+                                wall.transform.Rotate(new Vector3(0f, 180, 0f));
+
+                            } else if(directionPast + directionFuture == 3) {
+                                //3
+                                if(Mathf.Abs(directionFuture - directionPast) == 1) {
+                                    //1-2
+                                    //wall.transform.rotation = wall.transform.rotation * Quaternion.AngleAxis(270f, Vector3.up);
+                                    wall.transform.Rotate(new Vector3(0f, 270f, 0f));
+                                } else {
+                                    //3-0
+                                    wall.transform.Rotate(new Vector3(0f, 90f, 0f));
+                                }
+                            } else {
+                                //5
+                                wall.transform.Rotate(new Vector3(0f, 0f, 0f));
+                            }
+
                         }
                     }
                 }

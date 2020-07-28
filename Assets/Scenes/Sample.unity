@@ -629,75 +629,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 689281832}
   m_CullTransparentMesh: 0
---- !u!1001 &763211318
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 7611283831837196034, guid: c2e14ffd4e4a60442b2c91d72c6f1903,
-        type: 3}
-      propertyPath: m_Name
-      value: Cobblestone Wall (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 9083054771992498827, guid: c2e14ffd4e4a60442b2c91d72c6f1903,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 27.008642
-      objectReference: {fileID: 0}
-    - target: {fileID: 9083054771992498827, guid: c2e14ffd4e4a60442b2c91d72c6f1903,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 9083054771992498827, guid: c2e14ffd4e4a60442b2c91d72c6f1903,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 6.752328
-      objectReference: {fileID: 0}
-    - target: {fileID: 9083054771992498827, guid: c2e14ffd4e4a60442b2c91d72c6f1903,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9083054771992498827, guid: c2e14ffd4e4a60442b2c91d72c6f1903,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9083054771992498827, guid: c2e14ffd4e4a60442b2c91d72c6f1903,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9083054771992498827, guid: c2e14ffd4e4a60442b2c91d72c6f1903,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9083054771992498827, guid: c2e14ffd4e4a60442b2c91d72c6f1903,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9083054771992498827, guid: c2e14ffd4e4a60442b2c91d72c6f1903,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9083054771992498827, guid: c2e14ffd4e4a60442b2c91d72c6f1903,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9083054771992498827, guid: c2e14ffd4e4a60442b2c91d72c6f1903,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: c2e14ffd4e4a60442b2c91d72c6f1903, type: 3}
 --- !u!1 &818243999 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5891472349960707473, guid: abf7bf9c9eb200947871fc80d9a8ffbc,
@@ -1991,6 +1922,75 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 575c25e3842231d48a9992c8b721ebd4, type: 3}
+--- !u!1001 &4169480120515372134
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2658565948962453564, guid: 223191d10846e2f408943ac279254b90,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 24.59
+      objectReference: {fileID: 0}
+    - target: {fileID: 2658565948962453564, guid: 223191d10846e2f408943ac279254b90,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 2658565948962453564, guid: 223191d10846e2f408943ac279254b90,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 3.814087
+      objectReference: {fileID: 0}
+    - target: {fileID: 2658565948962453564, guid: 223191d10846e2f408943ac279254b90,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2658565948962453564, guid: 223191d10846e2f408943ac279254b90,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2658565948962453564, guid: 223191d10846e2f408943ac279254b90,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2658565948962453564, guid: 223191d10846e2f408943ac279254b90,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2658565948962453564, guid: 223191d10846e2f408943ac279254b90,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2658565948962453564, guid: 223191d10846e2f408943ac279254b90,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2658565948962453564, guid: 223191d10846e2f408943ac279254b90,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2658565948962453564, guid: 223191d10846e2f408943ac279254b90,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4491641775454652310, guid: 223191d10846e2f408943ac279254b90,
+        type: 3}
+      propertyPath: m_Name
+      value: CobbleStone Wall Corner
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 223191d10846e2f408943ac279254b90, type: 3}
 --- !u!1001 &5015161480706614333
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1998,6 +1998,12 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4239509631743635887, guid: bd9c94660c926414a828d43a63439bcb,
+        type: 3}
+      propertyPath: blockadeCornerSpawn
+      value: 
+      objectReference: {fileID: 4491641775454652310, guid: 223191d10846e2f408943ac279254b90,
+        type: 3}
     - target: {fileID: 5015161481089550336, guid: bd9c94660c926414a828d43a63439bcb,
         type: 3}
       propertyPath: m_Name

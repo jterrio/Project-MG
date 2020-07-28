@@ -3037,7 +3037,7 @@ MonoBehaviour:
   blockPerlinThreshold: 0.2
   blockadeSpawn: {fileID: 7611283831837196034, guid: c2e14ffd4e4a60442b2c91d72c6f1903,
     type: 3}
-  blockadeCornerSpawn: {fileID: 543102058402463745, guid: 223191d10846e2f408943ac279254b90,
+  blockadeCornerSpawn: {fileID: 4491641775454652310, guid: 223191d10846e2f408943ac279254b90,
     type: 3}
   blockades: []
   minMonsterSpawn: 3
