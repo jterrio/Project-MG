@@ -39,6 +39,10 @@ public class Turnip : Enemy {
         BOOM
     }
 
+    private void Start() {
+        transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
+    }
+
     new void Update() {
         base.Update();
         switch (growState) {

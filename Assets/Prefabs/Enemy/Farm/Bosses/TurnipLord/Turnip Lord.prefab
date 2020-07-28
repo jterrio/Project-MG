@@ -86,6 +86,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -110,6 +111,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &7428941775176541546
 GameObject:
   m_ObjectHideFlags: 0
@@ -159,8 +161,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65fe9f02ab2d7e349bfd64dd5e03a3c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthTotal: 5000
-  health: 5000
+  healthTotal: 3500
+  health: 3500
   healthBar: {fileID: 4770236724709316523}
   healthBarFill: {fileID: 6019543731910362988}
   timeToDisplay: 3

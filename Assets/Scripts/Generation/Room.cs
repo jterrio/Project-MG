@@ -18,11 +18,43 @@ public class Room : MonoBehaviour {
     public GameObject floorBase;
     public GameObject walls;
     [Tooltip("Debug Object")]
-    public GameObject testObject;
     public GameObject floorGrass;
     public GameObject minimapObject;
 
+    [Header("Environment Generation")]
+    [Tooltip("Min environment that will spawn")]
+    public int minEnvironment;
+    [Tooltip("Max environment that will spawn")]
+    public int maxEnvironment;
+    [Tooltip("Min environment that will spawn inside individual node")]
+    public int minPatch;
+    [Tooltip("Max environment that will spawn inside individual node")]
+    public int maxPatch;
+    [Range(0, 1)]
+    [Tooltip("Threshold for spawning the environment per node. Higher means less will spawn")]
+    public float perlinThreshold;
+    [Tooltip("Potential environmental spawns during generation")]
+    public GameObject envSpawn;
+    [Tooltip("Environment that was spawned during generation")]
+    public List<GameObject> environments;
+
+    [Header("Blockade Generation")]
+    [Tooltip("Min environment that will spawn")]
+    public int minBlockade;
+    [Tooltip("Max environment that will spawn")]
+    public int maxBlockade;
+    [Tooltip("Potential environmental spawns during generation")]
+    public GameObject blockadeSpawn;
+    [Tooltip("Environment that was spawned during generation")]
+    public List<GameObject> blockades;
+
+
+
     [Header("Enemy Generation")]
+    [Tooltip("Min monsters that will spawn")]
+    public int minMonsterSpawn;
+    [Tooltip("Max monsters that will spawn")]
+    public int maxMonsterSpawn;
     [Tooltip("Potential enemy spawns during generation")]
     public List<GameObject> potentialMonsterSpawns;
     [Tooltip("Enemies that were spawned during generation")]
@@ -82,7 +114,8 @@ public class Room : MonoBehaviour {
     }
 
     void GenerateRoom() {
-        if(!specialRoom && !bossRoom) {
+        SpawnEnvironment();
+        if (!specialRoom && !bossRoom) {
             SpawnMonsters();
         }else if (specialRoom) {
             //spawn or shop
@@ -91,13 +124,51 @@ public class Room : MonoBehaviour {
         }
     }
 
+
+
+    void SpawnEnvironment() {
+        int timeout = 0;
+        int envToSpawn = Random.Range(minEnvironment, maxEnvironment);
+        HashSet<Vector2> hs = new HashSet<Vector2>();
+        while(environments.Count < envToSpawn && timeout < ((xLength - 1) * (yLength - 1))) {
+            int x = Random.Range(0, xLength - 1);
+            int y = Random.Range(0, yLength - 1);
+            if (hs.Contains(new Vector2(x, y))) {
+                timeout++;
+                continue;
+            }
+            hs.Add(new Vector2(x, y));
+            if (GameManager.gm.seed.ShouldSpawn(x, y, xLength, yLength, perlinThreshold)) {
+                int r = Random.Range(minPatch, maxPatch);
+                for (int i = 0; i < r; i++) {
+                    Vector3 spawnPoint = new Vector3(roomArray[x, y].position.x + Random.Range(-(nodeLength / 2), (nodeLength / 2)), 0.5f, roomArray[x, y].position.z + Random.Range(-(nodeLength / 2), (nodeLength / 2)));
+                    GameObject env = Instantiate(envSpawn);
+                    env.transform.parent = this.gameObject.transform;
+                    env.transform.position = spawnPoint;
+                    environments.Add(env);
+                }
+            }
+
+
+
+        }
+    }
+
     void SpawnMonsters() {
-        int x = Random.Range(0, xLength - 1);
-        int y = Random.Range(0, yLength - 1);
-        roomArray[x, y].isTaken = true;
-        int m = Random.Range(0, potentialMonsterSpawns.Count - 1);
-        int c = Random.Range(3, 7);
-        for (int i = 0; i < c; i++) {
+
+        int timeout = 0;
+        int monstersToSpawn = Random.Range(minMonsterSpawn, maxMonsterSpawn);
+        while (monsters.Count < monstersToSpawn || timeout >= ((xLength - 1) * (yLength - 1))) {
+            int x = Random.Range(0, xLength - 1);
+            int y = Random.Range(0, yLength - 1);
+            if (roomArray[x, y].isTaken) {
+                timeout++;
+                continue;
+            }
+
+            roomArray[x, y].isTaken = true;
+            timeout = 0;
+            int m = Random.Range(0, potentialMonsterSpawns.Count);
             Vector3 spawnPoint = new Vector3(roomArray[x, y].position.x + Random.Range(-(nodeLength / 2), (nodeLength / 2)), roomArray[x, y].position.y, roomArray[x, y].position.z + Random.Range(-(nodeLength / 2), (nodeLength / 2)));
             GameObject monster = Instantiate(potentialMonsterSpawns[m]);
             monster.transform.parent = this.gameObject.transform;

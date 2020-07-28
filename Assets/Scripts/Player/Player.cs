@@ -15,12 +15,13 @@ public class Player : MonoBehaviour {
     [Header("References")]
     public TMPro.TextMeshProUGUI ammoCountText;
     public PlayerMovement pm;
+    public GameObject weaponHolder;
     public Gun gun;
     public Image healthFill;
     public AudioSource audioSource;
 
     void Start() {
-        gun = GetComponentInChildren<Gun>();
+        //gun = GetComponentInChildren<Gun>();
     }
 
     // Update is called once per frame

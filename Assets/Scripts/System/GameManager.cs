@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Seed))]
 public class GameManager : MonoBehaviour {
 
     public static GameManager gm;
@@ -17,6 +18,11 @@ public class GameManager : MonoBehaviour {
     public Camera playerCamera;
     [Tooltip("Reference to the players rigidbody")]
     public Rigidbody playerRB;
+
+    [Header("Persistence")]
+    public int wepID;
+    public GameObject[] weapons;
+    public Seed seed;
 
     [Header("Floor")]
     [Tooltip("The number of the current floor the player is on")]
@@ -46,6 +52,23 @@ public class GameManager : MonoBehaviour {
 
         //playerMinimapObject = Instantiate(playerMinimapObject);
         mm = GameObject.FindGameObjectWithTag("Minimap").GetComponent<Minimap>();
+    }
+
+    public void LoadWeapon(int id) {
+        GameObject g = Instantiate(weapons[wepID]);
+        if (p.gun != null) {
+            Destroy(p.gun.gameObject);
+        }
+        g.transform.parent = p.weaponHolder.transform;
+        p.gun = g.GetComponent<Gun>();
+        g.transform.localPosition = Vector3.zero;
+        g.transform.localRotation = Quaternion.Euler(Vector3.zero);
+        g.transform.localScale = new Vector3(1, 1, 1);
+    }
+
+    public void CycleWeapon() {
+        wepID = (wepID + 1) % (weapons.Length);
+        LoadWeapon(wepID);
     }
 
 }

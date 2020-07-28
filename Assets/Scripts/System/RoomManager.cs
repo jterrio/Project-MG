@@ -110,9 +110,6 @@ public class RoomManager : MonoBehaviour {
                     yPos = y
                 };
                 roomArray[u, y] = temp;
-                //GameObject mmm = Instantiate(testObject);
-                //mmm.transform.position = new Vector3(u * nodeLength, 0, y * nodeLength);
-                //mmm.name = "X: " + u.ToString() + ", Y: " + y.ToString();
             }
         }
 

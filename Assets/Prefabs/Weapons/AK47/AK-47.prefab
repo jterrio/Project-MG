@@ -55,6 +55,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -79,6 +80,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &6746503099032755844
 GameObject:
   m_ObjectHideFlags: 0
@@ -139,7 +141,7 @@ Transform:
   m_GameObject: {fileID: 7644836633805404406}
   m_LocalRotation: {x: -0.037255686, y: 0.98512965, z: -0.012755653, w: 0.16723907}
   m_LocalPosition: {x: 30.16906, y: 1.9779999, z: -14.248704}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1409612418319643286}
   - {fileID: 503919345005681843}
@@ -169,6 +171,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -193,6 +196,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!82 &6388161590517700414
 AudioSource:
   m_ObjectHideFlags: 0
@@ -327,8 +331,6 @@ MonoBehaviour:
   bulletEmitter: {fileID: 6746503099032755844}
   bullet: {fileID: 5600607028344492658, guid: 352bd93452d543b42b18c89804c56c04, type: 3}
   gunFlash: {fileID: 1243258891682661336}
-  hitEffect: {fileID: 2300014961297877486, guid: 08d399ff7e702784d848277bbd2e8f28,
-    type: 3}
 --- !u!1001 &1405321311356247682
 PrefabInstance:
   m_ObjectHideFlags: 0

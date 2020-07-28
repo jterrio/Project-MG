@@ -76,6 +76,7 @@ public class LevelManager : MonoBehaviour {
         RoomManager.rm.CreateFloorLayout();
         GameManager.gm.currentFloor++;
         UIManager.ui.loadScreenPanel.gameObject.SetActive(false);
+        GameManager.gm.LoadWeapon(GameManager.gm.wepID);
     }
 
 }
