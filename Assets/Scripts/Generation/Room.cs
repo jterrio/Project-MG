@@ -148,14 +148,18 @@ public class Room : MonoBehaviour {
             }
             hs.Add(new Vector2(x, y));
             if (GameManager.gm.seed.ShouldSpawn(x, y, xLength, yLength, envPerlinThreshold)) {
+                GameObject grass = new GameObject();
+                grass.transform.parent = this.gameObject.transform;
+
                 int r = Random.Range(minPatch, maxPatch);
                 for (int i = 0; i < r; i++) {
                     Vector3 spawnPoint = new Vector3(roomArray[x, y].position.x + Random.Range(-(nodeLength / 2), (nodeLength / 2)), 0.5f, roomArray[x, y].position.z + Random.Range(-(nodeLength / 2), (nodeLength / 2)));
                     GameObject env = Instantiate(envSpawn);
-                    env.transform.parent = this.gameObject.transform;
+                    env.transform.parent = grass.transform;
                     env.transform.position = spawnPoint;
                     environments.Add(env);
                 }
+
             }
 
 
@@ -181,7 +185,7 @@ public class Room : MonoBehaviour {
                 int yCoord = y;
                 GameObject wallParent = new GameObject();
                 wallParent.transform.parent = this.gameObject.transform;
-                wallParent.transform.position = Vector3.zero;
+                wallParent.transform.position = new Vector3(0, 4f, 0f);
                 List<Vector2> validPath = new List<Vector2>();
                 validPath.Add(new Vector2(x, y));
                 for(int i = 0; i < r; i++) {
@@ -207,7 +211,7 @@ public class Room : MonoBehaviour {
                     if (u == 0) {
                         GameObject wall = Instantiate(blockadeSpawn);
                         wall.transform.parent = wallParent.transform;
-                        wall.transform.position = roomArray[(int)vPath[u].x, (int)vPath[u].y].position;
+                        wall.transform.position = wall.transform.parent.transform.position + roomArray[(int)vPath[u].x, (int)vPath[u].y].position;
                         blockades.Add(wall);
                         int direction = GetDirection((int)vPath[u].x, (int)vPath[u].y, (int)vPath[u + 1].x, (int)vPath[u + 1].y);
                         switch (direction) {
@@ -223,7 +227,7 @@ public class Room : MonoBehaviour {
                     } else if (u == vPath.Length - 1) {
                         GameObject wall = Instantiate(blockadeSpawn);
                         wall.transform.parent = wallParent.transform;
-                        wall.transform.position = roomArray[(int)vPath[u].x, (int)vPath[u].y].position;
+                        wall.transform.position = wall.transform.parent.transform.position + roomArray[(int)vPath[u].x, (int)vPath[u].y].position;
                         blockades.Add(wall);
                         int direction = GetDirection((int)vPath[u].x, (int)vPath[u].y, (int)vPath[u - 1].x, (int)vPath[u - 1].y);
                         switch (direction) {
@@ -238,38 +242,48 @@ public class Room : MonoBehaviour {
                         }
                     } else {
                         int directionPast = GetDirection((int)vPath[u].x, (int)vPath[u].y, (int)vPath[u - 1].x, (int)vPath[u - 1].y);
-                        int directionFuture = GetDirection((int)vPath[u + 1].x, (int)vPath[u + 1].y,(int)vPath[u].x, (int)vPath[u].y);
+                        int directionFuture = GetDirection((int)vPath[u].x, (int)vPath[u].y, (int)vPath[u +1].x, (int)vPath[u+1].y);
                         if ((directionPast + directionFuture) % 2 == 0) {
                             //SameDirection
                             GameObject wall = Instantiate(blockadeSpawn);
                             wall.transform.parent = wallParent.transform;
-                            wall.transform.position = roomArray[(int)vPath[u].x, (int)vPath[u].y].position;
+                            wall.transform.position = wall.transform.parent.transform.position + roomArray[(int)vPath[u].x, (int)vPath[u].y].position;
                             blockades.Add(wall);
-                            wall.transform.rotation = blockades[blockades.Count - 2].transform.rotation;
+
+                            if (directionFuture == 0 || directionFuture == 2) {
+                                wall.transform.Rotate(new Vector3(0f, 90f, 0f));
+                            } else {
+                                wall.transform.Rotate(new Vector3(0f, 0f, 0f));
+                            }
                         } else {
                             //Different Direction
                             GameObject wall = Instantiate(blockadeCornerSpawn);
                             wall.transform.parent = wallParent.transform;
-                            wall.transform.position = roomArray[(int)vPath[u].x, (int)vPath[u].y].position;
+                            wall.transform.position = wall.transform.parent.transform.position + roomArray[(int)vPath[u].x, (int)vPath[u].y].position;
                             blockades.Add(wall);
-                            if(directionFuture + directionPast == 1) {
+                            wall.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+                            wall.gameObject.name = "Corner";
+                            if (directionFuture + directionPast == 1) {
                                 //1
-                                //wall.transform.rotation = wall.transform.rotation * Quaternion.AngleAxis(180f, Vector3.up);
-                                wall.transform.Rotate(new Vector3(0f, 180, 0f));
+                                wall.transform.Rotate(new Vector3(0f, 270f, 0f));
+                                wall.transform.position = wall.transform.position + new Vector3(2.4f, 0f, 1.8f);
 
                             } else if(directionPast + directionFuture == 3) {
                                 //3
                                 if(Mathf.Abs(directionFuture - directionPast) == 1) {
-                                    //1-2
+                                    //3-1
                                     //wall.transform.rotation = wall.transform.rotation * Quaternion.AngleAxis(270f, Vector3.up);
-                                    wall.transform.Rotate(new Vector3(0f, 270f, 0f));
+                                    wall.transform.Rotate(new Vector3(0f, 180f, 0f));
+                                    wall.transform.position = wall.transform.position + new Vector3(-1.8f, 0f, 2.4f);
                                 } else {
-                                    //3-0
-                                    wall.transform.Rotate(new Vector3(0f, 90f, 0f));
+                                    //3-3
+                                    wall.transform.Rotate(new Vector3(0f, 0f, 0f));
+                                    wall.transform.position = wall.transform.position + new Vector3(1.8f, 0f, -2.4f);
                                 }
                             } else {
                                 //5
-                                wall.transform.Rotate(new Vector3(0f, 0f, 0f));
+                                wall.transform.Rotate(new Vector3(0f, 90f, 0f));
+                                wall.transform.position = wall.transform.position + new Vector3(-2.4f, 0f, -1.8f);
                             }
 
                         }
@@ -279,7 +293,14 @@ public class Room : MonoBehaviour {
         }
     }
 
-
+    /// <summary>
+    /// Returns a direction for given old and new coordinates where the direction is equal to the position of the new in relation to the old
+    /// </summary>
+    /// <param name="x">New x</param>
+    /// <param name="y">New y</param>
+    /// <param name="xx">Old x</param>
+    /// <param name="yy">Old y</param>
+    /// <returns></returns>
     int GetDirection(int x, int y, int xx, int yy) {
         int difX = xx - x;
         int difY = yy - y;

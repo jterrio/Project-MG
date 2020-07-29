@@ -14930,6 +14930,9 @@ MonoBehaviour:
   enemyPlayerLayers:
     serializedVersion: 2
     m_Bits: 4352
+  LOS:
+    serializedVersion: 2
+    m_Bits: 8448
 --- !u!4 &916061372
 Transform:
   m_ObjectHideFlags: 0

@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour {
 
     [Header("References")]
     public LayerMask enemyPlayerLayers;
+    public LayerMask LOS;
 
     private void Awake() {
         if(gm == null) {
@@ -69,6 +70,21 @@ public class GameManager : MonoBehaviour {
     public void CycleWeapon() {
         wepID = (wepID + 1) % (weapons.Length);
         LoadWeapon(wepID);
+    }
+
+    public bool HasLineOfSight(GameObject host, GameObject target) {
+        RaycastHit hit;
+        Vector3 direction = target.transform.position - host.transform.position;
+        if (Physics.Raycast(host.transform.position, direction, out hit, Mathf.Infinity, LOS)) {
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Player")) {
+                Debug.DrawRay(GameManager.gm.player.transform.position, direction, Color.green);
+                return true;
+            } else {
+                Debug.DrawRay(GameManager.gm.player.transform.position, direction, Color.red);
+                return false;
+            }
+        }
+        return false;
     }
 
 }

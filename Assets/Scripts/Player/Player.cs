@@ -55,6 +55,9 @@ public class Player : MonoBehaviour {
     }
 
     void Die() {
+        GameManager.gm.playerMinimapObject.SetActive(false);
+        Destroy(RoomManager.rm.transform.parent.gameObject);
+        RoomManager.rm = null;
         LevelManager.lm.LoadFarmLevel();
     }
 

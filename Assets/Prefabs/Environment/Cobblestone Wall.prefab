@@ -12,12 +12,12 @@ GameObject:
   - component: {fileID: 358497846048022550}
   - component: {fileID: 3136305335669700900}
   - component: {fileID: 3958175594885479072}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Cobblestone Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &9083054771992498827
 Transform:
@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 7611283831837196034}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 7.2, y: 1.8, z: 18.5}
-  m_LocalScale: {x: 10, y: 2.5, z: 1}
+  m_LocalScale: {x: 10, y: 10, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -89,7 +89,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7611283831837196034}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: da3985327fbc2fe43a22fbcf16487767, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2

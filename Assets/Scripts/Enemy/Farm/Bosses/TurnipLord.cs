@@ -60,10 +60,13 @@ public class TurnipLord : Enemy {
         }
         if(state == State.READY) {
             //transform.LookAt(GameManager.gm.player.transform.position);
-            if(health / healthTotal > 0.45f) {
+            float h = GetHealthPercentage();
+            if(h > 0.6f) {
                 HighHPAttack();
-            } else {
+            } else if (h > 0.05f){
                 LowHPAttack();
+            } else {
+                NearDeathAttack();
             }
         }
         if(state == State.VINE) {
@@ -91,10 +94,10 @@ public class TurnipLord : Enemy {
 
     void HighHPAttack() {
         if (lastTimeAttacked + (timeBetweenAttacks) < Time.time) {
-            int r = Random.Range(0, 9);
+            int r = Random.Range(0, 10);
             if (r < 4) {
                 state = State.VINE;
-            } else if (r < 8) {
+            } else if (r < 10) {
                 state = State.SPAWN;
             } else {
                 state = State.BOTH;
@@ -104,7 +107,7 @@ public class TurnipLord : Enemy {
 
     void LowHPAttack() {
         if (lastTimeAttacked + (timeBetweenAttacks) < Time.time) {
-            int r = Random.Range(0, 9);
+            int r = Random.Range(0, 20);
             if(r < 2) {
                 state = State.VINE;
             }else if(r < 4) {
@@ -112,6 +115,12 @@ public class TurnipLord : Enemy {
             } else {
                 state = State.BOTH;
             }
+        }
+    }
+
+    void NearDeathAttack() {
+        if (lastTimeAttacked + (timeBetweenAttacks) < Time.time) {
+            state = State.SPAWN;
         }
     }
 
@@ -135,7 +144,7 @@ public class TurnipLord : Enemy {
             GameObject m = Instantiate(minion);
             m.transform.position = new Vector3(spawnPoint.x, m.GetComponent<Turnip>().growth, spawnPoint.z);
             RoomManager.rm.currentRoom.monsters.Add(m);
-            yield return new WaitForSeconds(minionAttackSpeed * GetHealthPercentage());
+            yield return new WaitForSeconds(Mathf.Max(0.2f, minionAttackSpeed * GetHealthPercentage()));
         }
         lastTimeAttacked = Time.time;
         minionAttackDone = true;
@@ -173,7 +182,9 @@ public class TurnipLord : Enemy {
             yield return null;
         }
         vChild.transform.localPosition = new Vector3(0, 0f, 0);
-        yield return new WaitForSeconds(vineAttackSpeed * 2);
+        yield return new WaitForSeconds(vineAttackSpeed * 0.1f);
+        vine.hasLift = false;
+        yield return new WaitForSeconds(vineAttackSpeed * 1.9f);
         spawnedVines.Remove(v);
         Destroy(v);
     }
@@ -229,7 +240,21 @@ public class TurnipLord : Enemy {
         healthBarFill.fillAmount = health / healthTotal;
         if (health <= 0f) {
             StopAllVineCoroutines();
+            ExplodeMinions();
             Die();
+        }
+    }
+
+    void ExplodeMinions() {
+        foreach(GameObject g in RoomManager.rm.currentRoom.monsters) {
+            if(g.gameObject == this.gameObject) {
+                continue;
+            }
+            Turnip t = g.GetComponent<Turnip>();
+            t.explosionDMG = 0;
+            t.growState = Turnip.State.BOOM;
+            t.explosionDelay = Random.Range(0.0f, 2f);
+            t.explosionVolume = 0.1f;
         }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Turnip : Enemy {
 
-    private State growState = State.GROW;
+    public State growState = State.GROW;
 
     [Header("Turnip Settings")]
     [Tooltip("Range to aggro")]
@@ -23,11 +23,16 @@ public class Turnip : Enemy {
     public float explosionTotalDistance = 5f;
     [Tooltip("Time before it explodes after reaching the player")]
     public float timeToExplode = 1f;
+    [Tooltip("Delay before engaging in the explosion")]
+    public float explosionDelay = 0f;
     [Tooltip("Force of the explosion")]
     public float explosionForce = 3f;
     [Tooltip("Damage to player")]
     [Range(0, 100)]
     public int explosionDMG = 2;
+    [Tooltip("Damage to player")]
+    [Range(0, 1)]
+    public float explosionVolume = 1;
 
     public ParticleSystem explosionEffect;
     private Coroutine explosionCoroutine;
@@ -63,10 +68,11 @@ public class Turnip : Enemy {
         }
     }
 
-    IEnumerator Explosion() {
+    public IEnumerator Explosion() {
+        yield return new WaitForSeconds(explosionDelay);
         yield return new WaitForSeconds(timeToExplode / 4);
         float t = 0;
-        audioSource.PlayOneShot(audioClips[0]);
+        audioSource.PlayOneShot(audioClips[0], explosionVolume);
         yield return new WaitForSeconds(timeToExplode / 4);
         Vector3 start = transform.position;
         Vector3 end = new Vector3(transform.position.x, transform.position.y + 3f, transform.position.z);
@@ -88,11 +94,11 @@ public class Turnip : Enemy {
             } else {
                 hRB = h.GetComponent<Rigidbody>();
             }
-            if(hRB != null) {
+            if(hRB != null && GameManager.gm.HasLineOfSight(this.gameObject, h.gameObject)) {
                 hRB.AddExplosionForce(explosionForce, transform.position, explosionTotalDistance, 5f, ForceMode.Impulse);
             }
         }
-        if(Vector3.Distance(transform.position, GameManager.gm.player.transform.position) <= explosionDmgDistance) {
+        if(Vector3.Distance(transform.position, GameManager.gm.player.transform.position) <= explosionDmgDistance && GameManager.gm.HasLineOfSight(this.gameObject, GameManager.gm.player)) {
             GameManager.gm.p.TakeDamage(explosionDMG);
         }
         this.gameObject.SetActive(false);
@@ -100,7 +106,7 @@ public class Turnip : Enemy {
     }
 
     void DetectGrow() {
-        if(Vector3.Distance(GameManager.gm.player.transform.position, transform.position) <= range) {
+        if(Vector3.Distance(GameManager.gm.player.transform.position, this.gameObject.transform.position) <= range && GameManager.gm.HasLineOfSight(this.gameObject, GameManager.gm.player)) {
             growState = State.HARVEST;
         }
     }
@@ -112,6 +118,12 @@ public class Turnip : Enemy {
     }
 
     void TryFeast() {
+        if(!GameManager.gm.HasLineOfSight(this.gameObject, GameManager.gm.player)) {
+            growState = State.GROW;
+            DisableCollisions();
+            transform.position = new Vector3(transform.position.x, transform.position.y - growth, transform.position.z);
+            return;
+        }
         float d = Vector3.Distance(GameManager.gm.player.transform.position, transform.position);
         if (d > range * 1.5) {
             growState = State.GROW;

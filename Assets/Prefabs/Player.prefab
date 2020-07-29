@@ -185,7 +185,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4663
+    m_Bits: 12855
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -407,8 +407,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 817856b1513ee374f85ad4673792ee9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthTotal: 8
-  healthCurrent: 8
+  healthTotal: 10
+  healthCurrent: 10
   damageSound: {fileID: 8300000, guid: c331ff8d1319cff448e4a56d10c46177, type: 3}
   lastTimeTakenDMG: 0
   invDMGSecs: 1

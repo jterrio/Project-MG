@@ -1,14 +1,9 @@
 fileFormatVersion: 2
-guid: efedb545f5a725a408d703d69a1dc138
+guid: 67f66d0ba5e11eb45bc1fe315e2f2cf6
 ModelImporter:
   serializedVersion: 20101
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Turnip
-    second: {fileID: 2100000, guid: b7c2ac66a3c452740874f3c177b4ddad, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 1
     materialName: 0
