@@ -7,6 +7,9 @@ public class Room : MonoBehaviour {
 
     public Node[,] roomArray;
 
+    [Header("Room Settings")]
+    public RoomType roomType = RoomType.NORMAL;
+
     [Header("Node Settings")]
     [Tooltip("Number of nodes within the room in X and Z space")]
     public int xLength, yLength;
@@ -69,10 +72,6 @@ public class Room : MonoBehaviour {
     public List<GameObject> monsters;
     [Tooltip("Bosses that can be spawned in a boss room")]
     public List<GameObject> bosses;
-    [Tooltip("Determines if enemies spawn in this room, like a shop or spawn room")]
-    public bool specialRoom;
-    [Tooltip("Determines if this is a boss room")]
-    public bool bossRoom;
 
     [Header("Connectors")]
     [Tooltip("The entire connector")]
@@ -94,6 +93,13 @@ public class Room : MonoBehaviour {
         public int yPos;
         public Vector3 position;
         public bool isTaken = false;
+    }
+
+    public enum RoomType {
+        START,
+        SHOP,
+        BOSS,
+        NORMAL
     }
 
     private void Start() {
@@ -123,10 +129,10 @@ public class Room : MonoBehaviour {
 
     void GenerateRoom() {
         SpawnEnvironment();
-        if (!specialRoom && !bossRoom) {
+        if (roomType == RoomType.NORMAL) {
             SpawnBlockades();
             SpawnMonsters();
-        }else if (specialRoom) {
+        }else if (roomType == RoomType.SHOP || roomType == RoomType.START) {
             //spawn or shop
         } else {
             SpawnBoss();
@@ -381,24 +387,28 @@ public class Room : MonoBehaviour {
         DeactivateMonsters();
     }
 
-    public void DefeatMonster(GameObject monster) {
+    public bool DefeatMonster(GameObject monster) {
         monsters.Remove(monster);
         Destroy(monster);
         if(monsters.Count == 0) {
             ClearRoom();
+            return true;
         }
+        return false;
     }
 
-    public void DefeatMonster(GameObject monster, float d) {
+    public bool DefeatMonster(GameObject monster, float d) {
         monsters.Remove(monster);
         Destroy(monster, d);
         if (monsters.Count == 0) {
             ClearRoom();
+            return true;
         }
+        return false;
     }
 
     public void ClearRoom() {
-        if (bossRoom) {
+        if (roomType == RoomType.BOSS) {
             ClearFloor();
         }
         SetMinimapExplored();

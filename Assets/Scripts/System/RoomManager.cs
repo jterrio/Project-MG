@@ -32,6 +32,9 @@ public class RoomManager : MonoBehaviour {
     [Tooltip("The current room the player is in")]
     public Room currentRoom;
     public GameObject nextFloor;
+    [Tooltip("Text for number of enemies remaining")]
+    public TMPro.TextMeshProUGUI text;
+    public TMPro.TextMeshProUGUI slideText;
 
     private List<Node> endRoomNodes;
     private bool debugMode = false;
@@ -78,14 +81,33 @@ public class RoomManager : MonoBehaviour {
         currentRoom = r;
         currentRoom.AddGates();
         currentRoom.ActivateMonsters();
+        if (currentRoom.roomType == Room.RoomType.NORMAL) {
+            SetEnemiesRemainingText();
+        }
+    }
+
+    public void SetEnemiesRemainingText() {
+        text.gameObject.SetActive(true);
+        text.text = currentRoom.monsters.Count.ToString() + " Enemies Remaining";
     }
 
     public void DefeatMonster(GameObject monster) {
-        currentRoom.DefeatMonster(monster);
+        bool a = currentRoom.DefeatMonster(monster);
+        if (!a) {
+            SetEnemiesRemainingText();
+        } else {
+            text.gameObject.SetActive(false);
+        }
+
     }
 
     public void DefeatMonster(GameObject monster, float d) {
-        currentRoom.DefeatMonster(monster, d);
+        bool a = currentRoom.DefeatMonster(monster, d);
+        if (!a) {
+            SetEnemiesRemainingText();
+        } else {
+            text.gameObject.SetActive(false);
+        }
     }
 
     public void CreateFloorLayout() {
@@ -145,7 +167,7 @@ public class RoomManager : MonoBehaviour {
         ValidateNodeNeighbors();
         currentRoom.DeactivateMonsters();
         currentRoom.ClearRoom();
-        currentRoom.specialRoom = true;
+        currentRoom.roomType = Room.RoomType.START;
     }
 
     void ValidateNodeNeighbors() {
@@ -188,7 +210,7 @@ public class RoomManager : MonoBehaviour {
         boss.gameObject.name = "BOSS";
         boss.transform.position = new Vector3(potentialBossLoc[bossSpawn].x * nodeLength, 0, potentialBossLoc[bossSpawn].y * nodeLength);
         roomArray[(int)potentialBossLoc[bossSpawn].x, (int)potentialBossLoc[bossSpawn].y].isTaken = true;
-        boss.GetComponent<Room>().bossRoom = true;
+        boss.GetComponent<Room>().roomType = Room.RoomType.BOSS;
         createdRooms.Add(roomArray[(int)potentialBossLoc[bossSpawn].x, (int)potentialBossLoc[bossSpawn].y]);
         roomArray[(int)potentialBossLoc[bossSpawn].x, (int)potentialBossLoc[bossSpawn].y].room = boss;
     }
