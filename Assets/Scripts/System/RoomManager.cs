@@ -23,6 +23,8 @@ public class RoomManager : MonoBehaviour {
     public List<GameObject> potentialRoomSpawns;
     [Tooltip("Boss rooms that can be used during generation in place of a node")]
     public List<GameObject> potentialBossRoomSpawns;
+    [Tooltip("Shop rooms that can be used during generation in place of a node")]
+    public List<GameObject> potentialShopRoomSpawns;
     [Tooltip("Rooms that have already been generated")]
     public List<Node> createdRooms;
     [Tooltip("Debug spawn object")]
@@ -49,7 +51,7 @@ public class RoomManager : MonoBehaviour {
     }
 
     private void Awake() {
-        if(rm == null) {
+        if (rm == null) {
             rm = this;
             if (GameManager.gm != null) {
                 rm.gameObject.name = "RoomManager-" + GameManager.gm.currentFloor.ToString();
@@ -57,7 +59,7 @@ public class RoomManager : MonoBehaviour {
                 rm.gameObject.name = "Debug Mode";
                 debugMode = true;
             }
-        }else if(rm != this) {
+        } else if (rm != this) {
             Destroy(this);
         }
     }
@@ -65,12 +67,12 @@ public class RoomManager : MonoBehaviour {
     void Start() {
         if (debugMode) {
             CreateFloorLayout();
-        }   
+        }
     }
 
     Vector3 GetAveragePosition() {
         Vector3 v = new Vector3();
-        foreach(Node n in createdRooms) {
+        foreach (Node n in createdRooms) {
             v += n.room.transform.position;
         }
         v /= createdRooms.Count;
@@ -125,8 +127,8 @@ public class RoomManager : MonoBehaviour {
 
 
         //generate nodes
-        for(int u = 0; u < xLength; u++) {
-            for(int y = 0; y < yLength; y++) {
+        for (int u = 0; u < xLength; u++) {
+            for (int y = 0; y < yLength; y++) {
                 Node temp = new Node {
                     xPos = u,
                     yPos = y
@@ -149,15 +151,17 @@ public class RoomManager : MonoBehaviour {
         for (int i = 1; i < minNumberOfRooms;) {
             i += GenerateDoors(currentNode);
             currentNode = GetRandomEndNode();
-            if(currentNode == null) {
+            if (currentNode == null) {
                 break;
             }
         }
 
-        //generate special rooms
-
         //generate boss
         GetBossEndRoom(initialX, initialY);
+
+        //generate special rooms
+        GetShopEndRoom(initialX, initialY);
+
 
         //Camera
         GameManager.gm.mm.c.gameObject.transform.position = GetAveragePosition() + new Vector3(0, 50f, 0);
@@ -178,9 +182,34 @@ public class RoomManager : MonoBehaviour {
 
 
     void GetBossEndRoom(int initialX, int initialY) {
-        List<Vector2> potentialBossLoc = new List<Vector2>();
+        List<Vector2> potentialBossLoc = GetPotentialEndRooms(initialX, initialY);
+        int bossSpawn = Random.Range(0, potentialBossLoc.Count);
+        GameObject boss = Instantiate(potentialBossRoomSpawns[0]);
+        boss.gameObject.name = "BOSS";
+        boss.transform.position = new Vector3(potentialBossLoc[bossSpawn].x * nodeLength, 0, potentialBossLoc[bossSpawn].y * nodeLength);
+        roomArray[(int)potentialBossLoc[bossSpawn].x, (int)potentialBossLoc[bossSpawn].y].isTaken = true;
+        boss.GetComponent<Room>().roomType = Room.RoomType.BOSS;
+        createdRooms.Add(roomArray[(int)potentialBossLoc[bossSpawn].x, (int)potentialBossLoc[bossSpawn].y]);
+        roomArray[(int)potentialBossLoc[bossSpawn].x, (int)potentialBossLoc[bossSpawn].y].room = boss;
+    }
+
+    void GetShopEndRoom(int initialX, int initialY) {
+        List<Vector2> potentialShopLoc = GetPotentialEndRooms(initialX, initialY);
+        int shopSpawn = Random.Range(0, potentialShopLoc.Count);
+        GameObject shop = Instantiate(potentialShopRoomSpawns[0]);
+        shop.gameObject.name = "SHOP";
+        shop.transform.position = new Vector3(potentialShopLoc[shopSpawn].x * nodeLength, 0, potentialShopLoc[shopSpawn].y * nodeLength);
+        roomArray[(int)potentialShopLoc[shopSpawn].x, (int)potentialShopLoc[shopSpawn].y].isTaken = true;
+        shop.GetComponent<Room>().roomType = Room.RoomType.SHOP;
+        createdRooms.Add(roomArray[(int)potentialShopLoc[shopSpawn].x, (int)potentialShopLoc[shopSpawn].y]);
+        roomArray[(int)potentialShopLoc[shopSpawn].x, (int)potentialShopLoc[shopSpawn].y].room = shop;
+    }
+
+    List<Vector2> GetPotentialEndRooms(int x, int y) {
+        List<Vector2> toReturn = new List<Vector2>();
         foreach (Node n in createdRooms) {
-            if (roomArray[initialX, initialY] == n) {
+            Room nRoom = n.room.GetComponent<Room>();
+            if (nRoom.roomType != Room.RoomType.NORMAL) {
                 continue;
             }
             Vector2[] neighbors = GetNeighborNodesPositions(n);
@@ -196,23 +225,21 @@ public class RoomManager : MonoBehaviour {
                 for (int t = 0; t < nextNeighbors.Length; t++) {
                     if (IsValidCoordinate((int)nextNeighbors[t].x, (int)nextNeighbors[t].y)) {
                         if (roomArray[(int)nextNeighbors[t].x, (int)nextNeighbors[t].y].isTaken) {
+                            Room r = roomArray[(int)nextNeighbors[t].x, (int)nextNeighbors[t].y].room.GetComponent<Room>();
+                            if (r.roomType != Room.RoomType.NORMAL) {
+                                nCount += 4;
+                                break;
+                            }
                             nCount++;
                         }
                     }
                 }
                 if (nCount == 1) {
-                    potentialBossLoc.Add(new Vector2(neighbors[i].x, neighbors[i].y));
+                    toReturn.Add(new Vector2(neighbors[i].x, neighbors[i].y));
                 }
             }
         }
-        int bossSpawn = Random.Range(0, potentialBossLoc.Count - 1);
-        GameObject boss = Instantiate(potentialBossRoomSpawns[0]);
-        boss.gameObject.name = "BOSS";
-        boss.transform.position = new Vector3(potentialBossLoc[bossSpawn].x * nodeLength, 0, potentialBossLoc[bossSpawn].y * nodeLength);
-        roomArray[(int)potentialBossLoc[bossSpawn].x, (int)potentialBossLoc[bossSpawn].y].isTaken = true;
-        boss.GetComponent<Room>().roomType = Room.RoomType.BOSS;
-        createdRooms.Add(roomArray[(int)potentialBossLoc[bossSpawn].x, (int)potentialBossLoc[bossSpawn].y]);
-        roomArray[(int)potentialBossLoc[bossSpawn].x, (int)potentialBossLoc[bossSpawn].y].room = boss;
+        return toReturn;
     }
 
     void SetAllNeighborsClosed(Node n) {

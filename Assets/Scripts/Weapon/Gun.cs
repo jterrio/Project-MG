@@ -51,20 +51,33 @@ public class Gun : MonoBehaviour {
     public ParticleSystem gunFlash;
 
     private void Start() {
-        bulletsInMag = magSize;
+        bulletsInMag = GetMagSize();
     }
 
     private void Update() {
         if (Input.GetMouseButton(0)) {
             StartCoroutine(Shoot());
         }
-        if(Input.GetKeyDown(KeyCode.R) && reloadCoroutine == null && bulletsInMag < magSize) {
+        if(Input.GetKeyDown(KeyCode.R) && reloadCoroutine == null && bulletsInMag < GetMagSize()) {
             reloadCoroutine = StartCoroutine("Reload");
         }
     }
 
+    public int GetMagSize() {
+        return Mathf.FloorToInt((magSize + GameManager.gm.p.wepAmmoIncrease) * GameManager.gm.p.wepAmmoMulti);
+    }
+
+    public float GetDamage() {
+        return ((damage + GameManager.gm.p.wepDMGIncrease) * GameManager.gm.p.wepDMGMulti);
+    }
+
+    public float GetFireRate() {
+        return ((fireRate + GameManager.gm.p.wepFireIncrease) * GameManager.gm.p.wepFireMulti);
+    }
+
+
     IEnumerator Shoot() {
-        if (Time.time - lastFired > 1 / fireRate) {
+        if (Time.time - lastFired > 1 / GetFireRate()) {
             if (shotsPerTrigger == 1) {
                 lastFired = Time.time;
             } else {
@@ -136,7 +149,7 @@ public class Gun : MonoBehaviour {
             yield return null;
         }
         audioSource.PlayOneShot(reloadSound[2]);
-        bulletsInMag = magSize;
+        bulletsInMag = GetMagSize();
         reloadCoroutine = null;
         isReloading = false;
     }

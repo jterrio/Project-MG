@@ -12,6 +12,15 @@ public class Player : MonoBehaviour {
     public float lastTimeTakenDMG;
     public float invDMGSecs = 1f;
 
+    [Header("Inventory")]
+    public float money = 5f;
+    public float wepFireIncrease = 0f;
+    public float wepDMGIncrease = 0f;
+    public int wepAmmoIncrease = 0;
+    public float wepFireMulti = 1f;
+    public float wepDMGMulti = 1f;
+    public float wepAmmoMulti = 1f;
+
     [Header("References")]
     public TMPro.TextMeshProUGUI ammoCountText;
     public PlayerMovement pm;
@@ -33,9 +42,9 @@ public class Player : MonoBehaviour {
     void UpdateAmmoCount() {
         if (ammoCountText != null) {
             if (gun.isReloading) {
-                ammoCountText.text = "--/" + gun.magSize.ToString();
+                ammoCountText.text = "--/" + gun.GetMagSize().ToString();
             } else {
-                ammoCountText.text = gun.bulletsInMag.ToString() + "/" + gun.magSize.ToString();
+                ammoCountText.text = gun.bulletsInMag.ToString() + "/" + gun.GetMagSize().ToString();
             }
 
         }
@@ -63,5 +72,12 @@ public class Player : MonoBehaviour {
 
     void UpdateHealth() {
         healthFill.fillAmount = healthCurrent / healthTotal;
+    }
+
+    public void SetMoney(float i) {
+        money -= i;
+        if(money < 0) {
+            money = 0;
+        }
     }
 }

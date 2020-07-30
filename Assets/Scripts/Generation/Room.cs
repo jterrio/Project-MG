@@ -73,6 +73,12 @@ public class Room : MonoBehaviour {
     [Tooltip("Bosses that can be spawned in a boss room")]
     public List<GameObject> bosses;
 
+    [Header("Shop Generation")]
+    [Tooltip("Model used for the shopkeeper")]
+    public GameObject shopKeeper;
+    [Tooltip("Pedestal and trigger for the item where it shall rest")]
+    public GameObject itemPlace;
+
     [Header("Connectors")]
     [Tooltip("The entire connector")]
     public GameObject[] connectors;
@@ -129,17 +135,95 @@ public class Room : MonoBehaviour {
 
     void GenerateRoom() {
         SpawnEnvironment();
-        if (roomType == RoomType.NORMAL) {
-            SpawnBlockades();
-            SpawnMonsters();
-        }else if (roomType == RoomType.SHOP || roomType == RoomType.START) {
-            //spawn or shop
-        } else {
-            SpawnBoss();
+        switch (roomType) {
+            case RoomType.NORMAL:
+                SpawnBlockades();
+                SpawnMonsters();
+                break;
+            case RoomType.SHOP:
+                SpawnShop();
+                break;
+            case RoomType.BOSS:
+                SpawnBoss();
+                break;
+            case RoomType.START:
+                break;
         }
     }
 
 
+    void SpawnShop() {
+        GameObject shopKeep = Instantiate(shopKeeper);
+        shopKeep.transform.position = floorBase.transform.position;
+        shopKeep.transform.localScale = new Vector3(3f, 3f, 3f);
+        int pos = GetDirectionofEntrance(neighbors[0]);
+
+        GameObject item1 = Instantiate(itemPlace);
+        GameObject item2 = Instantiate(itemPlace);
+        GameObject item3 = Instantiate(itemPlace);
+
+        item1.transform.position = floorBase.transform.position + Vector3.up;
+        //shopKeep.transform.parent = this.gameObject.transform;
+        //item1.transform.parent = shopKeep.transform;
+        //item2.transform.parent = shopKeep.transform;
+        //item3.transform.parent = shopKeep.transform;
+
+
+        switch (pos) {
+            case 0:
+                shopKeep.transform.position += new Vector3(0f, 1f, floorBase.transform.localScale.z / 4);
+                item2.transform.position = floorBase.transform.position + new Vector3(floorBase.transform.localScale.x / 6, 1.5f, 0f);
+                item3.transform.position = floorBase.transform.position + new Vector3(-floorBase.transform.localScale.x / 6, 1.5f, 0f);
+                break;
+            case 1:
+                shopKeep.transform.position += new Vector3(floorBase.transform.localScale.x / 4, 1f, 0f);
+                item2.transform.position = floorBase.transform.position + new Vector3(0f, 1.5f, floorBase.transform.localScale.z / 6);
+                item3.transform.position = floorBase.transform.position + new Vector3(0f, 1.5f, -floorBase.transform.localScale.z / 6);
+                break;
+            case 2:
+                shopKeep.transform.position += new Vector3(0f, 1f, -floorBase.transform.localScale.z / 4);
+                item2.transform.position = floorBase.transform.position + new Vector3(-floorBase.transform.localScale.x / 6, 1f, 0f);
+                item3.transform.position = floorBase.transform.position + new Vector3(floorBase.transform.localScale.x / 6, 1f, 0f);
+                break;
+            case 3:
+                shopKeep.transform.position += new Vector3(-floorBase.transform.localScale.x / 4, 1f, 0f);
+                item2.transform.position = floorBase.transform.position + new Vector3(0f, 1.5f, -floorBase.transform.localScale.z / 6);
+                item3.transform.position = floorBase.transform.position + new Vector3(0f, 1.5f, floorBase.transform.localScale.z / 6);
+                break;
+        }
+
+        item1.AddComponent<ShopStand>().SetShop(Instantiate(ItemManager.im.getRandomAnyItem()), 5f);
+        item2.AddComponent<ShopStand>().SetShop(Instantiate(ItemManager.im.getRandomAnyItem()), 5f);
+        item3.AddComponent<ShopStand>().SetShop(Instantiate(ItemManager.im.getRandomAnyItem()), 5f);
+
+        item1.transform.parent = shopKeep.transform;
+        item2.transform.parent = shopKeep.transform;
+        item3.transform.parent = shopKeep.transform;
+
+        shopKeep.transform.parent = this.gameObject.transform;
+    }
+
+    int GetDirectionofEntrance(GameObject entrance) {
+        float difX = entrance.transform.position.x - this.gameObject.transform.position.x;
+        float difZ = entrance.transform.position.z - this.gameObject.transform.position.z;
+        if(difX > 0) {
+            //EAST
+            return 3;
+        }else if(difX < 0) {
+            //WEST
+            return 1;
+        }else if(difZ > 0) {
+            //NORTH
+            return 2;
+        }else if(difZ < 0) {
+            //SOUTH
+            return 0;
+        } else {
+            print("Warning! Coordinate math error!");
+            return 0;
+        }
+
+    }
 
     void SpawnEnvironment() {
         int timeout = 0;
