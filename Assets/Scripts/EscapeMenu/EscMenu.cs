@@ -16,7 +16,7 @@ public class EscMenu : MonoBehaviour
 
     public enum menuType {
         PAUSE,
-        MAIN_OPTIONS,
+        SETTINGS,
         GRAPHIC_OPTIONS,
         CONTROL_OPTIONS
     }
@@ -41,13 +41,28 @@ public class EscMenu : MonoBehaviour
     public void UpdateMenu() {
         switch (whereAmI) {
             case menuType.PAUSE:
-
+                LoadPause();
+                UnLoadSettings();
+                UnLoadGraphics();
+                UnLoadControls();
                 break;
-            case menuType.MAIN_OPTIONS:
+            case menuType.SETTINGS:
+                LoadSettings();
+                UnLoadGraphics();
+                UnLoadControls();
+                UnLoadPause();
                 break;
             case menuType.GRAPHIC_OPTIONS:
+                LoadGraphics();
+                UnLoadControls();
+                UnLoadPause();
+                UnLoadSettings();
                 break;
             case menuType.CONTROL_OPTIONS:
+                LoadControls();
+                UnLoadPause();
+                UnLoadSettings();
+                UnLoadGraphics();
                 break;
         }
     }
@@ -67,9 +82,22 @@ public class EscMenu : MonoBehaviour
         SceneManager.LoadScene(MainMenu.ToString());
     }
 
-    public void OptionsMenu() {
-        pauseMenu.SetActive(false);
-        optionMenu.SetActive(true);
+    // Methods for buttons to use when pressed.
+    public void NavigatePauseMenu() {
+        whereAmI = menuType.PAUSE;
+        UpdateMenu();
+    }
+    public void NavigateSettingsMenu() {
+        whereAmI = menuType.SETTINGS;
+        UpdateMenu();
+    }
+    public void NavigateGraphicMenu() {
+        whereAmI = menuType.GRAPHIC_OPTIONS;
+        UpdateMenu();
+    }
+    public void NavigateControlMenu() {
+        whereAmI = menuType.CONTROL_OPTIONS;
+        UpdateMenu();
     }
 
     public void QuitGame() {
@@ -79,5 +107,38 @@ public class EscMenu : MonoBehaviour
         if (true) {
             Application.Quit();
         }
+    }
+
+    //So loading an unloading the menus is easy.
+    public void LoadSettings() {
+        optionMenu.SetActive(true);
+    }
+
+    public void UnLoadSettings() {
+        optionMenu.SetActive(false);
+    }
+
+    public void LoadPause() {
+        pauseMenu.SetActive(true);
+    }
+
+    public void UnLoadPause() {
+        pauseMenu.SetActive(false);
+    }
+
+    public void LoadGraphics() {
+        graphicMenu.SetActive(true);
+    }
+
+    public void UnLoadGraphics() {
+        graphicMenu.SetActive(false);
+    }
+
+    public void LoadControls() {
+        controlMenu.SetActive(true);
+    }
+
+    public void UnLoadControls() {
+        controlMenu.SetActive(false);
     }
 }
