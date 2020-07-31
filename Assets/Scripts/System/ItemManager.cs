@@ -24,6 +24,7 @@ public class ItemManager : MonoBehaviour {
         }else if(im != this) {
             Destroy(this.gameObject);
         }
+        DontDestroyOnLoad(this.gameObject);
 
         allItems = new List<GameObject>();
         allItems.AddRange(commonItems);

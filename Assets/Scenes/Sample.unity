@@ -886,18 +886,6 @@ Rigidbody:
     type: 3}
   m_PrefabInstance: {fileID: 1635761549}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &818244001
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 818243999}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ffdd2b66735e0214280387e59227aa53, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &818244003 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5891472349960707472, guid: abf7bf9c9eb200947871fc80d9a8ffbc,
@@ -908,6 +896,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 07115b354bbb3ae4781497b6e20db009, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &818244005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 818243999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffdd2b66735e0214280387e59227aa53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &852660832
@@ -1030,7 +1030,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   commonItems:
   - {fileID: 4087508236805503906, guid: c2c4d1ac44dcd9c45a57e24b4dba0a0d, type: 3}
-  uncommonItems: []
+  - {fileID: 7078041583660112804, guid: 3a9dfa75bb171ac47bb7c133ef1efa40, type: 3}
+  uncommonItems:
+  - {fileID: 8323369861739032763, guid: b7f5692c54bc54240866f4972e561370, type: 3}
   rareItems: []
   epicItems: []
   legendaryItems: []

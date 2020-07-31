@@ -45,11 +45,20 @@ public class GameManager : MonoBehaviour {
     }
 
     public void FindPlayer() {
-        player = GameObject.FindGameObjectWithTag("Player");
-        playerMovement = player.GetComponent<PlayerMovement>();
-        playerCamera = player.GetComponentInChildren<Camera>();
-        p = player.GetComponent<Player>();
-        playerRB = player.GetComponent<Rigidbody>();
+        if(player == null) {
+            player = GameObject.FindGameObjectWithTag("Player");
+            playerMovement = player.GetComponent<PlayerMovement>();
+            playerCamera = player.GetComponentInChildren<Camera>();
+            p = player.GetComponent<Player>();
+            playerRB = player.GetComponent<Rigidbody>();
+        } else {
+            foreach (GameObject c in GameObject.FindGameObjectsWithTag("Player")) {
+                if(c != player) {
+                    Destroy(c);
+                }
+            }
+        }
+        //player = GameObject.FindGameObjectWithTag("Player");
 
         //playerMinimapObject = Instantiate(playerMinimapObject);
         mm = GameObject.FindGameObjectWithTag("Minimap").GetComponent<Minimap>();
