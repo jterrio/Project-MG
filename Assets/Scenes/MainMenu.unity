@@ -475,7 +475,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: TEST BUILD v0.37
+  m_text: TEST BUILD v0.38 Pre-Alpha
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -505,7 +505,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 26.8
+  m_fontSize: 25.05
   m_fontSizeBase: 100
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -549,12 +549,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 38764238}
-    characterCount: 16
+    characterCount: 26
     spriteCount: 0
-    spaceCount: 2
-    wordCount: 4
+    spaceCount: 3
+    wordCount: 5
     linkCount: 0
-    lineCount: 1
+    lineCount: 2
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
@@ -8142,6 +8142,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 818244000, guid: abf7bf9c9eb200947871fc80d9a8ffbc, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 285436351256968523, guid: abf7bf9c9eb200947871fc80d9a8ffbc,
         type: 3}
       propertyPath: weaponHolder
@@ -8250,6 +8254,18 @@ Rigidbody:
     type: 3}
   m_PrefabInstance: {fileID: 634728823}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &634728831 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5891472349960707472, guid: abf7bf9c9eb200947871fc80d9a8ffbc,
+    type: 3}
+  m_PrefabInstance: {fileID: 634728823}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 634728825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07115b354bbb3ae4781497b6e20db009, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &651579358
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15069,7 +15085,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 634728825}
   p: {fileID: 634728827}
-  playerMovement: {fileID: 0}
+  playerMovement: {fileID: 634728831}
   playerCamera: {fileID: 634728826}
   playerRB: {fileID: 634728829}
   wepID: 0

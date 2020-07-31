@@ -12,7 +12,7 @@ public class Vine : MonoBehaviour
 
 
     private void OnTriggerStay(Collider other) {
-        if (other.gameObject.tag == "Player") {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player")) {
             GameManager.gm.p.TakeDamage(vineDamage);
             if (hasLift) {
                 GameManager.gm.playerRB.AddForce(Vector3.up * vineLift, ForceMode.Impulse);
