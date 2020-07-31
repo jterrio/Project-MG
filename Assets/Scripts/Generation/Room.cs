@@ -537,7 +537,12 @@ public class Room : MonoBehaviour {
 
     public void ClearFloor() {
         GameObject f = Instantiate(RoomManager.rm.nextFloor);
-        f.gameObject.transform.position = new Vector3(floorBase.transform.position.x, 3f, floorBase.transform.position.z);
+        f.gameObject.transform.position = GetPositionAcross(GameManager.gm.player.transform.position) + (Vector3.up * 3f);
+
+        GameObject reward = Instantiate(ItemManager.im.getRandomBossItem());
+        reward.AddComponent<PickUpItem>();
+        reward.transform.position = Vector3.Lerp(f.gameObject.transform.position, GameManager.gm.player.transform.position, 0.45f);
+        reward.transform.position = new Vector3(reward.transform.position.x, 3f, reward.transform.position.z);
     }
 
     public void AccessNeighbors() {
@@ -604,5 +609,37 @@ public class Room : MonoBehaviour {
 
     public void AddTrigger(int p) {
         triggers[p].SetActive(true);
+    }
+
+    public Vector3 GetPositionAcross(Vector3 pos) {
+        Vector3[] corners = new Vector3[] {
+            roomArray[0, 0].position,
+            roomArray[xLength - 1, 0].position,
+            roomArray[0, yLength - 1].position,
+            roomArray[xLength - 1, yLength - 1].position
+        };
+        float d = Vector3.Distance(pos, corners[0]);
+        int t = 0;
+        for(int i = 1; i < corners.Length; i++) {
+            float e = Vector3.Distance(pos, corners[i]);
+            if(e < d) {
+                d = e;
+                t = i;
+            }
+        }
+        switch (t) {
+            case 0:
+                return roomArray[xLength - 1, yLength - 1].position;
+            case 1:
+                return roomArray[0, yLength - 1].position;
+            case 2:
+                return roomArray[xLength - 1, 0].position;
+            case 3:
+                return roomArray[0, 0].position;
+            default:
+                print("Warning! Corner math error!");
+                return floorBase.transform.position + Vector3.up;
+        }
+ 
     }
 }

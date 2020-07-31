@@ -158,6 +158,11 @@ public class RoomManager : MonoBehaviour {
             }
         }
 
+        //Validate start
+        currentRoom.DeactivateMonsters();
+        currentRoom.ClearRoom();
+        currentRoom.roomType = Room.RoomType.START;
+
         //generate boss
         GetBossEndRoom(initialX, initialY);
 
@@ -171,9 +176,6 @@ public class RoomManager : MonoBehaviour {
 
         //Validation
         ValidateNodeNeighbors();
-        currentRoom.DeactivateMonsters();
-        currentRoom.ClearRoom();
-        currentRoom.roomType = Room.RoomType.START;
 
 
     }
