@@ -10,11 +10,10 @@ public class OptionsMenu : MonoBehaviour
     public Slider horizontalSlider;
     public InputField horizontalInput;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    private void Start() {
+        //ToDo Have the InputField and Sliders update on start
     }
+
     public void UpdateValueFromVerticalFloat(float value) {
         Debug.Log("float value changed: " + value);
         if (verticalSlider) { verticalSlider.value = value; }
