@@ -89,8 +89,10 @@ public class RoomManager : MonoBehaviour {
     }
 
     public void SetEnemiesRemainingText() {
-        text.gameObject.SetActive(true);
-        text.text = currentRoom.monsters.Count.ToString() + " Enemies Remaining";
+        if (currentRoom.roomType != Room.RoomType.BOSS) {
+            text.gameObject.SetActive(true);
+            text.text = currentRoom.monsters.Count.ToString() + " Enemies Remaining";
+        }
     }
 
     public void DefeatMonster(GameObject monster) {
@@ -172,6 +174,8 @@ public class RoomManager : MonoBehaviour {
         currentRoom.DeactivateMonsters();
         currentRoom.ClearRoom();
         currentRoom.roomType = Room.RoomType.START;
+
+
     }
 
     void ValidateNodeNeighbors() {
@@ -201,6 +205,7 @@ public class RoomManager : MonoBehaviour {
         shop.transform.position = new Vector3(potentialShopLoc[shopSpawn].x * nodeLength, 0, potentialShopLoc[shopSpawn].y * nodeLength);
         roomArray[(int)potentialShopLoc[shopSpawn].x, (int)potentialShopLoc[shopSpawn].y].isTaken = true;
         shop.GetComponent<Room>().roomType = Room.RoomType.SHOP;
+        shop.GetComponent<Room>().ClearRoom();
         createdRooms.Add(roomArray[(int)potentialShopLoc[shopSpawn].x, (int)potentialShopLoc[shopSpawn].y]);
         roomArray[(int)potentialShopLoc[shopSpawn].x, (int)potentialShopLoc[shopSpawn].y].room = shop;
     }

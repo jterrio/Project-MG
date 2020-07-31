@@ -612,7 +612,7 @@ MonoBehaviour:
   bosses: []
   shopKeeper: {fileID: 6055961066519231114, guid: c416195f50044e445af759c093fa5f99,
     type: 3}
-  itemPlace: {fileID: 7675185106474146137, guid: b623bb4f45e743640969b16d015b11d6,
+  itemPlace: {fileID: 5560587329254674625, guid: b623bb4f45e743640969b16d015b11d6,
     type: 3}
   connectors:
   - {fileID: 8409905482292370372}

@@ -298,6 +298,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4087508236805503904}
   - component: {fileID: 4087508236805503905}
+  - component: {fileID: -7943823142375148741}
   m_Layer: 0
   m_Name: FireRateUp
   m_TagString: Untagged
@@ -342,12 +343,26 @@ MonoBehaviour:
   normalItemPool: 1
   shopItemPool: 1
   bossItemPool: 1
+  rarity: 0
   wepFireIncrease: 2
   wepDMGIncrease: 0
   wepAmmoIncrease: 0
   wepFireMulti: 0
   wepDMGMulti: 0
   wepAmmoMulti: 0
+--- !u!114 &-7943823142375148741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4087508236805503906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba712ef3df01c2249a4be0ca1a981698, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotateSpeed: 150
 --- !u!1 &4087508236824921480
 GameObject:
   m_ObjectHideFlags: 0

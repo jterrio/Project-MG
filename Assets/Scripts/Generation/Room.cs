@@ -162,7 +162,7 @@ public class Room : MonoBehaviour {
         GameObject item2 = Instantiate(itemPlace);
         GameObject item3 = Instantiate(itemPlace);
 
-        item1.transform.position = floorBase.transform.position + Vector3.up;
+        
         //shopKeep.transform.parent = this.gameObject.transform;
         //item1.transform.parent = shopKeep.transform;
         //item2.transform.parent = shopKeep.transform;
@@ -172,29 +172,53 @@ public class Room : MonoBehaviour {
         switch (pos) {
             case 0:
                 shopKeep.transform.position += new Vector3(0f, 1f, floorBase.transform.localScale.z / 4);
+                item1.transform.Rotate(new Vector3(0, 90f, 0));
+                item1.gameObject.name = "90";
+                item2.transform.Rotate(new Vector3(0, 90f, 0));
+                item3.transform.Rotate(new Vector3(0, 90f, 0));
+
                 item2.transform.position = floorBase.transform.position + new Vector3(floorBase.transform.localScale.x / 6, 1.5f, 0f);
                 item3.transform.position = floorBase.transform.position + new Vector3(-floorBase.transform.localScale.x / 6, 1.5f, 0f);
                 break;
             case 1:
                 shopKeep.transform.position += new Vector3(floorBase.transform.localScale.x / 4, 1f, 0f);
+                item1.transform.Rotate(new Vector3(0, 180f, 0));
+                item1.gameObject.name = "180";
+                item2.transform.Rotate(new Vector3(0, 180f, 0));
+                item3.transform.Rotate(new Vector3(0, 180f, 0));
+
                 item2.transform.position = floorBase.transform.position + new Vector3(0f, 1.5f, floorBase.transform.localScale.z / 6);
                 item3.transform.position = floorBase.transform.position + new Vector3(0f, 1.5f, -floorBase.transform.localScale.z / 6);
                 break;
             case 2:
                 shopKeep.transform.position += new Vector3(0f, 1f, -floorBase.transform.localScale.z / 4);
-                item2.transform.position = floorBase.transform.position + new Vector3(-floorBase.transform.localScale.x / 6, 1f, 0f);
-                item3.transform.position = floorBase.transform.position + new Vector3(floorBase.transform.localScale.x / 6, 1f, 0f);
+                item1.transform.Rotate(new Vector3(0, -90f, 0));
+                item1.gameObject.name = "-90";
+                item2.transform.Rotate(new Vector3(0, -90f, 0));
+                item3.transform.Rotate(new Vector3(0, -90f, 0));
+
+                item2.transform.position = floorBase.transform.position + new Vector3(-floorBase.transform.localScale.x / 6, 1.5f, 0f);
+                item3.transform.position = floorBase.transform.position + new Vector3(floorBase.transform.localScale.x / 6, 1.5f, 0f);
                 break;
             case 3:
                 shopKeep.transform.position += new Vector3(-floorBase.transform.localScale.x / 4, 1f, 0f);
+                item1.transform.Rotate(new Vector3(0, 0f, 0));
+                item1.gameObject.name = "0";
+                item2.transform.Rotate(new Vector3(0, 0f, 0));
+                item3.transform.Rotate(new Vector3(0, 0f, 0));
+
                 item2.transform.position = floorBase.transform.position + new Vector3(0f, 1.5f, -floorBase.transform.localScale.z / 6);
                 item3.transform.position = floorBase.transform.position + new Vector3(0f, 1.5f, floorBase.transform.localScale.z / 6);
                 break;
         }
 
-        item1.AddComponent<ShopStand>().SetShop(Instantiate(ItemManager.im.getRandomAnyItem()), 5f);
-        item2.AddComponent<ShopStand>().SetShop(Instantiate(ItemManager.im.getRandomAnyItem()), 5f);
-        item3.AddComponent<ShopStand>().SetShop(Instantiate(ItemManager.im.getRandomAnyItem()), 5f);
+        item1.transform.position = floorBase.transform.position + (Vector3.up * 1.5f);
+
+        float baseCost = 20f;
+
+        item1.GetComponentInChildren<ShopStand>().SetShop(Instantiate(ItemManager.im.getRandomAnyItem()), baseCost);
+        item2.GetComponentInChildren<ShopStand>().SetShop(Instantiate(ItemManager.im.getRandomAnyItem()), baseCost);
+        item3.GetComponentInChildren<ShopStand>().SetShop(Instantiate(ItemManager.im.getRandomAnyItem()), baseCost);
 
         item1.transform.parent = shopKeep.transform;
         item2.transform.parent = shopKeep.transform;
@@ -495,7 +519,9 @@ public class Room : MonoBehaviour {
         if (roomType == RoomType.BOSS) {
             ClearFloor();
         }
-        SetMinimapExplored();
+        if (roomType != RoomType.SHOP) {
+            SetMinimapExplored();
+        }
         ClearTriggers();
         RemoveTriggers();
         RemoveGates();

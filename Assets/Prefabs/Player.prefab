@@ -412,7 +412,15 @@ MonoBehaviour:
   damageSound: {fileID: 8300000, guid: c331ff8d1319cff448e4a56d10c46177, type: 3}
   lastTimeTakenDMG: 0
   invDMGSecs: 1
+  money: 5
+  wepFireIncrease: 0
+  wepDMGIncrease: 0
+  wepAmmoIncrease: 0
+  wepFireMulti: 1
+  wepDMGMulti: 1
+  wepAmmoMulti: 1
   ammoCountText: {fileID: 0}
+  moneyCountText: {fileID: 0}
   pm: {fileID: 5891472349960707472}
   weaponHolder: {fileID: 5424216821897351580}
   gun: {fileID: 7391318215825624519}

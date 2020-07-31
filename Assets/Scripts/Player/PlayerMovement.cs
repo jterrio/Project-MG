@@ -54,7 +54,7 @@ public class PlayerMovement : MonoBehaviour {
 
     void CheckJump() {
         if (Input.GetButton("Jump") && isGrounded) {
-            Debug.Log("JUMP " + Time.time);
+            //Debug.Log("JUMP " + Time.time);
             rb.AddForce(Vector3.up * jumpHeight, jumpForce);
             isGrounded = false;
         } else if(!isGrounded && rb.velocity.y <= airTime) {

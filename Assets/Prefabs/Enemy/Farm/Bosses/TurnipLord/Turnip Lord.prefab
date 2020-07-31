@@ -176,6 +176,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 3ccb21be6809ab847b4adcfb92e9a16a, type: 3}
   - {fileID: 8300000, guid: b0f62c228f9763b4eb68171142ee5a81, type: 3}
   rb: {fileID: 339961957839462484}
+  minMoneyReward: 20
+  maxMoneyReward: 20
   state: 0
   shakeBeforeRiseTime: 3
   riseSpeed: 3

@@ -23,6 +23,7 @@ public class Player : MonoBehaviour {
 
     [Header("References")]
     public TMPro.TextMeshProUGUI ammoCountText;
+    public TMPro.TextMeshProUGUI moneyCountText;
     public PlayerMovement pm;
     public GameObject weaponHolder;
     public Gun gun;
@@ -74,10 +75,20 @@ public class Player : MonoBehaviour {
         healthFill.fillAmount = healthCurrent / healthTotal;
     }
 
-    public void SetMoney(float i) {
+    public void LoseMoney(float i) {
         money -= i;
         if(money < 0) {
             money = 0;
         }
+        SetMoneyText();
+    }
+
+    public void GainMoney(float i) {
+        money += i;
+        SetMoneyText();
+    }
+
+    void SetMoneyText() {
+        moneyCountText.text = Mathf.FloorToInt(money).ToString();
     }
 }

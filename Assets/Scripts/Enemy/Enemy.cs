@@ -27,6 +27,10 @@ public class Enemy : MonoBehaviour {
     [Header("Movement")]
     public Rigidbody rb;
 
+    [Header("Rewards")]
+    public float minMoneyReward = 0f;
+    public float maxMoneyReward = 0f;
+
     private void Start() {
         health = healthTotal;
         DisableCollisions();
@@ -63,10 +67,16 @@ public class Enemy : MonoBehaviour {
 
     protected void Die() {
         RoomManager.rm.DefeatMonster(this.gameObject);
+        GiveMoneyReward();
     }
 
     protected void DelayDie(float d) {
         RoomManager.rm.DefeatMonster(this.gameObject, d);
+        GiveMoneyReward();
+    }
+
+    void GiveMoneyReward() {
+        GameManager.gm.p.GainMoney(Random.Range(minMoneyReward, maxMoneyReward));
     }
 
     protected void LookAt(GameObject g) {

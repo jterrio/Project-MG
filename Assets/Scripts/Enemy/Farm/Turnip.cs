@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class Turnip : Enemy {
 
-    public State growState = State.GROW;
-
     [Header("Turnip Settings")]
+    public State growState = State.GROW;
     [Tooltip("Range to aggro")]
     public float range = 10f;
     [Tooltip("How much to move on the Y axis from the ground")]
@@ -102,6 +101,8 @@ public class Turnip : Enemy {
             GameManager.gm.p.TakeDamage(explosionDMG);
         }
         this.gameObject.SetActive(false);
+        minMoneyReward = 0f;
+        maxMoneyReward = 0f;
         DelayDie(0.5f);
     }
 
