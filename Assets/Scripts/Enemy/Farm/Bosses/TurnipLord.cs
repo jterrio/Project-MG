@@ -172,7 +172,12 @@ public class TurnipLord : Enemy {
         Vine vine = v.GetComponentInChildren<Vine>();
         spawnedVines.Add(v);
         GameObject vChild = vine.vine;
-        v.transform.position = new Vector3(GameManager.gm.player.transform.position.x, 0, GameManager.gm.player.transform.position.z); ;
+        int r = Random.Range(0, 2);
+        if (r == 0) {
+            v.transform.position = new Vector3(GameManager.gm.player.transform.position.x + (GameManager.gm.playerRB.velocity.normalized.x * 15), 0f, GameManager.gm.player.transform.position.z + (GameManager.gm.playerRB.velocity.normalized.z * 15));
+        } else {
+            v.transform.position = new Vector3(GameManager.gm.player.transform.position.x, 0, GameManager.gm.player.transform.position.z);
+        }
         vChild.transform.localPosition = new Vector3(0, -0.4f, 0);
         vine.audioSource.PlayOneShot(audioClips[3]);
         yield return new WaitForSeconds(Mathf.Max(0.5f, vineAttackSpeed * ((GetHealthPercentage() + 0.01f))));
