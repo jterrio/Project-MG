@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour {
     [Header("References")]
     public LayerMask enemyPlayerLayers;
     public LayerMask LOS;
+    public LayerMask minimap;
 
     private void Awake() {
         if(gm == null) {

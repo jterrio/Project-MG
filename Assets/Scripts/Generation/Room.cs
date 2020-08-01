@@ -134,7 +134,7 @@ public class Room : MonoBehaviour {
     }
 
     void GenerateRoom() {
-        SpawnEnvironment();
+        //SpawnEnvironment();
         switch (roomType) {
             case RoomType.NORMAL:
                 SpawnBlockades();

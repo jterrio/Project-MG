@@ -28,6 +28,7 @@ public class PlayerMovement : MonoBehaviour {
 
     private Vector3 move;
     bool isGrounded;
+    private float lastTimeJumped = 0f;
 
     private void Start() {
         rb.freezeRotation = true;
@@ -36,7 +37,6 @@ public class PlayerMovement : MonoBehaviour {
     void Update() {
         CheckGround();
         Move();
-
     }
 
     void Move() {
@@ -53,11 +53,16 @@ public class PlayerMovement : MonoBehaviour {
 
 
     void CheckJump() {
-        if (Input.GetButton("Jump") && isGrounded) {
-            //Debug.Log("JUMP " + Time.time);
-            rb.AddForce(Vector3.up * jumpHeight, jumpForce);
-            isGrounded = false;
-        } else if(!isGrounded && rb.velocity.y <= airTime) {
+        if (isGrounded) {
+            if (Input.GetButton("Jump") && Time.time >= lastTimeJumped + 0.2f) {
+                Debug.Log("JUMP " + (Time.time - lastTimeJumped).ToString());
+                lastTimeJumped = Time.time;
+                rb.AddForce(Vector3.up * jumpHeight, jumpForce);
+                isGrounded = false;
+            } else {
+                rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+            }
+        } else if (!isGrounded && rb.velocity.y <= airTime) {
             Vector3 newGravity = new Vector3(0, -1 * Physics.gravity.y * (fallMultiplier - 1), 0);
             rb.AddForce(newGravity, fallForce);
         }
