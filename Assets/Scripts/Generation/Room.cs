@@ -254,8 +254,8 @@ public class Room : MonoBehaviour {
         int envToSpawn = Random.Range(minEnvironment, maxEnvironment);
         HashSet<Vector2> hs = new HashSet<Vector2>();
         while(environments.Count < envToSpawn && timeout < ((xLength - 1) * (yLength - 1))) {
-            int x = Random.Range(0, xLength - 1);
-            int y = Random.Range(0, yLength - 1);
+            int x = Random.Range(1, xLength - 1);
+            int y = Random.Range(1, yLength - 1);
             if (hs.Contains(new Vector2(x, y))) {
                 timeout++;
                 continue;
@@ -286,8 +286,8 @@ public class Room : MonoBehaviour {
         int blockToSpawn = Random.Range(minBlockade, maxBlockade);
         HashSet<Vector2> hs = new HashSet<Vector2>();
         while (blockades.Count < blockToSpawn && timeout < ((xLength - 1) * (yLength - 1))) {
-            int x = Random.Range(0, xLength - 1);
-            int y = Random.Range(0, yLength - 1);
+            int x = Random.Range(1, xLength - 1);
+            int y = Random.Range(1, yLength - 1);
             if (hs.Contains(new Vector2(x, y))) {
                 timeout++;
                 continue;
@@ -306,7 +306,7 @@ public class Room : MonoBehaviour {
                     List<Vector2> potPath = new List<Vector2>(GetNeighborNodesPositions(roomArray[xCoord, yCoord]));
                     for(int t = 0; t < 4; t++) {
                         int index = Random.Range(0, potPath.Count);
-                        if(IsValidCoordinate((int)potPath[index].x, (int)potPath[index].y) && !hs.Contains(new Vector2((int)potPath[index].x, (int)potPath[index].y))) {
+                        if(IsValidCoordinate((int)potPath[index].x, (int)potPath[index].y) && !hs.Contains(new Vector2((int)potPath[index].x, (int)potPath[index].y)) && (int)potPath[index].x < xLength - 1 && (int)potPath[index].y < yLength - 1 && (int)potPath[index].x >= 1 && (int)potPath[index].y >= 1) {
                             hs.Add(new Vector2((int)potPath[index].x, (int)potPath[index].y));
                             validPath.Add(new Vector2((int)potPath[index].x, (int)potPath[index].y));
                             xCoord = (int)potPath[index].x;
