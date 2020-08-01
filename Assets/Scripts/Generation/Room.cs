@@ -214,7 +214,7 @@ public class Room : MonoBehaviour {
 
         item1.transform.position = floorBase.transform.position + (Vector3.up * 1.5f);
 
-        float baseCost = 20f;
+        float baseCost = 30f;
 
         item1.GetComponentInChildren<ShopStand>().SetShop(Instantiate(ItemManager.im.getRandomAnyItem()), baseCost);
         item2.GetComponentInChildren<ShopStand>().SetShop(Instantiate(ItemManager.im.getRandomAnyItem()), baseCost);

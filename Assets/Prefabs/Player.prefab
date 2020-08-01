@@ -41,7 +41,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4470452852228567508}
   - component: {fileID: 2321751230289999152}
-  - component: {fileID: 7688612454784693081}
   m_Layer: 0
   m_Name: WeaponCamera
   m_TagString: MainCamera
@@ -107,20 +106,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!114 &7688612454784693081
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5777626269884214579}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1dd22ec5cc401544955ff9526bb2695, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mouseSens: 100
-  playerBody: {fileID: 5891472349960707474}
 --- !u!1 &5891472348953544372
 GameObject:
   m_ObjectHideFlags: 0
@@ -217,7 +202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1dd22ec5cc401544955ff9526bb2695, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseSens: 100
+  mouseSens: 5
   playerBody: {fileID: 5891472349960707474}
 --- !u!1 &5891472349296363625
 GameObject:
@@ -366,7 +351,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 818244000}
-  speed: 10
+  speed: 7.5
   fallMultiplier: -30
   jumpHeight: 80
   airTime: 5

@@ -27,7 +27,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7254095393575450621}
-  m_LocalRotation: {x: -0, y: -0.94898516, z: -0, w: 0.3153208}
+  m_LocalRotation: {x: 0, y: -0.9489862, z: 0, w: 0.31531775}
   m_LocalPosition: {x: 1.6567247, y: -1.61, z: 1.9062195}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -50,17 +50,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 3848624608968721356}
-  speed: 10
-  fallMultiplier: 0.2
+  speed: 7.5
+  fallMultiplier: -30
   jumpHeight: 80
   airTime: 5
   groundCheck: {fileID: 7254095393910337168}
-  groundDistance: 0.4
+  groundDistance: 0.1
   groundMask:
     serializedVersion: 2
     m_Bits: 512
   jumpForce: 1
-  fallForce: 1
+  fallForce: 5
 --- !u!114 &3935896939124135719
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -330,7 +330,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1dd22ec5cc401544955ff9526bb2695, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseSens: 100
+  mouseSens: 5
   playerBody: {fileID: 7254095393575450622}
 --- !u!1 &7254095395045089797
 GameObject:
@@ -438,7 +438,6 @@ GameObject:
   m_Component:
   - component: {fileID: 820555219109288888}
   - component: {fileID: 1536162611269197660}
-  - component: {fileID: 6906973692202899765}
   m_Layer: 0
   m_Name: WeaponCamera
   m_TagString: MainCamera
@@ -504,20 +503,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!114 &6906973692202899765
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7297889458345789279}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1dd22ec5cc401544955ff9526bb2695, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mouseSens: 100
-  playerBody: {fileID: 7254095393575450622}
 --- !u!1 &7991138003353094465
 GameObject:
   m_ObjectHideFlags: 0
