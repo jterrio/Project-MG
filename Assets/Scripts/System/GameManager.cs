@@ -84,17 +84,21 @@ public class GameManager : MonoBehaviour {
 
     public bool HasLineOfSight(GameObject host, GameObject target) {
         RaycastHit hit;
-        Vector3 direction = target.transform.position - host.transform.position;
-        if (Physics.Raycast(host.transform.position, direction, out hit, Mathf.Infinity, LOS)) {
+        Vector3 hostPos = host.transform.position;
+        Vector3 targetPos = target.transform.position;
+
+        Vector3 direction = targetPos - hostPos;
+        if (Physics.Raycast(hostPos, direction, out hit, Vector3.Distance(hostPos, targetPos), LOS)) {
             if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Player")) {
-                Debug.DrawRay(GameManager.gm.player.transform.position, direction, Color.green);
+                //Debug.DrawRay(hostPos, direction, Color.green);
                 return true;
             } else {
-                Debug.DrawRay(GameManager.gm.player.transform.position, direction, Color.red);
+                Debug.DrawRay(hostPos, direction, Color.red, 10f);
                 return false;
             }
         }
-        return false;
+        Debug.DrawRay(hostPos, direction, Color.blue, 10f);
+        return true;
     }
 
 }
