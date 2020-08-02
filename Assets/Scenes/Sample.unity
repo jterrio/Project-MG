@@ -770,20 +770,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 285436351256968523, guid: abf7bf9c9eb200947871fc80d9a8ffbc,
+    - target: {fileID: 1460202984293899365, guid: abf7bf9c9eb200947871fc80d9a8ffbc,
         type: 3}
-      propertyPath: ammoCountText
-      value: 
+      propertyPath: m_LocalPosition.x
+      value: 1.23
       objectReference: {fileID: 0}
-    - target: {fileID: 285436351256968523, guid: abf7bf9c9eb200947871fc80d9a8ffbc,
+    - target: {fileID: 1460202984293899365, guid: abf7bf9c9eb200947871fc80d9a8ffbc,
         type: 3}
-      propertyPath: moneyCountText
-      value: 
+      propertyPath: m_LocalPosition.y
+      value: -0.72
       objectReference: {fileID: 0}
-    - target: {fileID: 285436351256968523, guid: abf7bf9c9eb200947871fc80d9a8ffbc,
+    - target: {fileID: 1460202984293899365, guid: abf7bf9c9eb200947871fc80d9a8ffbc,
         type: 3}
-      propertyPath: healthFill
-      value: 
+      propertyPath: m_LocalPosition.z
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5891472349960707473, guid: abf7bf9c9eb200947871fc80d9a8ffbc,
         type: 3}

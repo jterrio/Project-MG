@@ -27,6 +27,7 @@ public class Player : MonoBehaviour {
     public PlayerMovement pm;
     public GameObject weaponHolder;
     public Gun gun;
+    public GameObject bulletSpawn;
     public Image healthFill;
     public AudioSource audioSource;
 

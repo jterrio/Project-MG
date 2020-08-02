@@ -121,7 +121,7 @@ public class Gun : MonoBehaviour {
         b.transform.position = bulletEmitter.transform.position;
         Vector3 v = Vector3.zero;
         if (Physics.Raycast(GameManager.gm.playerCamera.transform.position, GameManager.gm.playerCamera.transform.forward, out hit, Mathf.Infinity, hitLayerMask)) {
-            //print(hit.collider.gameObject.name);
+            print(hit.collider.gameObject.name);
             v = hit.point;
         } else {
             v = GameManager.gm.playerCamera.transform.position + (GameManager.gm.playerCamera.transform.forward * 50f);

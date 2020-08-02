@@ -72,6 +72,7 @@ public class GameManager : MonoBehaviour {
         }
         g.transform.parent = p.weaponHolder.transform;
         p.gun = g.GetComponent<Gun>();
+        p.gun.bulletEmitter = p.bulletSpawn;
         g.transform.localPosition = Vector3.zero;
         g.transform.localRotation = Quaternion.Euler(Vector3.zero);
         g.transform.localScale = new Vector3(1, 1, 1);
