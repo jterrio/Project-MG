@@ -99,6 +99,6 @@ public class GameManager : MonoBehaviour {
         }
         Debug.DrawRay(hostPos, direction, Color.blue, 10f);
         return true;
-    }
+    } 
 
 }

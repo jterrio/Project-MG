@@ -68,6 +68,7 @@ public class RoomManager : MonoBehaviour {
         if (debugMode) {
             CreateFloorLayout();
         }
+        text = UIManager.ui.enemyCount.GetComponent<TMPro.TextMeshProUGUI>();
     }
 
     Vector3 GetAveragePosition() {

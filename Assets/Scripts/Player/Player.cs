@@ -32,6 +32,12 @@ public class Player : MonoBehaviour {
 
     void Start() {
         //gun = GetComponentInChildren<Gun>();
+        ammoCountText = UIManager.ui.ammoCount.GetComponent<TMPro.TextMeshProUGUI>();
+        moneyCountText = UIManager.ui.moneyCount.GetComponent<TMPro.TextMeshProUGUI>();
+        healthFill = UIManager.ui.HealthUIFill.GetComponent<Image>();
+        UIManager.ui.TurnOnHUD();
+        SetMoneyText();
+        UpdateHealth();
     }
 
     // Update is called once per frame
@@ -68,7 +74,7 @@ public class Player : MonoBehaviour {
         GameManager.gm.playerMinimapObject.SetActive(false);
         Destroy(RoomManager.rm.transform.parent.gameObject);
         RoomManager.rm = null;
-        LevelManager.lm.LoadFarmLevel();
+        LevelManager.lm.LoadFarmDeath();
     }
 
     void UpdateHealth() {
