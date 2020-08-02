@@ -216,9 +216,9 @@ public class Room : MonoBehaviour {
 
         float baseCost = 30f;
 
-        item1.GetComponentInChildren<ShopStand>().SetShop(Instantiate(ItemManager.im.getRandomAnyItem()), baseCost);
-        item2.GetComponentInChildren<ShopStand>().SetShop(Instantiate(ItemManager.im.getRandomAnyItem()), baseCost);
-        item3.GetComponentInChildren<ShopStand>().SetShop(Instantiate(ItemManager.im.getRandomAnyItem()), baseCost);
+        item1.GetComponentInChildren<ShopStand>().SetShop(Instantiate(ItemManager.im.GetRandomAnyItem()), baseCost);
+        item2.GetComponentInChildren<ShopStand>().SetShop(Instantiate(ItemManager.im.GetRandomAnyItem()), baseCost);
+        item3.GetComponentInChildren<ShopStand>().SetShop(Instantiate(ItemManager.im.GetRandomAnyItem()), baseCost);
 
         item1.transform.parent = shopKeep.transform;
         item2.transform.parent = shopKeep.transform;
@@ -539,7 +539,7 @@ public class Room : MonoBehaviour {
         GameObject f = Instantiate(RoomManager.rm.nextFloor);
         f.gameObject.transform.position = GetPositionAcross(GameManager.gm.player.transform.position) + (Vector3.up * 3f);
 
-        GameObject reward = Instantiate(ItemManager.im.getRandomBossItem());
+        GameObject reward = Instantiate(ItemManager.im.GetRandomAnyItem());
         reward.AddComponent<PickUpItem>();
         reward.transform.position = Vector3.Lerp(f.gameObject.transform.position, GameManager.gm.player.transform.position, 0.45f);
         reward.transform.position = new Vector3(reward.transform.position.x, 3f, reward.transform.position.z);
