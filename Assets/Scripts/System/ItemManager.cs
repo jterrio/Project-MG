@@ -6,6 +6,7 @@ public class ItemManager : MonoBehaviour {
 
     public static ItemManager im;
     
+    [Header("Item Lists")]
     public List<GameObject> commonItems;
     public List<GameObject> uncommonItems;
     public List<GameObject> rareItems;
@@ -16,6 +17,7 @@ public class ItemManager : MonoBehaviour {
     private List<GameObject> shopItems;
     private List<GameObject> bossItems;
 
+    [Header("Item Chances")]
     public float commonItemChance = 20f;
     public float uncommonItemChance = 15f;
     public float rareItemChance = 10f;
@@ -25,6 +27,12 @@ public class ItemManager : MonoBehaviour {
     private float totalItemChanceCost;
     private float shopChanceCost;
     private float bossChanceCost;
+
+    public delegate void GunDelegate();
+    public delegate void BulletVelocityDelegate(GameObject bullet);
+    public GunDelegate gunDelegate;
+    public BulletVelocityDelegate bulletVelocityDelegate;
+
 
     private void Start() {
 
@@ -57,6 +65,7 @@ public class ItemManager : MonoBehaviour {
                 bossItems.Add(g);
             }
         }
+
     }
 
     public GameObject GetRandomCommonItem() {
@@ -142,6 +151,30 @@ public class ItemManager : MonoBehaviour {
             default:
                 return commonItemChance;
         }
+    }
+
+
+    public void CurveBullet(GameObject bullet) {
+        //ADD LINE OF SIGHT CHECK
+        Collider[] hitColliders = Physics.OverlapSphere(bullet.transform.position, 30f, GameManager.gm.enemyLayers);
+        if(hitColliders.Length == 0) {
+            return;
+        }
+        Collider c = hitColliders[0];
+        float distance = Vector3.Distance(bullet.transform.position, c.transform.position);
+        for (int i = 0; i < hitColliders.Length; i++) {
+            float checkDistance = Vector3.Distance(hitColliders[i].gameObject.transform.position, bullet.transform.position);
+            if (checkDistance < distance) {
+                distance = checkDistance;
+                c = hitColliders[i];
+            }
+        }
+
+        bullet.GetComponent<Rigidbody>().AddForce((c.gameObject.transform.position - bullet.transform.position).normalized * GameManager.gm.p.gun.bulletSpeed * 2f, ForceMode.VelocityChange);
+    }
+
+    public void NoReload() {
+        GameManager.gm.p.gun.bulletsInMag = GameManager.gm.p.gun.magSize;
     }
 
 }

@@ -21,6 +21,7 @@ public class Player : MonoBehaviour {
     public float wepDMGMulti = 1f;
     public float wepAmmoMulti = 1f;
 
+
     [Header("References")]
     public TMPro.TextMeshProUGUI ammoCountText;
     public TMPro.TextMeshProUGUI moneyCountText;

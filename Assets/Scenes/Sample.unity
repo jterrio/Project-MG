@@ -1084,8 +1084,14 @@ MonoBehaviour:
   uncommonItems:
   - {fileID: 8323369861739032763, guid: b7f5692c54bc54240866f4972e561370, type: 3}
   rareItems: []
-  epicItems: []
+  epicItems:
+  - {fileID: 1754331820224389650, guid: 6878a066788f1de47b0f0e2eb965381b, type: 3}
   legendaryItems: []
+  commonItemChance: 20
+  uncommonItemChance: 15
+  rareItemChance: 10
+  epicItemChance: 8.5
+  legendaryItemChance: 5
 --- !u!1 &1005737721
 GameObject:
   m_ObjectHideFlags: 0
@@ -1763,21 +1769,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1460202984293899365, guid: abf7bf9c9eb200947871fc80d9a8ffbc,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1.23
-      objectReference: {fileID: 0}
-    - target: {fileID: 1460202984293899365, guid: abf7bf9c9eb200947871fc80d9a8ffbc,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.72
-      objectReference: {fileID: 0}
-    - target: {fileID: 1460202984293899365, guid: abf7bf9c9eb200947871fc80d9a8ffbc,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 5891472349960707473, guid: abf7bf9c9eb200947871fc80d9a8ffbc,
         type: 3}
       propertyPath: m_Name
@@ -2105,6 +2096,9 @@ MonoBehaviour:
   enemyPlayerLayers:
     serializedVersion: 2
     m_Bits: 4352
+  enemyLayers:
+    serializedVersion: 2
+    m_Bits: 4096
   LOS:
     serializedVersion: 2
     m_Bits: 8448

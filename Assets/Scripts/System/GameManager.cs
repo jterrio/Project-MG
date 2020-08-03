@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour {
 
     [Header("References")]
     public LayerMask enemyPlayerLayers;
+    public LayerMask enemyLayers;
     public LayerMask LOS;
     public LayerMask minimap;
 

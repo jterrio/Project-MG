@@ -13,7 +13,14 @@ public class Bullet : MonoBehaviour
         Destroy(this.gameObject, bulletLifetime);
     }
 
-    private void OnCollisionEnter(Collision collision) {
+    private void Update() {
+        ItemManager.im.bulletVelocityDelegate?.Invoke(this.gameObject);
+    }
+
+    private void OnTriggerEnter(Collision collision) {
+        if(collision.gameObject.layer == LayerMask.NameToLayer("Bullet")) {
+            return;
+        }
         GameObject g = Instantiate(hitEffect, collision.contacts[0].point, Quaternion.LookRotation(collision.contacts[0].normal));
         Destroy(g, 4f);
         if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy")) {
