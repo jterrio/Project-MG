@@ -12,15 +12,34 @@ public class Player : MonoBehaviour {
     public float lastTimeTakenDMG;
     public float invDMGSecs = 1f;
 
+    [Header("Inventory")]
+    public float money = 5f;
+    public float wepFireIncrease = 0f;
+    public float wepDMGIncrease = 0f;
+    public int wepAmmoIncrease = 0;
+    public float wepFireMulti = 1f;
+    public float wepDMGMulti = 1f;
+    public float wepAmmoMulti = 1f;
+
+
     [Header("References")]
     public TMPro.TextMeshProUGUI ammoCountText;
+    public TMPro.TextMeshProUGUI moneyCountText;
     public PlayerMovement pm;
+    public GameObject weaponHolder;
     public Gun gun;
+    public GameObject bulletSpawn;
     public Image healthFill;
     public AudioSource audioSource;
 
     void Start() {
-        gun = GetComponentInChildren<Gun>();
+        //gun = GetComponentInChildren<Gun>();
+        ammoCountText = UIManager.ui.ammoCount.GetComponent<TMPro.TextMeshProUGUI>();
+        moneyCountText = UIManager.ui.moneyCount.GetComponent<TMPro.TextMeshProUGUI>();
+        healthFill = UIManager.ui.HealthUIFill.GetComponent<Image>();
+        UIManager.ui.TurnOnHUD();
+        SetMoneyText();
+        UpdateHealth();
     }
 
     // Update is called once per frame
@@ -32,9 +51,9 @@ public class Player : MonoBehaviour {
     void UpdateAmmoCount() {
         if (ammoCountText != null) {
             if (gun.isReloading) {
-                ammoCountText.text = "--/" + gun.magSize.ToString();
+                ammoCountText.text = "--/" + gun.GetMagSize().ToString();
             } else {
-                ammoCountText.text = gun.bulletsInMag.ToString() + "/" + gun.magSize.ToString();
+                ammoCountText.text = gun.bulletsInMag.ToString() + "/" + gun.GetMagSize().ToString();
             }
 
         }
@@ -54,10 +73,30 @@ public class Player : MonoBehaviour {
     }
 
     void Die() {
-        LevelManager.lm.LoadFarmLevel();
+        GameManager.gm.playerMinimapObject.SetActive(false);
+        Destroy(RoomManager.rm.transform.parent.gameObject);
+        RoomManager.rm = null;
+        LevelManager.lm.LoadFarmDeath();
     }
 
     void UpdateHealth() {
         healthFill.fillAmount = healthCurrent / healthTotal;
+    }
+
+    public void LoseMoney(float i) {
+        money -= i;
+        if(money < 0) {
+            money = 0;
+        }
+        SetMoneyText();
+    }
+
+    public void GainMoney(float i) {
+        money += i;
+        SetMoneyText();
+    }
+
+    void SetMoneyText() {
+        moneyCountText.text = Mathf.FloorToInt(money).ToString();
     }
 }

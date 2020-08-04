@@ -20,14 +20,15 @@ public class PlayerMovement : MonoBehaviour {
     public Transform groundCheck;
     [Tooltip("Distance from ground to be considered grounded")]
     public float groundDistance = 0.4f;
-    [Tooltip("Layer that detects the ground")]
-    public LayerMask groundMask;
 
     public ForceMode jumpForce;
     public ForceMode fallForce;
 
+    private float x, z;
+
     private Vector3 move;
     bool isGrounded;
+    private float lastTimeJumped = 0f;
 
     private void Start() {
         rb.freezeRotation = true;
@@ -36,35 +37,40 @@ public class PlayerMovement : MonoBehaviour {
     void Update() {
         CheckGround();
         Move();
-
+        CheckJump();
     }
 
     void Move() {
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
+        x = Input.GetAxis("Horizontal");
+        z = Input.GetAxis("Vertical");
         move = new Vector3(x, 0, z) * speed;
         //controller.Move(move * speed * Time.deltaTime);
     }
 
     private void FixedUpdate() {
-        CheckJump();
         rb.AddForce(rb.rotation * move, ForceMode.Impulse);
-    }
-
-
-    void CheckJump() {
-        if (Input.GetButton("Jump") && isGrounded) {
-            Debug.Log("JUMP " + Time.time);
-            rb.AddForce(Vector3.up * jumpHeight, jumpForce);
-            isGrounded = false;
-        } else if(!isGrounded && rb.velocity.y <= airTime) {
+        if (!isGrounded && rb.velocity.y <= airTime) {
             Vector3 newGravity = new Vector3(0, -1 * Physics.gravity.y * (fallMultiplier - 1), 0);
             rb.AddForce(newGravity, fallForce);
         }
     }
 
+
+    void CheckJump() {
+        if (isGrounded) {
+            if (Input.GetButton("Jump") && Time.time >= lastTimeJumped + 0.2f) {
+                Debug.Log("JUMP " + (Time.time - lastTimeJumped).ToString());
+                lastTimeJumped = Time.time;
+                rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+                rb.AddForce(Vector3.up * jumpHeight, jumpForce);
+                isGrounded = false;
+            }
+        }
+    }
+        
+
     void CheckGround() {
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, GameManager.gm.groundMask);
     }
 
     public void Warp(Vector3 newPos) {

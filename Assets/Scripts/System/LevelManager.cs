@@ -57,6 +57,13 @@ public class LevelManager : MonoBehaviour {
         StartCoroutine(LoadLevel("Sample"));
     }
 
+    public void LoadFarmDeath() {
+        print("You died!");
+        Destroy(GameManager.gm.player);
+        StartCoroutine(LoadLevel("Sample"));
+        UIManager.ui.enemyCount.gameObject.SetActive(false);
+    }
+
     IEnumerator LoadLevel(string level) {
         UIManager.ui.loadScreenPanel.gameObject.SetActive(true);
         AsyncOperation a = SceneManager.LoadSceneAsync(level);
@@ -76,6 +83,7 @@ public class LevelManager : MonoBehaviour {
         RoomManager.rm.CreateFloorLayout();
         GameManager.gm.currentFloor++;
         UIManager.ui.loadScreenPanel.gameObject.SetActive(false);
+        GameManager.gm.LoadWeapon(GameManager.gm.wepID);
     }
 
 }

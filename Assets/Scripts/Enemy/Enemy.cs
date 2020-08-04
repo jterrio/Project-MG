@@ -5,6 +5,11 @@ using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour {
 
+    [Header("Spawn Settings")]
+    public EnemyType et;
+    [Min(0)]
+    public int maxSpawn = 0;
+    public int enemyID;
 
     [Header("Health")]
     public float healthTotal = 50f;
@@ -26,6 +31,16 @@ public class Enemy : MonoBehaviour {
 
     [Header("Movement")]
     public Rigidbody rb;
+
+    [Header("Rewards")]
+    public float minMoneyReward = 0f;
+    public float maxMoneyReward = 0f;
+
+
+    public enum EnemyType{
+        NORMAL,
+        BLOCKADE
+    }
 
     private void Start() {
         health = healthTotal;
@@ -63,10 +78,16 @@ public class Enemy : MonoBehaviour {
 
     protected void Die() {
         RoomManager.rm.DefeatMonster(this.gameObject);
+        GiveMoneyReward();
     }
 
     protected void DelayDie(float d) {
         RoomManager.rm.DefeatMonster(this.gameObject, d);
+        GiveMoneyReward();
+    }
+
+    void GiveMoneyReward() {
+        GameManager.gm.p.GainMoney(Random.Range(minMoneyReward, maxMoneyReward));
     }
 
     protected void LookAt(GameObject g) {

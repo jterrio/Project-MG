@@ -6,7 +6,7 @@ public class MouseLook : MonoBehaviour {
 
     [Header("Mouse Settings")]
     [Tooltip("Sensitivity of the mouse")]
-    public float mouseSens = 100f;
+    public float mouseSens = 1f;
     public Transform playerBody;
     float xRotation = 0f;
 
@@ -16,15 +16,22 @@ public class MouseLook : MonoBehaviour {
     }
 
     private void Update() {
-        float mouseX = Input.GetAxis("Mouse X") * mouseSens * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSens * Time.deltaTime;
+        float mouseX = Input.GetAxis("Mouse X") * mouseSens;
+        float mouseY = Input.GetAxis("Mouse Y") * (mouseSens / 2);
 
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
-        transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-        GameManager.gm.playerRB.MoveRotation(Quaternion.Euler(new Vector3(GameManager.gm.playerRB.rotation.eulerAngles.x, GameManager.gm.playerRB.rotation.eulerAngles.y + mouseX, GameManager.gm.playerRB.rotation.eulerAngles.z)));
+        Vector3 playerRotation = GameManager.gm.playerRB.transform.rotation.eulerAngles;
+        playerRotation.y += mouseX;
+
+        //GameManager.gm.playerRB.MoveRotation(Quaternion.Euler(new Vector3(GameManager.gm.playerRB.rotation.eulerAngles.x, GameManager.gm.playerRB.rotation.eulerAngles.y + mouseX, GameManager.gm.playerRB.rotation.eulerAngles.z)));
         //playerBody.Rotate(Vector3.up * mouseX);
+
+        //this.transform.rotation = Quaternion.Euler(cameraRotation);
+        transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        GameManager.gm.playerRB.rotation = Quaternion.Euler(playerRotation);
+
     }
 
 }
