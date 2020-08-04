@@ -5,7 +5,7 @@ using UnityEngine;
 public class StartFloor : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other) {
-        if (other.gameObject.tag == "Player") {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player")) {
             LevelManager.lm.LoadFarmLevel();
         }
     }

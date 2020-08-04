@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Minimap
+  - Item
   layers:
   - Default
   - TransparentFX
@@ -19,10 +20,10 @@ TagManager:
   - Weapon
   - Minimap
   - Enemy
-  - 
-  - 
-  - 
-  - 
+  - EnemyInvincible
+  - Wall
+  - Bullet
+  - Item
   - 
   - 
   - 

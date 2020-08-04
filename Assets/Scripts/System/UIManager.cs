@@ -14,12 +14,22 @@ public class UIManager : MonoBehaviour {
     [Header("Main Menu")]
     public RectTransform mainMenuPanel;
 
+    [Header("HUD")]
+    public RectTransform HUD;
+    public RectTransform miniMap;
+    public RectTransform crosshair;
+    public RectTransform ammoCount;
+    public RectTransform HealthUIFill;
+    public RectTransform enemyCount;
+    public RectTransform moneyCount;
+
     private void Start() {
         if(ui == null) {
             ui = this;
         }else if(ui != this) {
             Destroy(this);
         }
+        DontDestroyOnLoad(this);
     }
 
     public void DisableMainMenuUI() {
@@ -28,6 +38,14 @@ public class UIManager : MonoBehaviour {
 
     public void EnableMainMenuUI() {
         mainMenuPanel.gameObject.SetActive(true);
+    }
+
+    public void TurnOnHUD() {
+        HUD.gameObject.SetActive(true);
+    }
+
+    public void TurnOffHUD() {
+        HUD.gameObject.SetActive(false);
     }
 
 

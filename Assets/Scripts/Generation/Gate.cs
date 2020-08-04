@@ -7,7 +7,7 @@ public class Gate : MonoBehaviour {
     public bool hasCleared = false;
 
     private void OnTriggerEnter(Collider other) {
-        if (other.gameObject.tag == "Player") {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player")) {
             if (!hasCleared) {
                 RoomManager.rm.ChangeRoom(this.GetComponentInParent<Room>());
             }
