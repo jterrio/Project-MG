@@ -475,8 +475,27 @@ public class Room : MonoBehaviour {
             roomArray[x, y].isTaken = true;
             timeout = 0;
             int m = Random.Range(0, potentialMonsterSpawns.Count);
-            Vector3 spawnPoint = new Vector3(roomArray[x, y].position.x + Random.Range(-(nodeLength / 2), (nodeLength / 2)), roomArray[x, y].position.y, roomArray[x, y].position.z + Random.Range(-(nodeLength / 2), (nodeLength / 2)));
             GameObject monster = Instantiate(potentialMonsterSpawns[m]);
+            Enemy e = monster.GetComponent<Enemy>();
+            Vector3 spawnPoint = Vector3.zero;
+            if(e.et == Enemy.EnemyType.NORMAL) {
+                spawnPoint = new Vector3(roomArray[x, y].position.x + Random.Range(-(nodeLength / 2), (nodeLength / 2)), roomArray[x, y].position.y, roomArray[x, y].position.z + Random.Range(-(nodeLength / 2), (nodeLength / 2)));
+            } else if(e.et == Enemy.EnemyType.BLOCKADE) {
+                List<GameObject> blockadeCopy = new List<GameObject>(blockades);
+                while(blockadeCopy.Count > 0) {
+                    int b = Random.Range(0, blockadeCopy.Count);
+                    if(blockadeCopy[b].gameObject.name == "Corner") {
+                        blockadeCopy.RemoveAt(b);
+                        continue;
+                    }
+                    spawnPoint = blockades[b].transform.position;
+                    monster.transform.rotation = blockades[b].transform.rotation;
+                    Destroy(blockades[b]);
+                    blockades.RemoveAt(b);
+                    break;
+                }
+
+            }
             monster.transform.parent = this.gameObject.transform;
             monster.transform.position = spawnPoint;
             monsters.Add(monster);

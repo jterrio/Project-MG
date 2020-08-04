@@ -52,42 +52,45 @@ public class TurnipLord : Enemy {
 
     // Update is called once per frame
     new void Update() {
-        if(state == State.GROW) {
-            state = State.HARVEST;
-        }
-        if(state == State.HARVEST && harvestCoroutine == null) {
-            harvestCoroutine = StartCoroutine(Harvest());
-        }
-        if(state == State.READY) {
-            //transform.LookAt(GameManager.gm.player.transform.position);
-            float h = GetHealthPercentage();
-            if(h > 0.6f) {
-                HighHPAttack();
-            } else if (h > 0.05f){
-                LowHPAttack();
-            } else {
-                NearDeathAttack();
-            }
-        }
-        if(state == State.VINE) {
-            state = State.ISATTACKING;
-            VineAttack();
-        }
-        if(state == State.SPAWN) {
-            state = State.ISATTACKING;
-            SpawnAttack();
-        }
-        if(state == State.BOTH) {
-            state = State.ISATTACKING;
-            VineAttack();
-            SpawnAttack();
-        }
-        if(state == State.ISATTACKING) {
-            LookAt(GameManager.gm.player);
-            if (minionAttackDone && vineAttackDone) {
-                state = State.READY;
-            }
-            return;
+        switch (state) {
+            case State.GROW:
+                state = State.HARVEST;
+                break;
+            case State.HARVEST:
+                if(harvestCoroutine == null) {
+                    harvestCoroutine = StartCoroutine(Harvest());
+                }
+                break;
+            case State.READY:
+                //transform.LookAt(GameManager.gm.player.transform.position);
+                float h = GetHealthPercentage();
+                if (h > 0.6f) {
+                    HighHPAttack();
+                } else if (h > 0.05f) {
+                    LowHPAttack();
+                } else {
+                    NearDeathAttack();
+                }
+                break;
+            case State.VINE:
+                state = State.ISATTACKING;
+                VineAttack();
+                break;
+            case State.SPAWN:
+                state = State.ISATTACKING;
+                SpawnAttack();
+                break;
+            case State.BOTH:
+                state = State.ISATTACKING;
+                VineAttack();
+                SpawnAttack();
+                break;
+            case State.ISATTACKING:
+                LookAt(GameManager.gm.player);
+                if (minionAttackDone && vineAttackDone) {
+                    state = State.READY;
+                }
+                break;
         }
     }
 

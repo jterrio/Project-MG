@@ -17,7 +17,7 @@ public class Bullet : MonoBehaviour
         ItemManager.im.bulletVelocityDelegate?.Invoke(this.gameObject);
     }
 
-    private void OnTriggerEnter(Collision collision) {
+    private void OnCollisionEnter(Collision collision) {
         if(collision.gameObject.layer == LayerMask.NameToLayer("Bullet")) {
             return;
         }

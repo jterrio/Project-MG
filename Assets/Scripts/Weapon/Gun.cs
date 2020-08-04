@@ -116,6 +116,11 @@ public class Gun : MonoBehaviour {
         bulletsInMag--;
         gunFlash.Play();
         audioSource.PlayOneShot(fireSounds[Random.Range(0, fireSounds.Length - 1)]);
+        ItemManager.im.gunDelegate?.Invoke();
+        CreateBullet();
+    }
+
+    void CreateBullet() {
         RaycastHit hit;
         GameObject b = Instantiate(bullet);
         b.transform.position = bulletEmitter.transform.position;

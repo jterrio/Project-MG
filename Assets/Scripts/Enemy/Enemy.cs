@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour {
 
+    [Header("Enemy Type")]
+    public EnemyType et;
 
     [Header("Health")]
     public float healthTotal = 50f;
@@ -30,6 +32,12 @@ public class Enemy : MonoBehaviour {
     [Header("Rewards")]
     public float minMoneyReward = 0f;
     public float maxMoneyReward = 0f;
+
+
+    public enum EnemyType{
+        NORMAL,
+        BLOCKADE
+    }
 
     private void Start() {
         health = healthTotal;

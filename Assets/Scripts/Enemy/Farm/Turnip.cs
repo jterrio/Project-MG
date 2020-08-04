@@ -94,7 +94,7 @@ public class Turnip : Enemy {
                 hRB = h.GetComponent<Rigidbody>();
             }
             if(hRB != null && GameManager.gm.HasLineOfSight(this.gameObject, h.gameObject)) {
-                hRB.AddExplosionForce(explosionForce, transform.position, explosionTotalDistance, 5f, ForceMode.Impulse);
+                hRB.AddExplosionForce(explosionForce, transform.position, explosionTotalDistance, 5f, ForceMode.VelocityChange);
             }
         }
         if(Vector3.Distance(transform.position, GameManager.gm.player.transform.position) <= explosionDmgDistance && GameManager.gm.HasLineOfSight(this.gameObject, GameManager.gm.player)) {

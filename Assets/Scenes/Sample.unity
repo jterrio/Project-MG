@@ -384,6 +384,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23d8e8858d4c4714db919118ac5eab77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  et: 0
   healthTotal: 50
   health: 50
   healthBar: {fileID: 0}
@@ -1875,6 +1876,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23d8e8858d4c4714db919118ac5eab77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  et: 0
   healthTotal: 50
   health: 50
   healthBar: {fileID: 0}
@@ -2105,6 +2107,9 @@ MonoBehaviour:
   minimap:
     serializedVersion: 2
     m_Bits: 2048
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!4 &1906214636
 Transform:
   m_ObjectHideFlags: 0

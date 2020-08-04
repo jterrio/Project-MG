@@ -20,8 +20,6 @@ public class PlayerMovement : MonoBehaviour {
     public Transform groundCheck;
     [Tooltip("Distance from ground to be considered grounded")]
     public float groundDistance = 0.4f;
-    [Tooltip("Layer that detects the ground")]
-    public LayerMask groundMask;
 
     public ForceMode jumpForce;
     public ForceMode fallForce;
@@ -72,7 +70,7 @@ public class PlayerMovement : MonoBehaviour {
         
 
     void CheckGround() {
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, GameManager.gm.groundMask);
     }
 
     public void Warp(Vector3 newPos) {

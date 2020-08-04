@@ -31,11 +31,12 @@ public class GameManager : MonoBehaviour {
     public Minimap mm;
     public GameObject playerMinimapObject;
 
-    [Header("References")]
+    [Header("Layer Mask")]
     public LayerMask enemyPlayerLayers;
     public LayerMask enemyLayers;
     public LayerMask LOS;
     public LayerMask minimap;
+    public LayerMask groundMask;
 
     private void Awake() {
         if(gm == null) {

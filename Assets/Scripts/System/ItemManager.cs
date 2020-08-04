@@ -29,9 +29,11 @@ public class ItemManager : MonoBehaviour {
     private float bossChanceCost;
 
     public delegate void GunDelegate();
+    public delegate void ReloadDelegate();
     public delegate void BulletVelocityDelegate(GameObject bullet);
     public GunDelegate gunDelegate;
     public BulletVelocityDelegate bulletVelocityDelegate;
+    public ReloadDelegate reloadDelegate;
 
 
     private void Start() {
@@ -155,22 +157,33 @@ public class ItemManager : MonoBehaviour {
 
 
     public void CurveBullet(GameObject bullet) {
-        //ADD LINE OF SIGHT CHECK
         Collider[] hitColliders = Physics.OverlapSphere(bullet.transform.position, 30f, GameManager.gm.enemyLayers);
         if(hitColliders.Length == 0) {
             return;
         }
-        Collider c = hitColliders[0];
+        List<GameObject> mobsToCheck = new List<GameObject>();
+        foreach(Collider col in hitColliders) {
+            if(GameManager.gm.HasLineOfSight(bullet, col.gameObject)) {
+                mobsToCheck.Add(col.gameObject);
+            }
+        }
+        if(mobsToCheck.Count == 0) {
+            return;
+        }
+        GameObject c = mobsToCheck[0];
         float distance = Vector3.Distance(bullet.transform.position, c.transform.position);
-        for (int i = 0; i < hitColliders.Length; i++) {
-            float checkDistance = Vector3.Distance(hitColliders[i].gameObject.transform.position, bullet.transform.position);
+        foreach(GameObject g in mobsToCheck) {
+            if(c == g) {
+                continue;
+            }
+            float checkDistance = Vector3.Distance(g.transform.position, bullet.transform.position);
             if (checkDistance < distance) {
                 distance = checkDistance;
-                c = hitColliders[i];
+                c = g;
             }
         }
 
-        bullet.GetComponent<Rigidbody>().AddForce((c.gameObject.transform.position - bullet.transform.position).normalized * GameManager.gm.p.gun.bulletSpeed * 2f, ForceMode.VelocityChange);
+        bullet.GetComponent<Rigidbody>().AddForce((c.gameObject.transform.position - bullet.transform.position).normalized * GameManager.gm.p.gun.bulletSpeed * 2.5f, ForceMode.VelocityChange);
     }
 
     public void NoReload() {
