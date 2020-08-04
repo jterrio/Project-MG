@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2001831413231580549}
   - component: {fileID: 1205605288667430465}
   - component: {fileID: 7904192509116533151}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Capsule (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 7078041583018345606}
   - component: {fileID: 7078041583018345627}
   - component: {fileID: 7078041583018345624}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Capsule (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -173,7 +173,7 @@ GameObject:
   - component: {fileID: 7078041583289366271}
   - component: {fileID: 7078041583289366256}
   - component: {fileID: 7078041583289366257}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -255,9 +255,9 @@ GameObject:
   - component: {fileID: 3326376539072323180}
   - component: {fileID: 5422932861943862077}
   - component: {fileID: 7089381177122476063}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: AmmoUp
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -339,7 +339,7 @@ GameObject:
   - component: {fileID: 7078041584331510002}
   - component: {fileID: 7078041584331510007}
   - component: {fileID: 7078041584331510004}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Capsule (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

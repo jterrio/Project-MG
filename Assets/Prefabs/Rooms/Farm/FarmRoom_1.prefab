@@ -6319,6 +6319,7 @@ MonoBehaviour:
   minMonsterSpawn: 3
   maxMonsterSpawn: 7
   potentialMonsterSpawns:
+  - {fileID: 7428941775176541546, guid: 081e2574a5e0a8249853b23885ff5dfd, type: 3}
   - {fileID: 9118222856060365628, guid: 6f70088b524750b43bd3a6692f17f959, type: 3}
   monsters: []
   bosses: []

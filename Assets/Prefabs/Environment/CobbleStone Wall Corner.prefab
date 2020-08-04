@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2320553208059778719}
   - component: {fileID: 1384505970576786367}
   - component: {fileID: 5153141997157153305}
-  m_Layer: 13
+  m_Layer: 14
   m_Name: Cobblestone Wall (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,7 +104,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2658565948962453564}
-  m_Layer: 13
+  m_Layer: 14
   m_Name: CobbleStone Wall Corner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -139,7 +139,7 @@ GameObject:
   - component: {fileID: 4406028897780361798}
   - component: {fileID: 1322542072433193844}
   - component: {fileID: 1095144021709713648}
-  m_Layer: 13
+  m_Layer: 14
   m_Name: Cobblestone Wall (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

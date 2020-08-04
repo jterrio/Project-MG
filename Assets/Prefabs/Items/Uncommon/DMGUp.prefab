@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 418925492498932717}
   - component: {fileID: 1852400147381153555}
   - component: {fileID: 1822772799418358971}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Capsule (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 2506714736461838685}
   - component: {fileID: 936435655853400571}
   - component: {fileID: 1233619547522134174}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Capsule (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -173,7 +173,7 @@ GameObject:
   - component: {fileID: 1197519335045984240}
   - component: {fileID: 1367136150329865194}
   - component: {fileID: 4284933216052523263}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Capsule (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -254,7 +254,7 @@ GameObject:
   - component: {fileID: 756361245254639258}
   - component: {fileID: 73154926623987038}
   - component: {fileID: 8937842810910237312}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Capsule (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -335,7 +335,7 @@ GameObject:
   - component: {fileID: 8323369861067668461}
   - component: {fileID: 8323369861067668456}
   - component: {fileID: 8323369861067668459}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Capsule (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -417,9 +417,9 @@ GameObject:
   - component: {fileID: -5274714227531192199}
   - component: {fileID: 6555812994789439522}
   - component: {fileID: 8348062947949247232}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: DMGUp
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -504,7 +504,7 @@ GameObject:
   - component: {fileID: 8323369862051356128}
   - component: {fileID: 8323369862051356143}
   - component: {fileID: 8323369862051356142}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -585,7 +585,7 @@ GameObject:
   - component: {fileID: 8323369862321942425}
   - component: {fileID: 8323369862321942404}
   - component: {fileID: 8323369862321942407}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Capsule (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

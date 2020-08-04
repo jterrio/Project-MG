@@ -475,8 +475,21 @@ public class Room : MonoBehaviour {
             roomArray[x, y].isTaken = true;
             timeout = 0;
             int m = Random.Range(0, potentialMonsterSpawns.Count);
+            Enemy e = potentialMonsterSpawns[m].GetComponent<Enemy>();
+            if(e.maxSpawn > 0) {
+                int count = 0;
+                foreach(GameObject mon in monsters) {
+                    if(mon.GetComponent<Enemy>().enemyID == e.enemyID) {
+                        count++;
+                    }
+                }
+                if(count >= e.maxSpawn) {
+                    potentialMonsterSpawns.RemoveAt(m);
+                    m = Random.Range(0, potentialMonsterSpawns.Count);
+                }
+            }
             GameObject monster = Instantiate(potentialMonsterSpawns[m]);
-            Enemy e = monster.GetComponent<Enemy>();
+            e = monster.GetComponent<Enemy>();
             Vector3 spawnPoint = Vector3.zero;
             if(e.et == Enemy.EnemyType.NORMAL) {
                 spawnPoint = new Vector3(roomArray[x, y].position.x + Random.Range(-(nodeLength / 2), (nodeLength / 2)), roomArray[x, y].position.y, roomArray[x, y].position.z + Random.Range(-(nodeLength / 2), (nodeLength / 2)));

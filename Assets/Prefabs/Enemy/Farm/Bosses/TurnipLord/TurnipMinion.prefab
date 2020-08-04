@@ -238,6 +238,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   et: 0
+  maxSpawn: 0
+  enemyID: 3
   healthTotal: 20
   health: 20
   healthBar: {fileID: 745673879451717196}

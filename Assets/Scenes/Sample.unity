@@ -385,6 +385,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   et: 0
+  maxSpawn: 0
+  enemyID: 0
   healthTotal: 50
   health: 50
   healthBar: {fileID: 0}
@@ -1877,6 +1879,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   et: 0
+  maxSpawn: 0
+  enemyID: 0
   healthTotal: 50
   health: 50
   healthBar: {fileID: 0}
@@ -2097,13 +2101,13 @@ MonoBehaviour:
     type: 3}
   enemyPlayerLayers:
     serializedVersion: 2
-    m_Bits: 4352
+    m_Bits: 12544
   enemyLayers:
     serializedVersion: 2
-    m_Bits: 4096
+    m_Bits: 12288
   LOS:
     serializedVersion: 2
-    m_Bits: 8448
+    m_Bits: 16640
   minimap:
     serializedVersion: 2
     m_Bits: 2048

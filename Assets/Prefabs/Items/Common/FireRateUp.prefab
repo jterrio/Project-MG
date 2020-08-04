@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4702902964986418563}
   - component: {fileID: 5348259695530204743}
   - component: {fileID: 3977429924804209049}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Capsule (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 4087508236306474112}
   - component: {fileID: 4087508236306474141}
   - component: {fileID: 4087508236306474142}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Capsule (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -173,7 +173,7 @@ GameObject:
   - component: {fileID: 4087508236576528121}
   - component: {fileID: 4087508236576528118}
   - component: {fileID: 4087508236576528119}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -255,9 +255,9 @@ GameObject:
   - component: {fileID: 4087508236805503905}
   - component: {fileID: -7943823142375148741}
   - component: {fileID: 4098685618211434521}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: FireRateUp
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -343,7 +343,7 @@ GameObject:
   - component: {fileID: 4087508236824921479}
   - component: {fileID: 4087508236824921476}
   - component: {fileID: 4087508236824921477}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -424,7 +424,7 @@ GameObject:
   - component: {fileID: 4087508237744779508}
   - component: {fileID: 4087508237744779505}
   - component: {fileID: 4087508237744779506}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Capsule (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -505,7 +505,7 @@ GameObject:
   - component: {fileID: 4087508237890854614}
   - component: {fileID: 4087508237890854611}
   - component: {fileID: 4087508237890854612}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -586,7 +586,7 @@ GameObject:
   - component: {fileID: 4087508237935719514}
   - component: {fileID: 4087508237935719511}
   - component: {fileID: 4087508237935719512}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -667,7 +667,7 @@ GameObject:
   - component: {fileID: 3753356982747997799}
   - component: {fileID: 5492619455958260621}
   - component: {fileID: 5048145766332126572}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Cube (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

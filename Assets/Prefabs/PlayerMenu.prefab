@@ -357,9 +357,6 @@ MonoBehaviour:
   airTime: 5
   groundCheck: {fileID: 7254095393910337168}
   groundDistance: 0.1
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 512
   jumpForce: 1
   fallForce: 5
 --- !u!114 &3935896939124135719
@@ -391,6 +388,7 @@ MonoBehaviour:
   pm: {fileID: 7254095393575450620}
   weaponHolder: {fileID: 9092697026156493808}
   gun: {fileID: 6051205611755153323}
+  bulletSpawn: {fileID: 0}
   healthFill: {fileID: 0}
   audioSource: {fileID: 4368366132626151790}
 --- !u!54 &3848624608968721356
@@ -600,7 +598,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 12855
+    m_Bits: 127543
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0

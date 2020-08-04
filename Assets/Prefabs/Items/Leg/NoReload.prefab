@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7785254228455386399}
   - component: {fileID: 7785254228455386392}
   - component: {fileID: 7785254228455386393}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Capsule (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 7785254228598734175}
   - component: {fileID: 7785254228598734168}
   - component: {fileID: 7785254228598734169}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Capsule (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -173,7 +173,7 @@ GameObject:
   - component: {fileID: 7785254228755969455}
   - component: {fileID: 7785254228755969448}
   - component: {fileID: 7785254228755969449}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Capsule (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -254,7 +254,7 @@ GameObject:
   - component: {fileID: 7785254228794134673}
   - component: {fileID: 7785254228794134674}
   - component: {fileID: 7785254228794134675}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Capsule (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -335,7 +335,7 @@ GameObject:
   - component: {fileID: 7785254229094618489}
   - component: {fileID: 7785254229094618490}
   - component: {fileID: 7785254229094618491}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Capsule (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -416,7 +416,7 @@ GameObject:
   - component: {fileID: 7785254229660464162}
   - component: {fileID: 7785254229660464175}
   - component: {fileID: 7785254229660464172}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -498,9 +498,9 @@ GameObject:
   - component: {fileID: 7785254229861440571}
   - component: {fileID: 7785254229861440568}
   - component: {fileID: 5933675835407607914}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: NoReload
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -585,7 +585,7 @@ GameObject:
   - component: {fileID: 7785254229979155764}
   - component: {fileID: 7785254229979155761}
   - component: {fileID: 7785254229979155766}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Capsule (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

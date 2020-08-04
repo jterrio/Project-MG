@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 469121577587290675}
   - component: {fileID: 1699274343083650290}
   - component: {fileID: 1783992932399657759}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Capsule (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,9 +108,9 @@ GameObject:
   - component: {fileID: -8480491135944935659}
   - component: {fileID: -6153000517636570516}
   - component: {fileID: -3479917510971112949}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: CurveBullets
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -192,7 +192,7 @@ GameObject:
   - component: {fileID: 3496376468229395594}
   - component: {fileID: 6521873908361960754}
   - component: {fileID: 8442732744879025112}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -288,7 +288,7 @@ GameObject:
   - component: {fileID: 3812742740939913604}
   - component: {fileID: 7165243669904674587}
   - component: {fileID: 7022126073266040774}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Capsule (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

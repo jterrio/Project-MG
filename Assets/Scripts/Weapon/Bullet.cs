@@ -21,13 +21,20 @@ public class Bullet : MonoBehaviour
         if(collision.gameObject.layer == LayerMask.NameToLayer("Bullet")) {
             return;
         }
+        Collider myCollider = collision.contacts[0].otherCollider;
         GameObject g = Instantiate(hitEffect, collision.contacts[0].point, Quaternion.LookRotation(collision.contacts[0].normal));
         Destroy(g, 4f);
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy")) {
-            Enemy e = collision.gameObject.GetComponent<Enemy>();
+        if (myCollider.gameObject.layer == LayerMask.NameToLayer("Enemy")) {
+            Enemy e = myCollider.gameObject.GetComponent<Enemy>();
             if(e != null) {
-                Debug.Log("Hit: " + collision.gameObject.name + "... Health: " + e.health);
+                Debug.Log("Hit: " + myCollider.gameObject.name + "... Health: " + e.health);
                 e.TakeDamage(GameManager.gm.p.gun.GetDamage());
+            } else {
+                e = myCollider.gameObject.GetComponentInParent<Enemy>();
+                if(e != null) {
+                    Debug.Log("Hit: " + myCollider.gameObject.name + "... Health: " + e.health);
+                    e.TakeDamage(GameManager.gm.p.gun.GetDamage());
+                }
             }
         }
         Destroy(this.gameObject);

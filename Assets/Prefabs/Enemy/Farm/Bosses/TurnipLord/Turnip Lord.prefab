@@ -162,6 +162,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65fe9f02ab2d7e349bfd64dd5e03a3c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  et: 0
+  maxSpawn: 0
+  enemyID: 4
   healthTotal: 3500
   health: 3500
   healthBar: {fileID: 4770236724709316523}

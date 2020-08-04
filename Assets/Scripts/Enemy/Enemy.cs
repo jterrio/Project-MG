@@ -5,8 +5,11 @@ using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour {
 
-    [Header("Enemy Type")]
+    [Header("Spawn Settings")]
     public EnemyType et;
+    [Min(0)]
+    public int maxSpawn = 0;
+    public int enemyID;
 
     [Header("Health")]
     public float healthTotal = 50f;

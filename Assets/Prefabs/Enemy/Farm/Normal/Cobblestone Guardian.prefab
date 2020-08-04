@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8389766590985441525}
   - component: {fileID: 20158755464122590}
   - component: {fileID: 389021114530630597}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Cube (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -122,7 +122,7 @@ GameObject:
   - component: {fileID: 7925258241247406926}
   - component: {fileID: 8042157759139238657}
   - component: {fileID: 7005039023886758163}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Cube (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -489,7 +489,7 @@ GameObject:
   - component: {fileID: 6879561725352848267}
   - component: {fileID: 8524421227528223545}
   - component: {fileID: 4149922496988300236}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Cube (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -571,7 +571,7 @@ GameObject:
   - component: {fileID: -6397853131117448446}
   - component: {fileID: -2475926758311068324}
   - component: {fileID: 5410674453718101430}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Cobblestone Guardian
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -609,8 +609,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   et: 1
-  healthTotal: 50
-  health: 50
+  maxSpawn: 2
+  enemyID: 1
+  healthTotal: 650
+  health: 650
   healthBar: {fileID: 413961346768629808}
   healthBarFill: {fileID: 2838790066371779539}
   timeToDisplay: 3
@@ -753,7 +755,7 @@ GameObject:
   - component: {fileID: 9118222856419012007}
   - component: {fileID: 9118222856419012058}
   - component: {fileID: 9118222856419012005}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -834,7 +836,7 @@ GameObject:
   - component: {fileID: 9118222856922156142}
   - component: {fileID: 9118222856922156141}
   - component: {fileID: 9118222856922156140}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -915,7 +917,7 @@ GameObject:
   - component: {fileID: 9118222857385625736}
   - component: {fileID: 9118222857385625743}
   - component: {fileID: 9118222857385625742}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -994,13 +996,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9118222857642995156}
-  m_Layer: 0
+  - component: {fileID: 4051939911392667359}
+  - component: {fileID: 4289343185089932150}
+  m_Layer: 12
   m_Name: Arms
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &9118222857642995156
 Transform:
   m_ObjectHideFlags: 0
@@ -1021,6 +1025,32 @@ Transform:
   m_Father: {fileID: 9118222856060365629}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &4051939911392667359
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9118222857642995159}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5.244918, y: 5.2922316, z: 3.2038622}
+  m_Center: {x: -2.5588083, y: 0.6607187, z: -1.1019311}
+--- !u!65 &4289343185089932150
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9118222857642995159}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4.1418095, y: 5.2922316, z: 3.2038622}
+  m_Center: {x: 11.301627, y: 0.6607187, z: -1.1019311}
 --- !u!1001 &8785588167842123598
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1046,7 +1076,7 @@ PrefabInstance:
     - target: {fileID: 7611283831837196034, guid: c2e14ffd4e4a60442b2c91d72c6f1903,
         type: 3}
       propertyPath: m_Layer
-      value: 12
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 9083054771992498827, guid: c2e14ffd4e4a60442b2c91d72c6f1903,
         type: 3}
