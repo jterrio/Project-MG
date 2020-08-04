@@ -66,7 +66,7 @@ public class CobbleStoneGuardian : Enemy {
             lastTimeAttacked = Time.time;
             arms.SetActive(true);
             EnableCollisions();
-            //PLAY SOUND
+            audioSource.PlayOneShot(audioClips[0]);
         }
     }
 
@@ -77,6 +77,7 @@ public class CobbleStoneGuardian : Enemy {
     }
 
     IEnumerator Smash() {
+        //audioSource.PlayOneShot(audioClips[0]);
         rb.AddForce(Vector3.up * 10f, ForceMode.VelocityChange);
         yield return new WaitForSeconds(1f);
         rb.velocity = Vector3.zero;
@@ -104,6 +105,7 @@ public class CobbleStoneGuardian : Enemy {
         if (Vector3.Distance(transform.position, GameManager.gm.player.transform.position) <= smashDistanceDMG && GameManager.gm.HasLineOfSight(this.gameObject, GameManager.gm.player)) {
             GameManager.gm.p.TakeDamage(smashDMG);
         }
+        audioSource.PlayOneShot(audioClips[0]);
         lastTimeAttacked = Time.time;
         attackCoroutine = null;
         state = State.READY;
@@ -116,10 +118,13 @@ public class CobbleStoneGuardian : Enemy {
     }
 
     IEnumerator Jump() {
+        audioSource.PlayOneShot(audioClips[0]);
         rb.AddForce(Vector3.up * 50f, ForceMode.VelocityChange);
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(2f);
         rb.velocity = Vector3.zero;
-        rb.AddForce((GameManager.gm.player.transform.position - this.gameObject.transform.position).normalized * 150f, ForceMode.VelocityChange);
+        Vector3 direction = (GameManager.gm.player.transform.position - this.gameObject.transform.position).normalized;
+        yield return new WaitForSeconds(0.5f);
+        rb.AddForce(direction * 175f, ForceMode.VelocityChange);
         float timeout = Time.time;
         while (!Physics.CheckSphere(groundCheck.transform.position, 1f, GameManager.gm.groundMask) && timeout + 5f > Time.time) {
             yield return null;
@@ -143,6 +148,7 @@ public class CobbleStoneGuardian : Enemy {
         if (Vector3.Distance(transform.position, GameManager.gm.player.transform.position) <= smashDistanceDMG && GameManager.gm.HasLineOfSight(this.gameObject, GameManager.gm.player)) {
             GameManager.gm.p.TakeDamage(smashDMG);
         }
+        audioSource.PlayOneShot(audioClips[1]);
         lastTimeAttacked = Time.time;
         attackCoroutine = null;
         state = State.READY;
