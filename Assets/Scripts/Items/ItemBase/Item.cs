@@ -6,10 +6,15 @@ using UnityEngine;
 [RequireComponent(typeof(Rotate))]
 public abstract class Item : MonoBehaviour {
 
+    [Header("Item Pool Settings")]
     public bool normalItemPool;
     public bool shopItemPool;
     public bool bossItemPool;
 
+    [Header("Item Settings")]
+    public bool isUnique;
+    public int ID;
+    public string displayName;
     public Rarity rarity;
 
     public enum Rarity {

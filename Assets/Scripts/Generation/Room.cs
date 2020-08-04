@@ -216,9 +216,17 @@ public class Room : MonoBehaviour {
 
         float baseCost = 30f;
 
-        item1.GetComponentInChildren<ShopStand>().SetShop(Instantiate(ItemManager.im.GetRandomAnyItem()), baseCost);
-        item2.GetComponentInChildren<ShopStand>().SetShop(Instantiate(ItemManager.im.GetRandomAnyItem()), baseCost);
-        item3.GetComponentInChildren<ShopStand>().SetShop(Instantiate(ItemManager.im.GetRandomAnyItem()), baseCost);
+        GameObject item1n = Instantiate(ItemManager.im.GetRandomShopItemWeighted());
+        GameObject item2n = Instantiate(ItemManager.im.GetRandomShopItemWeighted());
+        GameObject item3n = Instantiate(ItemManager.im.GetRandomShopItemWeighted());
+
+        item1n.name = item1n.name.Replace("(Clone)", "").Trim();
+        item2n.name = item2n.name.Replace("(Clone)", "").Trim();
+        item3n.name = item3n.name.Replace("(Clone)", "").Trim();
+
+        item1.GetComponentInChildren<ShopStand>().SetShop(item1n, baseCost);
+        item2.GetComponentInChildren<ShopStand>().SetShop(item2n, baseCost);
+        item3.GetComponentInChildren<ShopStand>().SetShop(item3n, baseCost);
 
         item1.transform.parent = shopKeep.transform;
         item2.transform.parent = shopKeep.transform;

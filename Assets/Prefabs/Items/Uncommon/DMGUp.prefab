@@ -459,7 +459,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalItemPool: 1
   shopItemPool: 1
-  bossItemPool: 1
+  bossItemPool: 0
+  isUnique: 0
+  ID: 4
   rarity: 1
   wepFireIncrease: 0
   wepDMGIncrease: 2

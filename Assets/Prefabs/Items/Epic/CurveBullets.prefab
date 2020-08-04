@@ -160,6 +160,8 @@ MonoBehaviour:
   normalItemPool: 1
   shopItemPool: 1
   bossItemPool: 1
+  isUnique: 1
+  ID: 2
   rarity: 3
   wepFireIncrease: 0
   wepDMGIncrease: 0

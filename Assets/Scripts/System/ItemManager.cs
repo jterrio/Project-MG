@@ -13,9 +13,9 @@ public class ItemManager : MonoBehaviour {
     public List<GameObject> epicItems;
     public List<GameObject> legendaryItems;
 
-    private List<GameObject> allItems;
-    private List<GameObject> shopItems;
-    private List<GameObject> bossItems;
+    private Hashtable allItems;
+    private Hashtable shopItems;
+    private Hashtable bossItems;
 
     [Header("Item Chances")]
     public float commonItemChance = 20f;
@@ -27,6 +27,9 @@ public class ItemManager : MonoBehaviour {
     private float totalItemChanceCost;
     private float shopChanceCost;
     private float bossChanceCost;
+
+    [Header("Obtained Unique Items")]
+    public Hashtable obtainedItems;
 
     public delegate void GunDelegate();
     public delegate void ReloadDelegate();
@@ -45,26 +48,36 @@ public class ItemManager : MonoBehaviour {
         }
         DontDestroyOnLoad(this.gameObject);
 
-        allItems = new List<GameObject>();
-        allItems.AddRange(commonItems);
-        allItems.AddRange(uncommonItems);
-        allItems.AddRange(rareItems);
-        allItems.AddRange(epicItems);
-        allItems.AddRange(legendaryItems);
-        shopItems = new List<GameObject>();
-        bossItems = new List<GameObject>();
+        allItems = new Hashtable();
+        foreach(GameObject g in commonItems) {
+            allItems.Add(g, g.GetComponent<Item>().ID);
+        }
+        foreach (GameObject g in uncommonItems) {
+            allItems.Add(g, g.GetComponent<Item>().ID);
+        }
+        foreach (GameObject g in rareItems) {
+            allItems.Add(g, g.GetComponent<Item>().ID);
+        }
+        foreach (GameObject g in epicItems) {
+            allItems.Add(g, g.GetComponent<Item>().ID);
+        }
+        foreach (GameObject g in legendaryItems) {
+            allItems.Add(g, g.GetComponent<Item>().ID);
+        }
+        shopItems = new Hashtable();
+        bossItems = new Hashtable();
 
-        foreach(GameObject g in allItems) {
+        foreach(GameObject g in allItems.Keys) {
             Item i = g.GetComponent<Item>();
             float c = GetCostFromRarity(i.rarity);
             totalItemChanceCost += c;
             if (i.shopItemPool) {
                 shopChanceCost += c;
-                shopItems.Add(g);
+                shopItems.Add(g, i.ID);
             }
             if (i.bossItemPool) {
                 bossChanceCost += c;
-                bossItems.Add(g);
+                bossItems.Add(g, i.ID);
             }
         }
 
@@ -91,51 +104,72 @@ public class ItemManager : MonoBehaviour {
     }
 
     public GameObject GetRandomAnyItem() {
-        return allItems[Random.Range(0, allItems.Count)];
+        float cost = Random.Range(0, allItems.Count);
+        foreach (GameObject i in allItems.Keys) {
+            cost--;
+            if (cost < 0) {
+                return i;
+            }
+        }
+        return null;
     }
 
     public GameObject GetRandomShopItem() {
-        return shopItems[Random.Range(0, shopItems.Count)];
+        float cost = Random.Range(0, shopItems.Count);
+        foreach (GameObject i in shopItems.Keys) {
+            cost--;
+            if (cost < 0) {
+                return i;
+            }
+        }
+        return null;
     }
 
     public GameObject GetRandomBossItem() {
-        return bossItems[Random.Range(0, bossItems.Count)];
+        float cost = Random.Range(0, bossItems.Count);
+        foreach (GameObject i in bossItems.Keys) {
+            cost--;
+            if (cost < 0) {
+                return i;
+            }
+        }
+        return null;
     }
 
     public GameObject GetRandomAnyItemWeighted() {
         float cost = Random.Range(0, totalItemChanceCost);
-        foreach (GameObject i in allItems) {
+        foreach (GameObject i in allItems.Keys) {
             Item item = i.GetComponent<Item>();
             cost -= GetCostFromRarity(item.rarity);
             if (cost < 0) {
                 return i;
             }
         }
-        return allItems[0];
+        return null;
     }
 
     public GameObject GetRandomShopItemWeighted() {
         float cost = Random.Range(0, shopChanceCost);
-        foreach (GameObject i in shopItems) {
+        foreach (GameObject i in shopItems.Keys) {
             Item item = i.GetComponent<Item>();
             cost -= GetCostFromRarity(item.rarity);
             if (cost < 0) {
                 return i;
             }
         }
-        return allItems[0];
+        return null;
     }
 
     public GameObject GetRandomBossItemWeighted() {
         float cost = Random.Range(0, bossChanceCost);
-        foreach (GameObject i in bossItems) {
+        foreach (GameObject i in bossItems.Keys) {
             Item item = i.GetComponent<Item>();
             cost -= GetCostFromRarity(item.rarity);
             if (cost < 0) {
                 return i;
             }
         }
-        return allItems[0];
+        return null;
     }
 
     public float GetCostFromRarity(Item.Rarity r) {
@@ -153,6 +187,24 @@ public class ItemManager : MonoBehaviour {
             default:
                 return commonItemChance;
         }
+    }
+
+    public void GetItem(GameObject i) {
+        Item item = i.GetComponent<Item>();
+        if (item.isUnique) {
+            if (DoesPlayerHaveItem(item)) {
+                return;
+            }
+            obtainedItems.Add(i, item.ID);
+        }
+        item.GetItemEffects();
+    }
+
+    public bool DoesPlayerHaveItem(Item i) {
+        if (obtainedItems.ContainsValue(i.ID)){
+            return true;
+        }
+        return false;
     }
 
 
