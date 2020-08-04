@@ -11,30 +11,37 @@ public class OptionsMenu : MonoBehaviour
     public InputField horizontalInput;
 
     private void Start() {
+        setDefaultSens();
         //ToDo Have the InputField and Sliders update on start
     }
 
     public void UpdateValueFromVerticalFloat(float value) {
-        Debug.Log("float value changed: " + value);
+        //Debug.Log("float value changed: " + value);
         if (verticalSlider) { verticalSlider.value = value; }
         if (verticalInput) { verticalInput.text = value.ToString(); }
     }
 
     public void UpdateValueFromVerticalString(string value) {
-        Debug.Log("string value changed: " + value);
+        //Debug.Log("string value changed: " + value);
         if (verticalSlider) { verticalSlider.value = float.Parse(value); }
         if (verticalInput) { verticalInput.text = value; }
     }
 
     public void UpdateValueFromHorizontalFloat(float value) {
-        Debug.Log("float value changed: " + value);
+        //Debug.Log("float value changed: " + value);
         if (horizontalSlider) { horizontalSlider.value = value; }
         if (horizontalInput) { horizontalInput.text = value.ToString(); }
     }
 
     public void UpdateValueFromHorizontalString(string value) {
-        Debug.Log("string value changed: " + value);
+        //Debug.Log("string value changed: " + value);
         if (horizontalSlider) { horizontalSlider.value = float.Parse(value); } 
         if (horizontalInput) { horizontalInput.text = value; }
+    }
+
+    public void setDefaultSens() {
+        UpdateValueFromHorizontalFloat(100f);
+        UpdateValueFromVerticalFloat(100f);
+
     }
 }
