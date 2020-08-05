@@ -32,11 +32,13 @@ public class ItemManager : MonoBehaviour {
     public Hashtable obtainedItems;
 
     public delegate void GunDelegate();
-    public delegate void ReloadDelegate();
+    public delegate void BeforeReloadDelegate();
+    public delegate void AfterReloadDelegate();
     public delegate void BulletVelocityDelegate(GameObject bullet);
     public GunDelegate gunDelegate;
     public BulletVelocityDelegate bulletVelocityDelegate;
-    public ReloadDelegate reloadDelegate;
+    public BeforeReloadDelegate beforeReloadDelegate;
+    public AfterReloadDelegate afterReloadDelegate;
 
 
     private void Start() {
@@ -81,6 +83,7 @@ public class ItemManager : MonoBehaviour {
             }
         }
 
+        obtainedItems = new Hashtable();
     }
 
     public GameObject GetRandomCommonItem() {
@@ -207,6 +210,14 @@ public class ItemManager : MonoBehaviour {
         return false;
     }
 
+    /*
+     * \\\\\\\
+     * 
+     * ITEM METHODS
+     * 
+     * \\\\\\\
+     **/
+
 
     public void CurveBullet(GameObject bullet) {
         Collider[] hitColliders = Physics.OverlapSphere(bullet.transform.position, 30f, GameManager.gm.enemyLayers);
@@ -240,6 +251,14 @@ public class ItemManager : MonoBehaviour {
 
     public void NoReload() {
         GameManager.gm.p.gun.bulletsInMag = GameManager.gm.p.gun.magSize;
+    }
+
+    public void SlowOnReloadStart() {
+        Time.timeScale = 0.35f;
+    }
+
+    public void SlowOnReloadFinish() {
+        Time.timeScale = 1f;
     }
 
 }

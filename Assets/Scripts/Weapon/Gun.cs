@@ -138,6 +138,7 @@ public class Gun : MonoBehaviour {
     IEnumerator Reload() {
         isReloading = true;
         float startReloadTime = Time.time;
+        ItemManager.im.beforeReloadDelegate?.Invoke();
         //start
         audioSource.PlayOneShot(reloadSound[0]);
         while (Time.time < startReloadTime + (reloadTime / 3)) {
@@ -153,6 +154,7 @@ public class Gun : MonoBehaviour {
         while (Time.time < startReloadTime + reloadTime) {
             yield return null;
         }
+        ItemManager.im.afterReloadDelegate?.Invoke();
         audioSource.PlayOneShot(reloadSound[2]);
         bulletsInMag = GetMagSize();
         reloadCoroutine = null;
