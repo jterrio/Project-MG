@@ -7,12 +7,20 @@ public class GraphicMenu : MonoBehaviour
 {
     public Text fOVText;
     public Slider fOVSlider;
+    public Camera MainCamera;
 
     private void Start() {
-        textUpdate(fOVSlider.value);
+        setDefault();
+        //Todo: set values from saved settings.
     }
 
-    public void textUpdate(float value) {
+    public void setDefault() {
+        fOVText.text = MainCamera.fieldOfView.ToString();
+        fOVSlider.value = MainCamera.fieldOfView;
+    }
+
+    public void UpdateFOV(float value) {
         fOVText.text = value.ToString();
+        MainCamera.fieldOfView = value;
     }
 }

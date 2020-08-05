@@ -6,7 +6,8 @@ public class MouseLook : MonoBehaviour {
 
     [Header("Mouse Settings")]
     [Tooltip("Sensitivity of the mouse")]
-    public float mouseSens = 1f;
+    public float HorizontalMouseSens = 1f;
+    public float VerticalMouseSens = 1f;
     public Transform playerBody;
     float xRotation = 0f;
 
@@ -16,8 +17,8 @@ public class MouseLook : MonoBehaviour {
     }
 
     private void Update() {
-        float mouseX = Input.GetAxis("Mouse X") * mouseSens;
-        float mouseY = Input.GetAxis("Mouse Y") * (mouseSens / 2);
+        float mouseX = Input.GetAxis("Mouse X") * HorizontalMouseSens;
+        float mouseY = Input.GetAxis("Mouse Y") * (VerticalMouseSens / 2f);
 
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
@@ -32,6 +33,13 @@ public class MouseLook : MonoBehaviour {
         transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         GameManager.gm.playerRB.rotation = Quaternion.Euler(playerRotation);
 
+    }
+
+    public void updateHorizontalSens(float value) {
+        HorizontalMouseSens = value;
+    }
+    public void updateVerticalSens(float value) {
+        VerticalMouseSens = value;
     }
 
 }

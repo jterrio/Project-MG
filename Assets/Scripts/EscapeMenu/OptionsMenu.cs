@@ -12,7 +12,7 @@ public class OptionsMenu : MonoBehaviour
 
     private void Start() {
         setDefaultSens();
-        //ToDo Have the InputField and Sliders update on start
+        //ToDo Have the InputField and Sliders update from saved settings.
     }
 
     public void UpdateValueFromVerticalFloat(float value) {
@@ -40,8 +40,7 @@ public class OptionsMenu : MonoBehaviour
     }
 
     public void setDefaultSens() {
-        UpdateValueFromHorizontalFloat(100f);
-        UpdateValueFromVerticalFloat(100f);
-
+        UpdateValueFromHorizontalFloat(5f);
+        UpdateValueFromVerticalFloat(3f);
     }
 }
