@@ -198,7 +198,7 @@ GameObject:
   - component: {fileID: 7428941775041812790}
   - component: {fileID: 7428941775041812779}
   - component: {fileID: 7428941775041812776}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -319,6 +319,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   et: 0
+  maxSpawn: 0
+  enemyID: 0
   healthTotal: 50
   health: 50
   healthBar: {fileID: 2140272113}
@@ -580,11 +582,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Grass_01
-      objectReference: {fileID: 0}
-    - target: {fileID: 8903058273634794869, guid: f1fc5bb90ac285e4486771552d63bcb8,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8903058273634951509, guid: f1fc5bb90ac285e4486771552d63bcb8,
         type: 3}
