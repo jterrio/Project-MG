@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class SunEffect : MonoBehaviour {
 
-    [Range(0,100)]
-    public float speed;
-    private float oldSpeed;
     public ParticleSystem fire;
     public Light fireLight;
     public Color color;
@@ -14,39 +11,76 @@ public class SunEffect : MonoBehaviour {
     public bool tryingToStop = false;
     public bool canMove = true;
 
-    // Update is called once per frame
+
+    public Light sun;
+    public float secondsInFullDay = 10f;
+    public float oldTime;
+    [Range(0, 1)]
+    public float currentTimeOfDay = 0;
+    [HideInInspector]
+    public float timeMultiplier = 1f;
+
+    float sunInitialIntensity;
+
+    void Start() {
+        sunInitialIntensity = sun.intensity;
+    }
+
     void Update() {
         if (!canMove) {
             return;
         }
-        transform.Rotate(speed * Time.deltaTime, 0, 0);
-        if(transform.rotation.eulerAngles.x % 360 > 200 && transform.rotation.eulerAngles.x % 360 < 359) {
-            //RenderSettings.ambientLight = new Color(Mathf.Clamp((RenderSettings.ambientLight.r + (0.03f * Time.deltaTime)), 0.152f, 0.502f), Mathf.Clamp((RenderSettings.ambientLight.g + (0.034f * Time.deltaTime)), 0.18f, 0.56f), Mathf.Clamp((RenderSettings.ambientLight.b + (0.036f * Time.deltaTime)), 0.208f, 0.586f));
+        UpdateSun();
+
+        currentTimeOfDay += (Time.deltaTime / secondsInFullDay) * timeMultiplier;
+        //night
+        if(currentTimeOfDay <= 0.23f || currentTimeOfDay >= 0.75f) {
             if (!fire.isPlaying) {
                 fire.Play();
                 fireLight.enabled = true;
             }
-        } else {
-            //RenderSettings.ambientLight = new Color(Mathf.Clamp((RenderSettings.ambientLight.r - (.02f * Time.deltaTime)), 0.152f, 0.502f), Mathf.Clamp((RenderSettings.ambientLight.g - (0.027f * Time.deltaTime)), 0.18f, 0.56f), Mathf.Clamp((RenderSettings.ambientLight.b - (0.029f * Time.deltaTime)), 0.208f, 0.586f));
-            fire.Stop();
-            fireLight.enabled = false;
+
+        } else { //day 
+            if (fire.isPlaying) {
+                fire.Stop();
+                fireLight.enabled = false;
+            }
             if (tryingToStop) {
-                if (transform.rotation.eulerAngles.x % 360 > 90) {
+                if (currentTimeOfDay > 0.35f && currentTimeOfDay < 0.45f) {
                     canMove = false;
                 }
             }
+        }
+
+        if (currentTimeOfDay >= 1) {
+            currentTimeOfDay = 0;
         }
     }
 
     public void SetDay() {
         tryingToStop = true;
-        oldSpeed = speed;
-        speed = 100;
+        oldTime = secondsInFullDay;
+        secondsInFullDay = 2f;
     }
 
     public void SetCycle() {
         tryingToStop = false;
-        canMove = false;
-        speed = oldSpeed;
+        canMove = true;
+        secondsInFullDay = oldTime;
+    }
+
+    void UpdateSun() {
+        sun.transform.localRotation = Quaternion.Euler((currentTimeOfDay * 360f) - 90, 170, 0);
+
+        float intensityMultiplier = 1;
+        if (currentTimeOfDay <= 0.23f || currentTimeOfDay >= 0.75f) {
+            intensityMultiplier = 0;
+        } else if (currentTimeOfDay <= 0.25f) {
+            intensityMultiplier = Mathf.Clamp01((currentTimeOfDay - 0.23f) * (1 / 0.02f));
+        } else if (currentTimeOfDay >= 0.73f) {
+            intensityMultiplier = Mathf.Clamp01(1 - ((currentTimeOfDay - 0.73f) * (1 / 0.02f)));
+        }
+
+        sun.intensity = sunInitialIntensity * intensityMultiplier;
     }
 }

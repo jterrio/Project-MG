@@ -23,11 +23,13 @@ public class UIManager : MonoBehaviour {
     public RectTransform enemyCount;
     public RectTransform moneyCount;
 
+    public TMPro.TextMeshProUGUI enemyCountText;
+
     private void Start() {
         if(ui == null) {
             ui = this;
         }else if(ui != this) {
-            Destroy(this);
+            Destroy(this.gameObject);
         }
         DontDestroyOnLoad(this);
     }
@@ -46,6 +48,10 @@ public class UIManager : MonoBehaviour {
 
     public void TurnOffHUD() {
         HUD.gameObject.SetActive(false);
+    }
+
+    public void SetEnemiesRemaining(int i) {
+        enemyCountText.text = i.ToString() + " Enemies Remaining";
     }
 
 
