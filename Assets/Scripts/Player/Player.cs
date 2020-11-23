@@ -47,7 +47,9 @@ public class Player : MonoBehaviour {
         UpdateAmmoCount();
     }
 
-
+    /// <summary>
+    /// Updates the UI for displaying bullet count and when reloading
+    /// </summary>
     void UpdateAmmoCount() {
         if (ammoCountText != null) {
             if (gun.isReloading) {
@@ -59,7 +61,13 @@ public class Player : MonoBehaviour {
         }
     }
 
+
+    /// <summary>
+    /// Deals damage to the player and determines if they should die
+    /// </summary>
+    /// <param name="d">Damage</param>
     public void TakeDamage(int d) {
+        //Checks to see if the player still has invicibility frames
         if (lastTimeTakenDMG + invDMGSecs >= Time.time) {
             return;
         }
@@ -72,6 +80,9 @@ public class Player : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Kills the player and handles the post-death process
+    /// </summary>
     void Die() {
         GameManager.gm.playerMinimapObject.SetActive(false);
         Destroy(RoomManager.rm.transform.parent.gameObject);
@@ -79,10 +90,17 @@ public class Player : MonoBehaviour {
         LevelManager.lm.LoadFarmDeath();
     }
 
+    /// <summary>
+    /// Updates the health bar
+    /// </summary>
     void UpdateHealth() {
         healthFill.fillAmount = healthCurrent / healthTotal;
     }
 
+    /// <summary>
+    /// Removes money from player wallet
+    /// </summary>
+    /// <param name="i">Ammount to lose</param>
     public void LoseMoney(float i) {
         money -= i;
         if(money < 0) {
@@ -91,11 +109,18 @@ public class Player : MonoBehaviour {
         SetMoneyText();
     }
 
+    /// <summary>
+    /// Adds money from player wallet
+    /// </summary>
+    /// <param name="i">Ammount to gain</param>
     public void GainMoney(float i) {
         money += i;
         SetMoneyText();
     }
 
+    /// <summary>
+    /// Updates money on the UI to reflect wallet
+    /// </summary>
     void SetMoneyText() {
         moneyCountText.text = Mathf.FloorToInt(money).ToString();
     }
