@@ -2947,7 +2947,7 @@ PrefabInstance:
     - target: {fileID: 1501441186192639278, guid: 2cb3e675e183dfd48aafedfb544eb605,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -131.3
       objectReference: {fileID: 0}
     - target: {fileID: 1501441186192639278, guid: 2cb3e675e183dfd48aafedfb544eb605,
         type: 3}
@@ -3124,7 +3124,9 @@ MonoBehaviour:
   - {fileID: 7078041583660112804, guid: 3a9dfa75bb171ac47bb7c133ef1efa40, type: 3}
   uncommonItems:
   - {fileID: 8323369861739032763, guid: b7f5692c54bc54240866f4972e561370, type: 3}
-  rareItems: []
+  - {fileID: 6260633448120735373, guid: 6043beea330f8df4d8c5c1e15592947b, type: 3}
+  rareItems:
+  - {fileID: 4590020064037517981, guid: fa970cf537a87d040a2a5230d30d07b3, type: 3}
   epicItems:
   - {fileID: 1754331820224389650, guid: 6878a066788f1de47b0f0e2eb965381b, type: 3}
   legendaryItems: []
@@ -3849,7 +3851,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 280.00006, y: -98.599976}
+  m_AnchoredPosition: {x: 280, y: -98.5}
   m_SizeDelta: {x: 500, y: 200}
   m_Pivot: {x: 0.49999994, y: 0.5}
 --- !u!114 &1086499621
@@ -4456,6 +4458,80 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1256953826}
   m_CullTransparentMesh: 0
+--- !u!1001 &1275638969
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5015161481089550336, guid: 5dd06b21df2045341b0172fefa263b78,
+        type: 3}
+      propertyPath: m_Name
+      value: FarmBoss_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5015161481089550336, guid: 5dd06b21df2045341b0172fefa263b78,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5015161481089550339, guid: 5dd06b21df2045341b0172fefa263b78,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.023361206
+      objectReference: {fileID: 0}
+    - target: {fileID: 5015161481089550339, guid: 5dd06b21df2045341b0172fefa263b78,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.33
+      objectReference: {fileID: 0}
+    - target: {fileID: 5015161481089550339, guid: 5dd06b21df2045341b0172fefa263b78,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 139.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5015161481089550339, guid: 5dd06b21df2045341b0172fefa263b78,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5015161481089550339, guid: 5dd06b21df2045341b0172fefa263b78,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5015161481089550339, guid: 5dd06b21df2045341b0172fefa263b78,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5015161481089550339, guid: 5dd06b21df2045341b0172fefa263b78,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5015161481089550339, guid: 5dd06b21df2045341b0172fefa263b78,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 5015161481089550339, guid: 5dd06b21df2045341b0172fefa263b78,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5015161481089550339, guid: 5dd06b21df2045341b0172fefa263b78,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5015161481089550339, guid: 5dd06b21df2045341b0172fefa263b78,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5dd06b21df2045341b0172fefa263b78, type: 3}
 --- !u!1 &1292243808
 GameObject:
   m_ObjectHideFlags: 0
@@ -5256,8 +5332,6 @@ MonoBehaviour:
   currentRoom: {fileID: 0}
   nextFloor: {fileID: 7777043831002486876, guid: 7d032ec92ab974d4fb0d837ff0994209,
     type: 3}
-  text: {fileID: 0}
-  slideText: {fileID: 0}
 --- !u!1 &1401615264
 GameObject:
   m_ObjectHideFlags: 0
@@ -6653,6 +6727,7 @@ MonoBehaviour:
   HealthUIFill: {fileID: 122115110}
   enemyCount: {fileID: 49747481}
   moneyCount: {fileID: 696883415}
+  enemyCountText: {fileID: 49747482}
 --- !u!4 &1618659303
 Transform:
   m_ObjectHideFlags: 0
@@ -7641,7 +7716,7 @@ MonoBehaviour:
     m_Bits: 12544
   enemyLayers:
     serializedVersion: 2
-    m_Bits: 12288
+    m_Bits: 4096
   LOS:
     serializedVersion: 2
     m_Bits: 16640
