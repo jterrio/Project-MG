@@ -29,9 +29,20 @@ public class Turnip : Enemy {
     [Tooltip("Damage to player")]
     [Range(0, 100)]
     public int explosionDMG = 2;
-    [Tooltip("Damage to player")]
+
+    [Header("Sound Settings")]
+    [Tooltip("How loud the explosion should be")]
     [Range(0, 1)]
     public float explosionVolume = 1;
+    public AudioClip turnipExplosion;
+    [Tooltip("How loud the uproot should be")]
+    [Range(0, 1)]
+    public float turnipUprootVolume = 1;
+    public AudioClip turnipUproot;
+    [Tooltip("How loud the root should be")]
+    [Range(0, 1)]
+    public float turnipRootVolume = 1;
+    public AudioClip turnipRoot;
 
     public ParticleSystem explosionEffect;
     private Coroutine explosionCoroutine;
@@ -71,7 +82,7 @@ public class Turnip : Enemy {
         yield return new WaitForSeconds(explosionDelay);
         yield return new WaitForSeconds(timeToExplode / 4);
         float t = 0;
-        audioSource.PlayOneShot(audioClips[0], explosionVolume);
+        audioSource.PlayOneShot(turnipExplosion, explosionVolume);
         yield return new WaitForSeconds(timeToExplode / 4);
         Vector3 start = transform.position;
         Vector3 end = new Vector3(transform.position.x, transform.position.y + 3f, transform.position.z);
@@ -116,20 +127,17 @@ public class Turnip : Enemy {
         transform.position = new Vector3(transform.position.x, transform.position.y + growth, transform.position.z);
         growState = State.FEAST;
         EnableCollisions();
+        audioSource.PlayOneShot(turnipUproot, turnipUprootVolume);
     }
 
     void TryFeast() {
         if(!GameManager.gm.HasLineOfSight(this.gameObject, GameManager.gm.player)) {
-            growState = State.GROW;
-            DisableCollisions();
-            transform.position = new Vector3(transform.position.x, transform.position.y - growth, transform.position.z);
+            EnterGrowth();
             return;
         }
         float d = Vector3.Distance(GameManager.gm.player.transform.position, transform.position);
         if (d > range * 1.5) {
-            growState = State.GROW;
-            DisableCollisions();
-            transform.position = new Vector3(transform.position.x, transform.position.y - growth, transform.position.z);
+            EnterGrowth();
         }else if (d < explodeDistance) {
             rb.MovePosition(transform.position);
             growState = State.BOOM;
@@ -138,6 +146,14 @@ public class Turnip : Enemy {
             rb.MovePosition(transform.position + (new Vector3(transform.forward.x, 0, transform.forward.z) * moveSpeed * Time.fixedDeltaTime));
             //transform.position += new Vector3(transform.forward.x, 0, transform.forward.z) * moveSpeed * Time.deltaTime;
         }
+    }
+
+
+    public void EnterGrowth() {
+        growState = State.GROW;
+        DisableCollisions();
+        transform.position = new Vector3(transform.position.x, transform.position.y - growth, transform.position.z);
+        audioSource.PlayOneShot(turnipRoot, turnipRootVolume);
     }
 
 

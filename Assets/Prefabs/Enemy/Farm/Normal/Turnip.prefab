@@ -328,8 +328,6 @@ MonoBehaviour:
   timeToDisplay: 3
   alwaysDisplay: 0
   audioSource: {fileID: -5966298775227660053}
-  audioClips:
-  - {fileID: 8300000, guid: 6baacd25164e0984eb50048adb0d14d5, type: 3}
   rb: {fileID: 4145299404008834569}
   minMoneyReward: 0
   maxMoneyReward: 2
@@ -345,6 +343,11 @@ MonoBehaviour:
   explosionForce: 250
   explosionDMG: 2
   explosionVolume: 1
+  turnipExplosion: {fileID: 8300000, guid: 6baacd25164e0984eb50048adb0d14d5, type: 3}
+  turnipUprootVolume: 1
+  turnipUproot: {fileID: 8300000, guid: 3a8daeb1b98915749a4cff2448622969, type: 3}
+  turnipRootVolume: 1
+  turnipRoot: {fileID: 8300000, guid: a8a38db8974f1e14db4590174bb8d66f, type: 3}
   explosionEffect: {fileID: 6844693084871691095, guid: e600028e3b69bfc4ab44ff7d0a22db57,
     type: 3}
 --- !u!65 &8488169513072433889

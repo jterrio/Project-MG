@@ -27,7 +27,7 @@ public class Enemy : MonoBehaviour {
 
     [Header("Sounds")]
     public AudioSource audioSource;
-    public AudioClip[] audioClips;
+    //public AudioClip[] audioClips;
 
     [Header("Movement")]
     public Rigidbody rb;
@@ -38,8 +38,7 @@ public class Enemy : MonoBehaviour {
 
 
     public enum EnemyType{
-        NORMAL,
-        BLOCKADE
+        NORMAL
     }
 
     private void Start() {

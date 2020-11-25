@@ -20,6 +20,8 @@ public class PlayerMovement : MonoBehaviour {
     public Transform groundCheck;
     [Tooltip("Distance from ground to be considered grounded")]
     public float groundDistance = 0.4f;
+    [Tooltip("Gravity setting for the Player only")]
+    public float playerGravity = -10.5f;
 
     [Header("Forces")]
     [Tooltip("Type of force applied to the jump")]
@@ -59,7 +61,7 @@ public class PlayerMovement : MonoBehaviour {
     private void FixedUpdate() {
         rb.AddForce(rb.rotation * move, ForceMode.Impulse);
         if (!isGrounded && rb.velocity.y <= airTime) {
-            Vector3 newGravity = new Vector3(0, -1 * Physics.gravity.y * (fallMultiplier - 1), 0);
+            Vector3 newGravity = new Vector3(0, -1 * playerGravity * (fallMultiplier - 1), 0);
             rb.AddForce(newGravity, fallForce);
         }
     }

@@ -172,12 +172,6 @@ MonoBehaviour:
   timeToDisplay: 3
   alwaysDisplay: 0
   audioSource: {fileID: 1431703469}
-  audioClips:
-  - {fileID: 8300000, guid: 1f53ddc3a1650fe45bcac1984bb48734, type: 3}
-  - {fileID: 8300000, guid: 327ecbb0ed2ac2a4c8c1144953300e58, type: 3}
-  - {fileID: 8300000, guid: f445502d562e8974aa455e1dfcaedd2a, type: 3}
-  - {fileID: 8300000, guid: 3ccb21be6809ab847b4adcfb92e9a16a, type: 3}
-  - {fileID: 8300000, guid: b0f62c228f9763b4eb68171142ee5a81, type: 3}
   rb: {fileID: 339961957839462484}
   minMoneyReward: 20
   maxMoneyReward: 20
@@ -192,6 +186,16 @@ MonoBehaviour:
   minion: {fileID: 4033008300267642909, guid: 4d0880a562a21fc43bbc3aea59aabda6, type: 3}
   minionSpawnPoint: {fileID: 4087958296136407381}
   magnitude: 0.4
+  groundCrackVolume: 1
+  groundCrack: {fileID: 8300000, guid: 327ecbb0ed2ac2a4c8c1144953300e58, type: 3}
+  rumbleVolume: 1
+  rumble: {fileID: 8300000, guid: 1f53ddc3a1650fe45bcac1984bb48734, type: 3}
+  spawnMinionVolume: 1
+  spawnMinion: {fileID: 8300000, guid: f445502d562e8974aa455e1dfcaedd2a, type: 3}
+  spawnVineVolume: 1
+  spawnVine: {fileID: 8300000, guid: 3ccb21be6809ab847b4adcfb92e9a16a, type: 3}
+  vineGroundBreakVolume: 1
+  vineGroundBreak: {fileID: 8300000, guid: b0f62c228f9763b4eb68171142ee5a81, type: 3}
 --- !u!82 &1431703469
 AudioSource:
   m_ObjectHideFlags: 0

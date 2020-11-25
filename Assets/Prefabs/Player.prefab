@@ -10213,6 +10213,7 @@ MonoBehaviour:
   airTime: 5
   groundCheck: {fileID: 5891472350297163004}
   groundDistance: 0.1
+  playerGravity: -10.5
   jumpForce: 1
   fallForce: 5
 --- !u!114 &285436351256968523
@@ -10646,6 +10647,8 @@ MonoBehaviour:
     m_Bits: 4627
   shotsPerTrigger: 1
   burstDelay: 0
+  timesToBounceOffEnemies: 0
+  piercingShots: 0
   reloadTime: 0.85
   isReloading: 0
   damage: 10

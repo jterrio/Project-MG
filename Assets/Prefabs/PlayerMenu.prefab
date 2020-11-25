@@ -359,6 +359,7 @@ MonoBehaviour:
   airTime: 5
   groundCheck: {fileID: 7254095393910337168}
   groundDistance: 0.1
+  playerGravity: -10.5
   jumpForce: 1
   fallForce: 5
 --- !u!114 &3935896939124135719

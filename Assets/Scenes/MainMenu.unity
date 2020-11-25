@@ -15739,16 +15739,16 @@ MonoBehaviour:
   playerMinimapObject: {fileID: 1698413025}
   enemyPlayerLayers:
     serializedVersion: 2
-    m_Bits: 12544
+    m_Bits: 4352
   enemyLayers:
     serializedVersion: 2
-    m_Bits: 12288
+    m_Bits: 4096
   LOS:
     serializedVersion: 2
-    m_Bits: 8448
+    m_Bits: 24832
   minimap:
     serializedVersion: 2
-    m_Bits: 67584
+    m_Bits: 2048
   groundMask:
     serializedVersion: 2
     m_Bits: 512

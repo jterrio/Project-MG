@@ -704,7 +704,6 @@ MonoBehaviour:
   timeToDisplay: 3
   alwaysDisplay: 0
   audioSource: {fileID: 0}
-  audioClips: []
   rb: {fileID: 0}
   minMoneyReward: 0
   maxMoneyReward: 0
@@ -7206,7 +7205,6 @@ MonoBehaviour:
   timeToDisplay: 3
   alwaysDisplay: 0
   audioSource: {fileID: 0}
-  audioClips: []
   rb: {fileID: 0}
   minMoneyReward: 0
   maxMoneyReward: 0
@@ -7713,7 +7711,7 @@ MonoBehaviour:
     type: 3}
   enemyPlayerLayers:
     serializedVersion: 2
-    m_Bits: 12544
+    m_Bits: 4352
   enemyLayers:
     serializedVersion: 2
     m_Bits: 4096
