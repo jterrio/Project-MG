@@ -246,12 +246,11 @@ MonoBehaviour:
   healthBarFill: {fileID: 127643898796843095}
   timeToDisplay: 3
   alwaysDisplay: 0
-  audioSource: {fileID: 2335197523559326994}
   rb: {fileID: -6638744318300094623}
   minMoneyReward: 0
   maxMoneyReward: 0
-  growState: 0
-  range: 100
+  growState: 2
+  range: 1000
   growth: 2
   moveSpeed: 25
   explodeDistance: 5

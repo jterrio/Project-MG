@@ -242,7 +242,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   et: 0
-  maxSpawn: 3
+  maxSpawn: 2
   enemyID: 2
   healthTotal: 300
   health: 300
@@ -250,18 +250,16 @@ MonoBehaviour:
   healthBarFill: {fileID: 3807772249417377932}
   timeToDisplay: 3
   alwaysDisplay: 0
-  audioSource: {fileID: 651006268394733750}
   rb: {fileID: 2555994266817000513}
-  minMoneyReward: 0
-  maxMoneyReward: 0
+  minMoneyReward: 1
+  maxMoneyReward: 5
   state: 0
   movementForce: 30
-  gravityCoefficent: 10
   distanceToMove: 60
   distanceToCrush: 10
-  lastTimeMoved: 0
   movementDelay: 2
   airTime: 1.35
+  jumpTimeDelay: 2.3
   sc: {fileID: 6760757690754985840}
   jumpVolume: 1
   jump: {fileID: 8300000, guid: 456f4afd7760ac940add341b9b680741, type: 3}

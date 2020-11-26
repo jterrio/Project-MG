@@ -82,7 +82,7 @@ public class Turnip : Enemy {
         yield return new WaitForSeconds(explosionDelay);
         yield return new WaitForSeconds(timeToExplode / 4);
         float t = 0;
-        audioSource.PlayOneShot(turnipExplosion, explosionVolume);
+        PlaySound(turnipExplosion, explosionVolume);
         yield return new WaitForSeconds(timeToExplode / 4);
         Vector3 start = transform.position;
         Vector3 end = new Vector3(transform.position.x, transform.position.y + 3f, transform.position.z);
@@ -99,13 +99,15 @@ public class Turnip : Enemy {
                 continue;
             }
             Rigidbody hRB;
+            float force = explosionForce;
             if (h.gameObject.layer == LayerMask.NameToLayer("Player")) {
                 hRB = h.GetComponentInParent<Rigidbody>();
             } else {
                 hRB = h.GetComponent<Rigidbody>();
+                force /= 4;
             }
             if(hRB != null && GameManager.gm.HasLineOfSight(this.gameObject, h.gameObject)) {
-                hRB.AddExplosionForce(explosionForce, transform.position, explosionTotalDistance, 5f, ForceMode.VelocityChange);
+                hRB.AddExplosionForce(force, transform.position, explosionTotalDistance, 5f, ForceMode.VelocityChange);
             }
         }
         if(Vector3.Distance(transform.position, GameManager.gm.player.transform.position) <= explosionDmgDistance && GameManager.gm.HasLineOfSight(this.gameObject, GameManager.gm.player)) {
@@ -127,7 +129,7 @@ public class Turnip : Enemy {
         transform.position = new Vector3(transform.position.x, transform.position.y + growth, transform.position.z);
         growState = State.FEAST;
         EnableCollisions();
-        audioSource.PlayOneShot(turnipUproot, turnipUprootVolume);
+        PlaySound(turnipUproot, turnipUprootVolume);
     }
 
     void TryFeast() {
@@ -153,7 +155,7 @@ public class Turnip : Enemy {
         growState = State.GROW;
         DisableCollisions();
         transform.position = new Vector3(transform.position.x, transform.position.y - growth, transform.position.z);
-        audioSource.PlayOneShot(turnipRoot, turnipRootVolume);
+        PlaySound(turnipRoot, turnipRootVolume);
     }
 
 

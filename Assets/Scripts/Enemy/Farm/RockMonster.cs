@@ -4,16 +4,29 @@ using UnityEngine;
 
 public class RockMonster : Enemy {
 
+    [Header("Rock Settings")]
+    [Tooltip("The current movement and attack state")]
     public State state = State.IDLE;
-    public Microstate microstate = Microstate.MOVING;
+    [Tooltip("How hard of force to apply when moving normally")]
     public float movementForce = 10f;
-    public float gravityCoefficent = 10f;
+    [Header("Attack and Movement Settings")]
+    [Tooltip("Distance to chase")]
     public float distanceToMove = 60f;
+    [Tooltip("Distance to attack")]
     public float distanceToCrush = 10f;
-    public float lastTimeMoved = 0f;
+    [Tooltip("Delays between attacking and moving")]
     public float movementDelay = 2f;
+    [Tooltip("How long to stay in the air")]
     public float airTime = 1.35f;
+    [Tooltip("How long to wait in air before slamming")]
+    public float jumpTimeDelay = 2.3f;
+    private float lastTimeMoved = 0f;
+
+    [Header("Colliders")]
     public SphereCollider sc;
+    private bool isGrounded;
+    private float jumpTime;
+
 
 
     [Header("Sound Settings")]
@@ -39,11 +52,6 @@ public class RockMonster : Enemy {
         CRUSHING
     }
 
-    public enum Microstate {
-        ATTACKING,
-        MOVING
-    }
-
 
 
     // Start is called before the first frame update
@@ -54,6 +62,7 @@ public class RockMonster : Enemy {
     // Update is called once per frame
     new void Update() {
         base.Update();
+        Grounded = IsGrounded();
         StateCheck();
         switch (state) {
             case State.IDLE:
@@ -71,10 +80,49 @@ public class RockMonster : Enemy {
         }
     }
 
+
+    /// <summary>
+    /// Checks to see the monster's air-to-ground status; Plays sounds and triggers crushing from being in the air too long
+    /// </summary>
+    /// <param name="old">Last frame's ground value</param>
+    /// <param name="n">This frame's ground value</param>
+    public bool Grounded {
+        get {
+            return isGrounded;
+        }
+        set {
+            if(crushCoroutine != null) {
+                isGrounded = value;
+                return;
+            }
+            if (!value && isGrounded) { //was grounded, but is not
+                jumpTime = Time.time;
+                PlaySound(jump, jumpVolume);
+            } else if (value && !isGrounded) { //was in air, but grounded
+                if (state == State.CRUSHING) {
+                    TryDamage();
+                    PlaySound(smashGround, smashGroundVolume);
+                } else {
+                    PlaySound(groundLand, groundLandVolume);
+                }
+            } else if (!value && !isGrounded && state != State.CRUSHING) { //was in air, and still in air
+                if (Time.time >= jumpTime + jumpTimeDelay) {
+                    state = State.CRUSHING;
+                    crushCoroutine = StartCoroutine(CrushAttack());
+                }
+            }
+            isGrounded = value;
+        }
+    }
+
     /// <summary>
     /// Checks through the different conditions to determine which state the monster should be in
     /// </summary>
     void StateCheck() {
+        //DO NOT change the state if the monster is in the air
+        if (!isGrounded) {
+            return;
+        }
         float dis = Vector3.Distance(this.gameObject.transform.position, GameManager.gm.player.transform.position);
         if (dis >= distanceToMove) {
             state = State.IDLE;
@@ -89,14 +137,27 @@ public class RockMonster : Enemy {
         }
     }
 
+    /// <summary>
+    /// Attempts to move the monster if it is grounded and able to.
+    /// </summary>
     void Move() {
+        if (!isGrounded) {
+            return;
+        }
         if (CanAct(movementDelay)) {
             lastTimeMoved = Time.time;
-            crushCoroutine = StartCoroutine(MoveAttack());
+            LookAt(GameManager.gm.player);
+            Vector3 angle = GetForceAngle();
+            rb.AddRelativeForce(angle * movementForce, ForceMode.VelocityChange);
+            //audioSource.PlayOneShot(jump, jumpVolume);
+            //crushCoroutine = StartCoroutine(MoveAttack());
         }
     }
 
-
+    /// <summary>
+    /// Gives a random angle between 35 degrees and 55 degrees
+    /// </summary>
+    /// <returns>Random angle</returns>
     Vector3 GetForceAngle() {
         float angle = Random.Range(35f, 55f);
         float xcomponent = Mathf.Cos(angle * Mathf.PI / 180);
@@ -104,49 +165,36 @@ public class RockMonster : Enemy {
         return new Vector3(0, ycomponent, xcomponent);
     }
 
+    /// <summary>
+    /// Attempts to crush attack, given it is able to move
+    /// </summary>
     void Crush() {
-        if (CanAct(movementDelay + airTime)) {
+        if (CanAct(movementDelay)) {
             lastTimeMoved = Time.time + airTime;
             crushCoroutine = StartCoroutine(CrushAttack());
         }
     }
 
+    /// <summary>
+    /// Used for crush attack and crushing down when in air too long
+    /// </summary>
+    /// <returns></returns>
     IEnumerator CrushAttack() {
-        rb.AddForce(Vector3.up * 25f, ForceMode.VelocityChange);
-        audioSource.PlayOneShot(jump, jumpVolume);
-        yield return new WaitForSeconds(airTime);
+        //isGrounded = false;
+        if (isGrounded) {
+            rb.AddForce(Vector3.up * 25f, ForceMode.VelocityChange);
+            PlaySound(jump, jumpVolume);
+            yield return new WaitForSeconds(airTime);
+        }
         rb.velocity = Vector3.zero;
         rb.AddForce(Vector3.down * 50f, ForceMode.VelocityChange);
-        audioSource.PlayOneShot(smashGround, smashGroundVolume);
-        TryDamage();
-
-        crushCoroutine = null;
         yield return null;
+        crushCoroutine = null;
     }
 
-    IEnumerator MoveAttack() {
-        LookAt(GameManager.gm.player);
-        Vector3 angle = GetForceAngle();
-        rb.AddRelativeForce(angle * movementForce, ForceMode.VelocityChange);
-        audioSource.PlayOneShot(jump, jumpVolume);
-        yield return new WaitForSeconds(movementDelay * 0.95f);
-
-        if (!IsGrounded()) {
-            rb.velocity = Vector3.zero;
-            rb.AddForce(Vector3.down * 200f, ForceMode.VelocityChange);
-            lastTimeMoved = Time.time;
-            yield return new WaitForSeconds(0.75f);
-            audioSource.PlayOneShot(smashGround, smashGroundVolume);
-            TryDamage();
-        } else {
-            audioSource.PlayOneShot(groundLand, groundLandVolume);
-        }
-
-        crushCoroutine = null;
-        yield return null;
-    }
-
-
+    /// <summary>
+    /// Stops attacking and crushing
+    /// </summary>
     public void StopAttacking() {
         if (crushCoroutine != null) {
             StopCoroutine(crushCoroutine);
@@ -154,6 +202,11 @@ public class RockMonster : Enemy {
         }
     }
 
+    /// <summary>
+    /// Determines if the monster is able to attack or move
+    /// </summary>
+    /// <param name="delay">Delay for attacking and moving</param>
+    /// <returns>Eligibility to attack or move</returns>
     public bool CanAct(float delay) {
         if(Time.time >= lastTimeMoved + delay) {
             return true;
@@ -161,7 +214,9 @@ public class RockMonster : Enemy {
         return false;
     }
 
-
+    /// <summary>
+    /// Attempts damage if the player is in sight and in distance
+    /// </summary>
     void TryDamage() {
         float dis = Vector3.Distance(this.gameObject.transform.position, GameManager.gm.player.transform.position);
         if(dis <= distanceToCrush && GameManager.gm.HasLineOfSight(this.gameObject, GameManager.gm.player)) {
@@ -169,6 +224,10 @@ public class RockMonster : Enemy {
         }
     }
 
+    /// <summary>
+    /// Determines if the monster is on the ground or not
+    /// </summary>
+    /// <returns>isGrounded</returns>
     public bool IsGrounded() {
         return Physics.CheckSphere(this.gameObject.transform.position, sc.radius * 1.1f, GameManager.gm.groundMask);
     }
