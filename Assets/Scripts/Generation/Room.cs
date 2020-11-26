@@ -113,10 +113,15 @@ public class Room : MonoBehaviour {
         GenerateRoom();
     }
 
+    /// <summary>
+    /// Creates a grid within the room and creates the floors
+    /// </summary>
     void CreateGrid() {
         roomArray = new Node[xLength, yLength];
         float roomRadius = floorBase.transform.localScale.x / 2;
         Vector3 firstNode = new Vector3(floorBase.transform.position.x - roomRadius + (nodeLength / 2), floorBase.transform.position.y + 1, floorBase.transform.position.z + roomRadius - (nodeLength / 2));
+
+        //Floor generation
         for(int i = 0; i < xLength; i++) {
             for(int t = 0; t < yLength; t++) {
                 Node n = new Node {
@@ -133,6 +138,9 @@ public class Room : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Adds things inside the room, depending on the type
+    /// </summary>
     void GenerateRoom() {
         //SpawnEnvironment();
         switch (roomType) {
@@ -151,7 +159,9 @@ public class Room : MonoBehaviour {
         }
     }
 
-
+    /// <summary>
+    /// Spawns the shop, the items, and orientates them properly
+    /// </summary>
     void SpawnShop() {
         GameObject shopKeep = Instantiate(shopKeeper);
         shopKeep.transform.position = floorBase.transform.position;
@@ -162,13 +172,7 @@ public class Room : MonoBehaviour {
         GameObject item2 = Instantiate(itemPlace);
         GameObject item3 = Instantiate(itemPlace);
 
-        
-        //shopKeep.transform.parent = this.gameObject.transform;
-        //item1.transform.parent = shopKeep.transform;
-        //item2.transform.parent = shopKeep.transform;
-        //item3.transform.parent = shopKeep.transform;
-
-
+        //Orientation
         switch (pos) {
             case 0:
                 shopKeep.transform.position += new Vector3(0f, 1f, floorBase.transform.localScale.z / 4);
@@ -215,26 +219,31 @@ public class Room : MonoBehaviour {
         item1.transform.position = floorBase.transform.position + (Vector3.up * 1.5f);
 
         float baseCost = 30f;
-
-        GameObject item1n = Instantiate(ItemManager.im.GetRandomShopItemWeighted());
-        GameObject item2n = Instantiate(ItemManager.im.GetRandomShopItemWeighted());
-        GameObject item3n = Instantiate(ItemManager.im.GetRandomShopItemWeighted());
-
-        item1n.name = item1n.name.Replace("(Clone)", "").Trim();
-        item2n.name = item2n.name.Replace("(Clone)", "").Trim();
-        item3n.name = item3n.name.Replace("(Clone)", "").Trim();
-
-        item1.GetComponentInChildren<ShopStand>().SetShop(item1n, baseCost);
-        item2.GetComponentInChildren<ShopStand>().SetShop(item2n, baseCost);
-        item3.GetComponentInChildren<ShopStand>().SetShop(item3n, baseCost);
-
-        item1.transform.parent = shopKeep.transform;
-        item2.transform.parent = shopKeep.transform;
-        item3.transform.parent = shopKeep.transform;
+        SetItemInShop(item1, baseCost, shopKeep);
+        SetItemInShop(item2, baseCost, shopKeep);
+        SetItemInShop(item3, baseCost, shopKeep);
 
         shopKeep.transform.parent = this.gameObject.transform;
     }
 
+    /// <summary>
+    /// Generates an item for the shop stand
+    /// </summary>
+    /// <param name="stand">Item stand</param>
+    /// <param name="baseCost">Base cost of item</param>
+    /// <param name="shopKeep">Parent shopkeep</param>
+    void SetItemInShop(GameObject stand, float baseCost, GameObject shopKeep) {
+        GameObject i = Instantiate(ItemManager.im.GetRandomShopItemWeighted());
+        i.name = i.name.Replace("(Clone)", "").Trim();
+        stand.GetComponentInChildren<ShopStand>().SetShop(i, baseCost);
+        stand.transform.parent = shopKeep.transform;
+    }
+
+    /// <summary>
+    /// Get the direction of the entrance of the room (for special rooms)
+    /// </summary>
+    /// <param name="entrance"></param>
+    /// <returns></returns>
     int GetDirectionofEntrance(GameObject entrance) {
         float difX = entrance.transform.position.x - this.gameObject.transform.position.x;
         float difZ = entrance.transform.position.z - this.gameObject.transform.position.z;
@@ -257,6 +266,9 @@ public class Room : MonoBehaviour {
 
     }
 
+    /// <summary>
+    /// Spawns ambience and environment (like grass)
+    /// </summary>
     void SpawnEnvironment() {
         int timeout = 0;
         int envToSpawn = Random.Range(minEnvironment, maxEnvironment);
@@ -289,6 +301,9 @@ public class Room : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Spawns walls around the room
+    /// </summary>
     void SpawnBlockades() {
         int timeout = 0;
         int blockToSpawn = Random.Range(minBlockade, maxBlockade);
@@ -468,6 +483,9 @@ public class Room : MonoBehaviour {
         return toCheck;
     }
 
+    /// <summary>
+    /// Spawns monsters within the room at random positions
+    /// </summary>
     void SpawnMonsters() {
 
         int timeout = 0;
@@ -501,21 +519,6 @@ public class Room : MonoBehaviour {
             Vector3 spawnPoint = Vector3.zero;
             if(e.et == Enemy.EnemyType.NORMAL) {
                 spawnPoint = new Vector3(roomArray[x, y].position.x + Random.Range(-(nodeLength / 2), (nodeLength / 2)), roomArray[x, y].position.y, roomArray[x, y].position.z + Random.Range(-(nodeLength / 2), (nodeLength / 2)));
-            } else if(e.et == Enemy.EnemyType.BLOCKADE) {
-                List<GameObject> blockadeCopy = new List<GameObject>(blockades);
-                while(blockadeCopy.Count > 0) {
-                    int b = Random.Range(0, blockadeCopy.Count);
-                    if(blockadeCopy[b].gameObject.name == "Corner") {
-                        blockadeCopy.RemoveAt(b);
-                        continue;
-                    }
-                    spawnPoint = blockades[b].transform.position;
-                    monster.transform.rotation = blockades[b].transform.rotation;
-                    Destroy(blockades[b]);
-                    blockades.RemoveAt(b);
-                    break;
-                }
-
             }
             monster.transform.parent = this.gameObject.transform;
             monster.transform.position = spawnPoint;
@@ -527,6 +530,9 @@ public class Room : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Spawns a boss
+    /// </summary>
     void SpawnBoss() {
         GameObject boss = Instantiate(bosses[0]);
         boss.transform.parent = this.gameObject.transform;

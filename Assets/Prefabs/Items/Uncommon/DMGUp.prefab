@@ -461,7 +461,8 @@ MonoBehaviour:
   shopItemPool: 1
   bossItemPool: 0
   isUnique: 0
-  ID: 4
+  ID: 5
+  displayName: 
   rarity: 1
   wepFireIncrease: 0
   wepDMGIncrease: 2

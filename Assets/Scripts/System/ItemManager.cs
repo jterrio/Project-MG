@@ -32,11 +32,15 @@ public class ItemManager : MonoBehaviour {
     public Hashtable obtainedItems;
 
     public delegate void GunDelegate();
-    public delegate void ReloadDelegate();
+    public delegate void BeforeReloadDelegate();
+    public delegate void AfterReloadDelegate();
     public delegate void BulletVelocityDelegate(GameObject bullet);
+    public delegate void BulletHitDelegate(GameObject bullet, Bullet thisBullet, GameObject monsterHit);
     public GunDelegate gunDelegate;
     public BulletVelocityDelegate bulletVelocityDelegate;
-    public ReloadDelegate reloadDelegate;
+    public BeforeReloadDelegate beforeReloadDelegate;
+    public AfterReloadDelegate afterReloadDelegate;
+    public BulletHitDelegate bulletHitDelegate;
 
 
     private void Start() {
@@ -81,6 +85,7 @@ public class ItemManager : MonoBehaviour {
             }
         }
 
+        obtainedItems = new Hashtable();
     }
 
     public GameObject GetRandomCommonItem() {
@@ -207,6 +212,14 @@ public class ItemManager : MonoBehaviour {
         return false;
     }
 
+    /*
+     * \\\\\\\
+     * 
+     * ITEM METHODS
+     * 
+     * \\\\\\\
+     **/
+
 
     public void CurveBullet(GameObject bullet) {
         Collider[] hitColliders = Physics.OverlapSphere(bullet.transform.position, 30f, GameManager.gm.enemyLayers);
@@ -240,6 +253,50 @@ public class ItemManager : MonoBehaviour {
 
     public void NoReload() {
         GameManager.gm.p.gun.bulletsInMag = GameManager.gm.p.gun.magSize;
+    }
+
+    public void SlowOnReloadStart() {
+        Time.timeScale = 0.35f;
+    }
+
+    public void SlowOnReloadFinish() {
+        Time.timeScale = 1f;
+    }
+
+    public void BounceOffEnemy(GameObject originalBullet, Bullet thisBullet, GameObject monsterHit) {
+        if(thisBullet.numberOfBounces >= GameManager.gm.p.gun.timesToBounceOffEnemies) {
+            return;
+        }
+
+        List<GameObject> visibleMonster = new List<GameObject>();
+        foreach(Collider m in Physics.OverlapSphere(originalBullet.transform.position, 30f, GameManager.gm.enemyLayers)) {
+            if(monsterHit == m.gameObject) {
+                continue;
+            }
+            if (GameManager.gm.HasLineOfSight(originalBullet, m.gameObject)) {
+                visibleMonster.Add(m.gameObject);
+            }
+        }
+        if(visibleMonster.Count == 0) {
+            return;
+        }
+
+        int bulletInt = 0;
+        float bulletDistance = Vector3.Distance(visibleMonster[0].transform.position, originalBullet.transform.position);
+        for(int i = 1; i < visibleMonster.Count; i++) {
+            float d = Vector3.Distance(visibleMonster[i].transform.position, originalBullet.transform.position);
+            if(d < bulletDistance) {
+                bulletDistance = d;
+                bulletInt = i;
+            }
+        }
+
+        thisBullet.monsterToIgnore = visibleMonster[bulletInt];
+        GameObject b = Instantiate(GameManager.gm.p.gun.bullet);
+        b.transform.position = originalBullet.transform.position + ((visibleMonster[bulletInt].transform.position - originalBullet.transform.position) * 0.5f);
+        b.transform.LookAt(visibleMonster[bulletInt].transform);
+        b.GetComponent<Bullet>().numberOfBounces = originalBullet.GetComponent<Bullet>().numberOfBounces + 1;
+        b.GetComponent<Rigidbody>().AddForce(b.transform.forward * GameManager.gm.p.gun.bulletSpeed);
     }
 
 }

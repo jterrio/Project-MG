@@ -47,6 +47,10 @@ public class GameManager : MonoBehaviour {
         DontDestroyOnLoad(this);
     }
 
+
+    /// <summary>
+    /// Set the Player object if it null and destroy an existing one if it exists (from changing levels)
+    /// </summary>
     public void FindPlayer() {
         if(player == null) {
             player = GameObject.FindGameObjectWithTag("Player");
@@ -67,6 +71,10 @@ public class GameManager : MonoBehaviour {
         mm = GameObject.FindGameObjectWithTag("Minimap").GetComponent<Minimap>();
     }
 
+    /// <summary>
+    /// Give the player their weapon of choice
+    /// </summary>
+    /// <param name="id">Weapon id</param>
     public void LoadWeapon(int id) {
         GameObject g = Instantiate(weapons[wepID]);
         if (p.gun != null) {
@@ -80,11 +88,21 @@ public class GameManager : MonoBehaviour {
         g.transform.localScale = new Vector3(1, 1, 1);
     }
 
+    
+    /// <summary>
+    /// TEMP--Cycle different weapon options available on the menu level--TEMP
+    /// </summary>
     public void CycleWeapon() {
         wepID = (wepID + 1) % (weapons.Length);
         LoadWeapon(wepID);
     }
 
+    /// <summary>
+    /// Determine if there is line of sight between the two objects (monster -> player)
+    /// </summary>
+    /// <param name="host">Monster</param>
+    /// <param name="target">Player</param>
+    /// <returns></returns>
     public bool HasLineOfSight(GameObject host, GameObject target) {
         RaycastHit hit;
         Vector3 hostPos = host.transform.position;

@@ -34,6 +34,28 @@ public class TurnipLord : Enemy {
     [Header("Camera Shake")]
     public float magnitude;
 
+    [Header("Sound Settings")]
+    [Tooltip("How loud the ground crack should be")]
+    [Range(0, 1)]
+    public float groundCrackVolume = 1;
+    public AudioClip groundCrack;
+    [Tooltip("How loud the rumble should be")]
+    [Range(0, 1)]
+    public float rumbleVolume = 1;
+    public AudioClip rumble;
+    [Tooltip("How loud the spawn minion should be")]
+    [Range(0, 1)]
+    public float spawnMinionVolume = 1;
+    public AudioClip spawnMinion;
+    [Tooltip("How loud the spawn vine should be")]
+    [Range(0, 1)]
+    public float spawnVineVolume = 1;
+    public AudioClip spawnVine;
+    [Tooltip("How loud the vine ground break should be")]
+    [Range(0, 1)]
+    public float vineGroundBreakVolume = 1;
+    public AudioClip vineGroundBreak;
+
     public enum State {
         GROW,
         HARVEST,
@@ -140,7 +162,7 @@ public class TurnipLord : Enemy {
     IEnumerator SpawnAttackSpawn(int n) {
         int nCount = 0;
         while (nCount < n) {
-            audioSource.PlayOneShot(audioClips[2]);
+            PlaySound(spawnMinion, spawnMinionVolume);
             nCount++;
             float randomAngle = Random.Range(0f, Mathf.PI * 2f);
             Vector3 spawnPoint = minionSpawnPoint.transform.position + (new Vector3(Mathf.Sin(randomAngle), 0f, Mathf.Cos(randomAngle)).normalized * 10f);
@@ -182,9 +204,9 @@ public class TurnipLord : Enemy {
             v.transform.position = new Vector3(GameManager.gm.player.transform.position.x, 0, GameManager.gm.player.transform.position.z);
         }
         vChild.transform.localPosition = new Vector3(0, -0.4f, 0);
-        vine.audioSource.PlayOneShot(audioClips[3]);
+        PlaySound(spawnVine, spawnVineVolume, vine.transform.position);
         yield return new WaitForSeconds(Mathf.Max(0.5f, vineAttackSpeed * ((GetHealthPercentage() + 0.01f))));
-        vine.audioSource.PlayOneShot(audioClips[4]);
+        PlaySound(vineGroundBreak, vineGroundBreakVolume, vine.transform.position);
         while (vChild.transform.position.y < 0f) {
             vChild.transform.localPosition = new Vector3(0, vChild.transform.localPosition.y + Mathf.Max(0.5f, vineAttackSpeed * ((GetHealthPercentage() + 0.01f))), 0);
             yield return null;
@@ -203,7 +225,7 @@ public class TurnipLord : Enemy {
         Vector3 originalCamPos = GameManager.gm.playerCamera.transform.localPosition;
         float elapsed = 0f;
         bool hasPlayedSound = false;
-        audioSource.PlayOneShot(audioClips[0]);
+        GameManager.gm.p.audioSource.PlayOneShot(rumble, rumbleVolume);
         while (transform.position.y < 2f) {
             float x = Random.Range(-1f, 1f) * magnitude;
             float y = Random.Range(-1f, 1f) * magnitude;
@@ -213,7 +235,7 @@ public class TurnipLord : Enemy {
             } else {
                 if (!hasPlayedSound) {
                     hasPlayedSound = true;
-                    audioSource.PlayOneShot(audioClips[1]);
+                    GameManager.gm.p.audioSource.PlayOneShot(groundCrack, groundCrackVolume);
                 }
                 transform.position = new Vector3(transform.position.x, transform.position.y + (riseSpeed * Time.deltaTime), transform.position.z);
             }

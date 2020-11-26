@@ -282,6 +282,8 @@ MonoBehaviour:
     m_Bits: 4627
   shotsPerTrigger: 1
   burstDelay: 0
+  timesToBounceOffEnemies: 0
+  piercingShots: 0
   reloadTime: 0.85
   isReloading: 0
   damage: 10
@@ -357,6 +359,7 @@ MonoBehaviour:
   airTime: 5
   groundCheck: {fileID: 7254095393910337168}
   groundDistance: 0.1
+  playerGravity: -10.5
   jumpForce: 1
   fallForce: 5
 --- !u!114 &3935896939124135719
@@ -388,7 +391,7 @@ MonoBehaviour:
   pm: {fileID: 7254095393575450620}
   weaponHolder: {fileID: 9092697026156493808}
   gun: {fileID: 6051205611755153323}
-  bulletSpawn: {fileID: 0}
+  bulletSpawn: {fileID: 8823821038577595454}
   healthFill: {fileID: 0}
   audioSource: {fileID: 4368366132626151790}
 --- !u!54 &3848624608968721356
