@@ -25,11 +25,7 @@ public class Enemy : MonoBehaviour {
     private float lastTimeTakenDamage = 0f;
     private bool hasTakenDamageRecently = false;
 
-    [Header("Sounds")]
-    public AudioSource audioSource;
-    //public AudioClip[] audioClips;
-
-    [Header("Movement")]
+    [Header("Physics")]
     public Rigidbody rb;
 
     [Header("Rewards")]
@@ -93,6 +89,25 @@ public class Enemy : MonoBehaviour {
         Vector3 targetPos = new Vector3(g.transform.position.x, this.transform.position.y, g.transform.position.z);
         //transform.LookAt(targetPos);
         rb.rotation = Quaternion.LookRotation(targetPos - transform.position);
+    }
+
+    /// <summary>
+    /// Plays sound at the monster's location
+    /// </summary>
+    /// <param name="ac">Clip to play</param>
+    /// <param name="vol">Volume</param>
+    public void PlaySound(AudioClip ac, float vol) {
+        AudioSource.PlayClipAtPoint(ac, transform.position, vol);
+    }
+
+    /// <summary>
+    /// Plays sound at a given locations, such as for a monster summon
+    /// </summary>
+    /// <param name="ac">Clip to play</param>
+    /// <param name="vol">Volume</param>
+    /// <param name="pos">Position</param>
+    public void PlaySound(AudioClip ac, float vol, Vector3 pos) {
+        AudioSource.PlayClipAtPoint(ac, pos, vol);
     }
 
 }

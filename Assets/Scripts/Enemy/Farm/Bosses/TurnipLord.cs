@@ -162,7 +162,7 @@ public class TurnipLord : Enemy {
     IEnumerator SpawnAttackSpawn(int n) {
         int nCount = 0;
         while (nCount < n) {
-            audioSource.PlayOneShot(spawnMinion, spawnMinionVolume);
+            PlaySound(spawnMinion, spawnMinionVolume);
             nCount++;
             float randomAngle = Random.Range(0f, Mathf.PI * 2f);
             Vector3 spawnPoint = minionSpawnPoint.transform.position + (new Vector3(Mathf.Sin(randomAngle), 0f, Mathf.Cos(randomAngle)).normalized * 10f);
@@ -204,9 +204,9 @@ public class TurnipLord : Enemy {
             v.transform.position = new Vector3(GameManager.gm.player.transform.position.x, 0, GameManager.gm.player.transform.position.z);
         }
         vChild.transform.localPosition = new Vector3(0, -0.4f, 0);
-        vine.audioSource.PlayOneShot(spawnVine, spawnVineVolume);
+        PlaySound(spawnVine, spawnVineVolume, vine.transform.position);
         yield return new WaitForSeconds(Mathf.Max(0.5f, vineAttackSpeed * ((GetHealthPercentage() + 0.01f))));
-        vine.audioSource.PlayOneShot(vineGroundBreak, vineGroundBreakVolume);
+        PlaySound(vineGroundBreak, vineGroundBreakVolume, vine.transform.position);
         while (vChild.transform.position.y < 0f) {
             vChild.transform.localPosition = new Vector3(0, vChild.transform.localPosition.y + Mathf.Max(0.5f, vineAttackSpeed * ((GetHealthPercentage() + 0.01f))), 0);
             yield return null;
@@ -225,7 +225,7 @@ public class TurnipLord : Enemy {
         Vector3 originalCamPos = GameManager.gm.playerCamera.transform.localPosition;
         float elapsed = 0f;
         bool hasPlayedSound = false;
-        audioSource.PlayOneShot(rumble, rumbleVolume);
+        GameManager.gm.p.audioSource.PlayOneShot(rumble, rumbleVolume);
         while (transform.position.y < 2f) {
             float x = Random.Range(-1f, 1f) * magnitude;
             float y = Random.Range(-1f, 1f) * magnitude;
@@ -235,7 +235,7 @@ public class TurnipLord : Enemy {
             } else {
                 if (!hasPlayedSound) {
                     hasPlayedSound = true;
-                    audioSource.PlayOneShot(groundCrack, groundCrackVolume);
+                    GameManager.gm.p.audioSource.PlayOneShot(groundCrack, groundCrackVolume);
                 }
                 transform.position = new Vector3(transform.position.x, transform.position.y + (riseSpeed * Time.deltaTime), transform.position.z);
             }
