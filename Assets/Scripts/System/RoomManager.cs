@@ -5,6 +5,7 @@ using UnityEngine;
 public class RoomManager : MonoBehaviour {
 
     public static RoomManager rm;
+    public CullingRooms cr;
     public Node[,] roomArray;
 
     [Header("Floor Settings")]
@@ -90,6 +91,7 @@ public class RoomManager : MonoBehaviour {
     /// </summary>
     /// <param name="r">Entered room</param>
     public void ChangeRoom(Room r) {
+        cr.SetCull(currentRoom, r);
         currentRoom = r;
         currentRoom.AddGates();
         currentRoom.ActivateMonsters();
@@ -197,7 +199,7 @@ public class RoomManager : MonoBehaviour {
 
         //Validation
         ValidateNodeNeighbors();
-
+        cr.ValidateStartRoom();
 
     }
 
@@ -234,6 +236,7 @@ public class RoomManager : MonoBehaviour {
             createdRooms.Add(roomArray[(int)potentialLoc[pickedSpawn].x, (int)potentialLoc[pickedSpawn].y]);
             roomArray[(int)potentialLoc[pickedSpawn].x, (int)potentialLoc[pickedSpawn].y].room = room;
             room.GetComponent<Room>().roomType = rt;
+            room.gameObject.SetActive(false);
         } else if(rt == Room.RoomType.START) {
             room = Instantiate(potentialRoomSpawns[0]);
             room.transform.position = new Vector3(intX * nodeLength, 0, intY * nodeLength);
@@ -376,6 +379,10 @@ public class RoomManager : MonoBehaviour {
 
         //Recheck end nodes
         RecheckAllEndNodes();
+
+        //Disable rooms for culling purposes
+        cr.CullOutRoom(room);
+
         return newRoomList.Count;
     }
 
