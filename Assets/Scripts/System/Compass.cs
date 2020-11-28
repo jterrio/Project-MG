@@ -11,7 +11,7 @@ public class Compass : MonoBehaviour {
             return;
         }
         if(RoomManager.rm.currentRoom.monsters.Count == 1) {
-            transform.LookAt(RoomManager.rm.currentRoom.monsters[0].transform.position);
+            transform.LookAt(new Vector3(RoomManager.rm.currentRoom.monsters[0].transform.position.x, this.transform.position.y, RoomManager.rm.currentRoom.monsters[0].transform.position.z));
             return;
         }
 
