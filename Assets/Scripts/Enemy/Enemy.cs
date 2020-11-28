@@ -64,6 +64,7 @@ public class Enemy : MonoBehaviour {
     public virtual void TakeDamage(float amount) {
         lastTimeTakenDamage = Time.time;
         hasTakenDamageRecently = true;
+        GameManager.gm.SetLastTimeDamaged();
         health -= amount;
         healthBarFill.fillAmount = health / healthTotal;
         if(health <= 0f) {

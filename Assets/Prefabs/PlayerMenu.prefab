@@ -287,6 +287,9 @@ MonoBehaviour:
   reloadTime: 0.85
   isReloading: 0
   damage: 10
+  fireSoundVolume: 0.5
+  reloadVolume: 0.35
+  emptyVolume: 1
   audioSource: {fileID: 9183870672633888132}
   fireSounds:
   - {fileID: 8300000, guid: e03d2e8734c76f146bb3d03a4921c3f5, type: 3}

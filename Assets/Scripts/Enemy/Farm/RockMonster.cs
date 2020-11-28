@@ -219,7 +219,7 @@ public class RockMonster : Enemy {
     /// </summary>
     void TryDamage() {
         float dis = Vector3.Distance(this.gameObject.transform.position, GameManager.gm.player.transform.position);
-        if(dis <= distanceToCrush && GameManager.gm.HasLineOfSight(this.gameObject, GameManager.gm.player)) {
+        if(dis <= distanceToCrush && GameManager.gm.HasLineOfSight(this.gameObject, GameManager.gm.player) && GameManager.gm.playerMovement.IsGrounded) {
             GameManager.gm.p.TakeDamage(1);
         }
     }

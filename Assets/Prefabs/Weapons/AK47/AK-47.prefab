@@ -201,9 +201,14 @@ MonoBehaviour:
     m_Bits: 4627
   shotsPerTrigger: 1
   burstDelay: 0.2
+  timesToBounceOffEnemies: 0
+  piercingShots: 0
   reloadTime: 0.85
   isReloading: 0
   damage: 10
+  fireSoundVolume: 0.5
+  reloadVolume: 0.35
+  emptyVolume: 1
   audioSource: {fileID: 6388161590517700414}
   fireSounds:
   - {fileID: 8300000, guid: e03d2e8734c76f146bb3d03a4921c3f5, type: 3}

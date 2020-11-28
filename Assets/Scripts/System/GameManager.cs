@@ -31,12 +31,20 @@ public class GameManager : MonoBehaviour {
     public Minimap mm;
     public GameObject playerMinimapObject;
 
+    [Header("Rooms")]
+    public GameObject compass;
+    [Tooltip("In seconds, how long until pity system kicks in and shows where enemies are")]
+    public float timeoutBeforePity = 15f;
+    public bool pityEnabled;
+    private float lastTimeKilledEnemy;
+
     [Header("Layer Mask")]
     public LayerMask enemyPlayerLayers;
     public LayerMask enemyLayers;
     public LayerMask LOS;
     public LayerMask minimap;
     public LayerMask groundMask;
+    public LayerMask groundEnemy;
 
     private void Awake() {
         if(gm == null) {
@@ -45,6 +53,38 @@ public class GameManager : MonoBehaviour {
             Destroy(this);
         }
         DontDestroyOnLoad(this);
+    }
+
+    private void Update() {
+        CheckPity();
+    }
+
+
+    public void SetLastTimeDamaged() {
+        lastTimeKilledEnemy = Time.time;
+    }
+
+    public void EnablePity() {
+        pityEnabled = true;
+        compass.gameObject.SetActive(true);
+    }
+
+    public void DisablePity() {
+        pityEnabled = false;
+        compass.gameObject.SetActive(false);
+    }
+
+    public void CheckPity() {
+        if(RoomManager.rm.currentRoom.roomType == Room.RoomType.BOSS) {
+            return;
+        }
+        if (pityEnabled && RoomManager.rm.currentRoom.monsters.Count == 0) {
+            DisablePity();
+        } else if(!pityEnabled && RoomManager.rm.currentRoom.monsters.Count > 0) {
+            if(Time.time >= lastTimeKilledEnemy + timeoutBeforePity) {
+                EnablePity();
+            }
+        }
     }
 
 

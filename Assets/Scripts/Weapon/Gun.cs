@@ -38,6 +38,15 @@ public class Gun : MonoBehaviour {
     private float lastFired;
 
     [Header("Sound Settings")]
+    [Tooltip("How loud the firing should be")]
+    [Range(0, 1)]
+    public float fireSoundVolume = 1;
+    [Tooltip("How loud the reload should be")]
+    [Range(0, 1)]
+    public float reloadVolume = 1;
+    [Tooltip("How loud the empty clicking should be")]
+    [Range(0, 1)]
+    public float emptyVolume = 1;
     public AudioSource audioSource;
     public AudioClip[] fireSounds;
     public AudioClip emptySound;
@@ -113,7 +122,7 @@ public class Gun : MonoBehaviour {
             //Cant shoot if you have no bullets
             if (bulletsInMag <= 0) {
                 bulletsInMag = 0;
-                audioSource.PlayOneShot(emptySound);
+                audioSource.PlayOneShot(emptySound, emptyVolume);
                 yield break;
             }
 
@@ -139,7 +148,7 @@ public class Gun : MonoBehaviour {
     void FireBullet() {
         bulletsInMag--;
         gunFlash.Play();
-        audioSource.PlayOneShot(fireSounds[Random.Range(0, fireSounds.Length - 1)]);
+        audioSource.PlayOneShot(fireSounds[Random.Range(0, fireSounds.Length - 1)], fireSoundVolume);
         ItemManager.im.gunDelegate?.Invoke();
         CreateBullet();
     }
@@ -179,7 +188,7 @@ public class Gun : MonoBehaviour {
         ItemManager.im.beforeReloadDelegate?.Invoke();
 
         //start
-        audioSource.PlayOneShot(reloadSound[0]);
+        audioSource.PlayOneShot(reloadSound[0], reloadVolume);
         while (Time.time < startReloadTime + (reloadTime / 3)) {
             yield return null;
         }
@@ -187,7 +196,7 @@ public class Gun : MonoBehaviour {
         while (Time.time < startReloadTime + ((reloadTime * 2) / 3)) {
             yield return null;
         }
-        audioSource.PlayOneShot(reloadSound[1]);
+        audioSource.PlayOneShot(reloadSound[1], reloadVolume);
 
         //end
         while (Time.time < startReloadTime + reloadTime) {
@@ -197,7 +206,7 @@ public class Gun : MonoBehaviour {
         //Triggers any items that occur from ending a reload
         ItemManager.im.afterReloadDelegate?.Invoke();
 
-        audioSource.PlayOneShot(reloadSound[2]);
+        audioSource.PlayOneShot(reloadSound[2], reloadVolume);
         bulletsInMag = GetMagSize();
         reloadCoroutine = null;
         isReloading = false;

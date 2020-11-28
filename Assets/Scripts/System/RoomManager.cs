@@ -94,6 +94,7 @@ public class RoomManager : MonoBehaviour {
         currentRoom.AddGates();
         currentRoom.ActivateMonsters();
         SetEnemiesRemainingText();
+        GameManager.gm.SetLastTimeDamaged();
     }
 
     /// <summary>

@@ -124,6 +124,87 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &5365283
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1906214636}
+    m_Modifications:
+    - target: {fileID: 4551042213424455661, guid: 204565dfec0d76343a9b4cfbd2b3906b,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4551042213424455661, guid: 204565dfec0d76343a9b4cfbd2b3906b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4551042213424455661, guid: 204565dfec0d76343a9b4cfbd2b3906b,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4551042213424455661, guid: 204565dfec0d76343a9b4cfbd2b3906b,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4551042213424455661, guid: 204565dfec0d76343a9b4cfbd2b3906b,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4551042213424455661, guid: 204565dfec0d76343a9b4cfbd2b3906b,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4551042213424455661, guid: 204565dfec0d76343a9b4cfbd2b3906b,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4551042213424455661, guid: 204565dfec0d76343a9b4cfbd2b3906b,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4551042213424455661, guid: 204565dfec0d76343a9b4cfbd2b3906b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4551042213424455661, guid: 204565dfec0d76343a9b4cfbd2b3906b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4551042213424455661, guid: 204565dfec0d76343a9b4cfbd2b3906b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184600354847939242, guid: 204565dfec0d76343a9b4cfbd2b3906b,
+        type: 3}
+      propertyPath: m_Name
+      value: Compass
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 204565dfec0d76343a9b4cfbd2b3906b, type: 3}
+--- !u!4 &5365284 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4551042213424455661, guid: 204565dfec0d76343a9b4cfbd2b3906b,
+    type: 3}
+  m_PrefabInstance: {fileID: 5365283}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5365285 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6184600354847939242, guid: 204565dfec0d76343a9b4cfbd2b3906b,
+    type: 3}
+  m_PrefabInstance: {fileID: 5365283}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7846866
 GameObject:
   m_ObjectHideFlags: 0
@@ -703,7 +784,6 @@ MonoBehaviour:
   healthBarFill: {fileID: 0}
   timeToDisplay: 3
   alwaysDisplay: 0
-  audioSource: {fileID: 0}
   rb: {fileID: 0}
   minMoneyReward: 0
   maxMoneyReward: 0
@@ -7204,7 +7284,6 @@ MonoBehaviour:
   healthBarFill: {fileID: 0}
   timeToDisplay: 3
   alwaysDisplay: 0
-  audioSource: {fileID: 0}
   rb: {fileID: 0}
   minMoneyReward: 0
   maxMoneyReward: 0
@@ -7709,6 +7788,9 @@ MonoBehaviour:
   mm: {fileID: 318489454}
   playerMinimapObject: {fileID: 7778456808393078342, guid: 21f2efccffaedbb4f8bcc648352408b5,
     type: 3}
+  compass: {fileID: 5365285}
+  timeoutBeforePity: 15
+  pityEnabled: 0
   enemyPlayerLayers:
     serializedVersion: 2
     m_Bits: 4352
@@ -7724,6 +7806,9 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 512
+  groundEnemy:
+    serializedVersion: 2
+    m_Bits: 4608
 --- !u!4 &1906214636
 Transform:
   m_ObjectHideFlags: 0
@@ -7737,6 +7822,7 @@ Transform:
   m_Children:
   - {fileID: 1397138101}
   - {fileID: 318489456}
+  - {fileID: 5365284}
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
