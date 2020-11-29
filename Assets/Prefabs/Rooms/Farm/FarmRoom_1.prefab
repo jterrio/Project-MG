@@ -6252,7 +6252,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5015161481089550339
 Transform:
   m_ObjectHideFlags: 0
@@ -6298,11 +6298,11 @@ MonoBehaviour:
   walls: {fileID: 787361921}
   floorGrass: {fileID: 1076262714343606, guid: 68cbfa1438162b243ac02fb9e3e30581, type: 3}
   minimapObject: {fileID: 102391555}
-  minEnvironment: 500
-  maxEnvironment: 1000
-  minPatch: 30
-  maxPatch: 50
-  envPerlinThreshold: 0
+  minEnvironment: 1000
+  maxEnvironment: 2000
+  minPatch: 20
+  maxPatch: 300
+  envPerlinThreshold: 0.165
   envSpawn: {fileID: 3166072222624775373, guid: 79054065885619c489dbe21292ee4469,
     type: 3}
   environments: []

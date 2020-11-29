@@ -212,6 +212,23 @@ public class ItemManager : MonoBehaviour {
         return false;
     }
 
+    public void ResetPlayerItems() {
+        obtainedItems.Clear();
+        gunDelegate = null;
+        bulletVelocityDelegate = null;
+        beforeReloadDelegate = null;
+        afterReloadDelegate = null;
+        bulletHitDelegate = null;
+        GameManager.gm.p.wepFireIncrease = 0;
+        GameManager.gm.p.wepDMGIncrease = 0;
+        GameManager.gm.p.wepAmmoIncrease = 0;
+        GameManager.gm.p.wepFireMulti = 1;
+        GameManager.gm.p.wepDMGMulti = 1;
+        GameManager.gm.p.wepAmmoMulti = 1;
+        GameManager.gm.p.numberOfBulletBounces = 0;
+        GameManager.gm.p.piercingShots = false;
+}
+
     /*
      * \\\\\\\
      * 
@@ -252,7 +269,7 @@ public class ItemManager : MonoBehaviour {
     }
 
     public void NoReload() {
-        GameManager.gm.p.gun.bulletsInMag = GameManager.gm.p.gun.magSize;
+        GameManager.gm.p.gun.bulletsInMag = Mathf.FloorToInt((GameManager.gm.p.gun.magSize + GameManager.gm.p.wepAmmoIncrease) * GameManager.gm.p.wepAmmoMulti);
     }
 
     public void SlowOnReloadStart() {
@@ -264,7 +281,7 @@ public class ItemManager : MonoBehaviour {
     }
 
     public void BounceOffEnemy(GameObject originalBullet, Bullet thisBullet, GameObject monsterHit) {
-        if(thisBullet.numberOfBounces >= GameManager.gm.p.gun.timesToBounceOffEnemies) {
+        if(thisBullet.numberOfBounces >= GameManager.gm.p.numberOfBulletBounces) {
             return;
         }
 

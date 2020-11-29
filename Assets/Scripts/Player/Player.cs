@@ -20,6 +20,9 @@ public class Player : MonoBehaviour {
     public float wepFireMulti = 1f;
     public float wepDMGMulti = 1f;
     public float wepAmmoMulti = 1f;
+    public int numberOfBulletBounces = 0;
+    [Tooltip("Used to determine if the bullets pierce enemies")]
+    public bool piercingShots = false;
 
 
     [Header("References")]
@@ -85,6 +88,7 @@ public class Player : MonoBehaviour {
     /// </summary>
     void Die() {
         GameManager.gm.playerMinimapObject.SetActive(false);
+        ItemManager.im.ResetPlayerItems();
         Destroy(RoomManager.rm.transform.parent.gameObject);
         RoomManager.rm = null;
         LevelManager.lm.LoadFarmDeath();

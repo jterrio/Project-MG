@@ -19,10 +19,6 @@ public class Gun : MonoBehaviour {
     public int shotsPerTrigger = 1;
     [Tooltip("Used for delay in burst fire between bullets inside a burst")]
     public float burstDelay = 0.2f;
-    [Tooltip("Used for determining how many enemies the bullet should hit via bouncing")]
-    public int timesToBounceOffEnemies = 0;
-    [Tooltip("Used to determine if the bullets pierce enemies")]
-    public bool piercingShots = false;
 
     [Header("Reload Settings")]
     [Tooltip("Time to fully reload")]
