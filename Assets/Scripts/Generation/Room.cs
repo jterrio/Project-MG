@@ -530,6 +530,12 @@ public class Room : MonoBehaviour {
         }
     }
 
+    public Vector3 GetRandomNodePosition() {
+        int x = Random.Range(0, xLength - 1);
+        int y = Random.Range(0, yLength - 1);
+        return roomArray[x, y].position;
+    }
+
     /// <summary>
     /// Spawns a boss
     /// </summary>

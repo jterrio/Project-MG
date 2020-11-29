@@ -171,14 +171,13 @@ MonoBehaviour:
   healthBarFill: {fileID: 6019543731910362988}
   timeToDisplay: 3
   alwaysDisplay: 0
-  audioSource: {fileID: 1431703469}
   rb: {fileID: 339961957839462484}
   minMoneyReward: 20
   maxMoneyReward: 20
   state: 0
   shakeBeforeRiseTime: 3
   riseSpeed: 3
-  vineAttackSpeed: 1
+  vineAttackSpeed: 2
   timeBetweenAttacks: 2.5
   minionAttackSpeed: 1.5
   vineObject: {fileID: 1101553798946899823, guid: 575c25e3842231d48a9992c8b721ebd4,

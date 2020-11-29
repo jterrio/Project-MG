@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1003636419490271588
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7058992118667460067}
+  - component: {fileID: -3889438508308836658}
+  m_Layer: 0
+  m_Name: Deathapillar
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7058992118667460067
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1003636419490271588}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.227054, y: -0.16261864, z: -4.8777847}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-3889438508308836658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1003636419490271588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93a414f8f15ff68449a8ccc2431d794c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  segments: []
+  headSegment: {fileID: 0}
+  segmentPrefab: {fileID: 7026462997350106651, guid: fe12eb51f4ca7f6488c30a796816fb9d,
+    type: 3}
+  distanceBetweenSegments: 10
+  speed: 3
+  diveMagnitude: 1
+  depth: -10
+  state: 0
+  idleTime: 3
+  positionDivingFrom: {x: 0, y: 0, z: 0}

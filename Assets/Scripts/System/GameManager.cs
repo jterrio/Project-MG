@@ -56,7 +56,9 @@ public class GameManager : MonoBehaviour {
     }
 
     private void Update() {
-        CheckPity();
+        if (RoomManager.rm != null) {
+            CheckPity();
+        }
     }
 
 
