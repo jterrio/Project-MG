@@ -15,6 +15,19 @@ public class CullingRooms : MonoBehaviour {
         }
     }
 
+    public void SetCull(GameObject oldRoom, GameObject newRoom) {
+        Room oldR = oldRoom.GetComponent<Room>();
+        Room newR = newRoom.GetComponent<Room>();
+        foreach (GameObject neighbor in oldR.neighbors) {
+            if (neighbor != newRoom.gameObject) {
+                neighbor.gameObject.SetActive(false);
+            }
+        }
+        foreach (GameObject neighbor in newR.neighbors) {
+            neighbor.gameObject.SetActive(true);
+        }
+    }
+
     public void ValidateStartRoom() {
         Room start = RoomManager.rm.currentRoom;
         start.gameObject.SetActive(true);

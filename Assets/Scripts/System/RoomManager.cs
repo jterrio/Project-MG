@@ -91,7 +91,7 @@ public class RoomManager : MonoBehaviour {
     /// </summary>
     /// <param name="r">Entered room</param>
     public void ChangeRoom(Room r) {
-        cr.SetCull(currentRoom, r);
+        //cr.SetCull(currentRoom, r);
         currentRoom = r;
         currentRoom.AddGates();
         currentRoom.ActivateMonsters();
