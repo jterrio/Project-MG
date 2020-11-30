@@ -536,6 +536,18 @@ public class Room : MonoBehaviour {
         return roomArray[x, y].position;
     }
 
+   public Vector3[] GetTwoRandomNodePosition() {
+        Vector3 pos1 = GetRandomNodePosition();
+        Vector3 pos2 = GetRandomNodePosition();
+        while (true) {
+            if (pos1 != pos2) {
+                break;
+            }
+            pos2 = GetRandomNodePosition();
+        }
+        return new Vector3[] { pos1, pos2 };
+    }
+
     /// <summary>
     /// Spawns a boss
     /// </summary>
