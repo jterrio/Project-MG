@@ -8550,6 +8550,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: FarmRoom_1
       objectReference: {fileID: 0}
+    - target: {fileID: 5015161481089550336, guid: bd9c94660c926414a828d43a63439bcb,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5015161481089550339, guid: bd9c94660c926414a828d43a63439bcb,
         type: 3}
       propertyPath: m_LocalPosition.x

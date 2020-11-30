@@ -23,8 +23,8 @@ public class Enemy : MonoBehaviour {
     [Header("Health Bar Settings")]
     public float timeToDisplay = 3f;
     public bool alwaysDisplay = false;
-    private float lastTimeTakenDamage = 0f;
-    private bool hasTakenDamageRecently = false;
+    protected float lastTimeTakenDamage = 0f;
+    protected bool hasTakenDamageRecently = false;
 
     [Header("Physics")]
     public Rigidbody rb;
@@ -38,7 +38,7 @@ public class Enemy : MonoBehaviour {
         NORMAL
     }
 
-    private void Start() {
+    protected void Start() {
         health = healthTotal;
         DisableCollisions();
     }

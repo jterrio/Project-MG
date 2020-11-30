@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7058992118667460067}
   - component: {fileID: -3889438508308836658}
   m_Layer: 0
-  m_Name: Deathapillar
+  m_Name: DeathapillarSplit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -52,7 +52,7 @@ MonoBehaviour:
     startTime: 0
   segmentPrefab: {fileID: 7026462997350106651, guid: fe12eb51f4ca7f6488c30a796816fb9d,
     type: 3}
-  deathapillarPrefab: {fileID: 1003636419490271588, guid: 1a405da49ba3c34478a2809ca9bd3044,
+  deathapillarPrefab: {fileID: 1003636419490271588, guid: aa880e63b3648cc438dba7e81d4c7ede,
     type: 3}
   numberOfSegments: 20
   maxHealth: 0

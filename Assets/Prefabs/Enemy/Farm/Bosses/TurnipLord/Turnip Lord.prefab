@@ -497,6 +497,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7428941775176541551}
     m_Modifications:
+    - target: {fileID: 211726890, guid: 4aa47f3301619a740944a8d217c14436, type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
+    - target: {fileID: 211726890, guid: 4aa47f3301619a740944a8d217c14436, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 211726890, guid: 4aa47f3301619a740944a8d217c14436, type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
+      objectReference: {fileID: 0}
+    - target: {fileID: 211726890, guid: 4aa47f3301619a740944a8d217c14436, type: 3}
+      propertyPath: m_textAlignment
+      value: 65535
+      objectReference: {fileID: 0}
     - target: {fileID: 3282117467593951904, guid: 4aa47f3301619a740944a8d217c14436,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -606,6 +622,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: HealthBarBoss
+      objectReference: {fileID: 0}
+    - target: {fileID: 8978364477340585993, guid: 4aa47f3301619a740944a8d217c14436,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4aa47f3301619a740944a8d217c14436, type: 3}

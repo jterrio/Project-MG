@@ -66,7 +66,7 @@ public class TurnipLord : Enemy {
         ISATTACKING
     }
 
-    private void Start() {
+    private new void Start() {
         transform.position = new Vector3(transform.position.x, transform.position.y - 7, transform.position.z);
         vineCoroutines = new List<Coroutine>();
         spawnedVines = new List<GameObject>();

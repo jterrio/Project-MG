@@ -10025,7 +10025,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 127543
+    m_Bits: 258615
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -10240,6 +10240,8 @@ MonoBehaviour:
   wepFireMulti: 1
   wepDMGMulti: 1
   wepAmmoMulti: 1
+  numberOfBulletBounces: 0
+  piercingShots: 0
   ammoCountText: {fileID: 0}
   moneyCountText: {fileID: 0}
   pm: {fileID: 5891472349960707472}
@@ -10647,8 +10649,6 @@ MonoBehaviour:
     m_Bits: 4627
   shotsPerTrigger: 1
   burstDelay: 0
-  timesToBounceOffEnemies: 0
-  piercingShots: 0
   reloadTime: 0.85
   isReloading: 0
   damage: 10

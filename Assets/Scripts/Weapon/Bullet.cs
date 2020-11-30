@@ -20,7 +20,7 @@ public class Bullet : MonoBehaviour
     }
 
     private void OnCollisionEnter(Collision collision) {
-        if(collision.gameObject.layer == LayerMask.NameToLayer("Bullet")) {
+        if(collision.gameObject.layer == LayerMask.NameToLayer("Bullet") || collision.gameObject.layer == LayerMask.NameToLayer("Bounds")) {
             return;
         }
 
@@ -33,7 +33,7 @@ public class Bullet : MonoBehaviour
                 if (myCollider.gameObject == monsterToIgnore) {
                     return;
                 }
-                Debug.Log("Hit: " + myCollider.gameObject.name + "... Health: " + e.health);
+                //Debug.Log("Hit: " + myCollider.gameObject.name + "... Health: " + e.health);
                 e.TakeDamage(GameManager.gm.p.gun.GetDamage());
                 ItemManager.im.bulletHitDelegate?.Invoke(this.gameObject, this, e.gameObject);
             } else {
@@ -42,7 +42,7 @@ public class Bullet : MonoBehaviour
                 }
                 e = myCollider.gameObject.GetComponentInParent<Enemy>();
                 if(e != null) {
-                    Debug.Log("Hit: " + myCollider.gameObject.name + "... Health: " + e.health);
+                    //Debug.Log("Hit: " + myCollider.gameObject.name + "... Health: " + e.health);
                     e.TakeDamage(GameManager.gm.p.gun.GetDamage());
                     ItemManager.im.bulletHitDelegate?.Invoke(this.gameObject, this, e.gameObject);
                 }
