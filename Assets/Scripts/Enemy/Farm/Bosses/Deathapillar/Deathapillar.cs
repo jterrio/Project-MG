@@ -87,6 +87,7 @@ public class Deathapillar : MonoBehaviour {
     private void Update() {
         if(originalBody == null) {
             originalBody = this;
+            gameObject.name = "Original Body";
             healthBar.gameObject.SetActive(true);
             maxHealth = oldBody.maxHealth;
             currentHealth = oldBody.currentHealth;
@@ -176,14 +177,22 @@ public class Deathapillar : MonoBehaviour {
             segmentObject = Instantiate(segmentPrefab),
             isHead = true
         };
+        Vector3 baseLineSpawn = new Vector3(0, 0, 0);
         head.sp = head.segmentObject.GetComponent<SegmentPart>();
         head.sp.healthTotal = segmentHealth;
-        head.sp.health = newBody[newBody.Length - i].sp.health;
-        head.segmentObject.name = "New Head";
+        if (newBody[newBody.Length - i].segmentObject == null) {
+            Destroy(head.segmentObject.gameObject);
+            head.segmentObject = null;
+        } else {
+            head.sp.health = newBody[newBody.Length - i].sp.health;
+            head.segmentObject.name = "New Head";
+            head.segmentObject.transform.position = new Vector3(0, depth, 0);
+            head.segmentObject.transform.parent = gameObject.transform;
+            baseLineSpawn = head.segmentObject.transform.position;
+        }
         segments[0] = head;
         headSegment = head;
-        head.segmentObject.transform.position = new Vector3(0, depth, 0);
-        head.segmentObject.transform.parent = gameObject.transform;
+
 
         //CREATE BODY
         Segment current = head;
@@ -201,7 +210,7 @@ public class Deathapillar : MonoBehaviour {
                 body.sp.healthTotal = segmentHealth;
                 body.sp.health = newBody[newBody.Length - i + s].sp.health;
                 body.segmentObject.name = s.ToString() + " Split";
-                body.segmentObject.transform.position = new Vector3(head.segmentObject.transform.position.x, head.segmentObject.transform.position.y - (distanceBetweenSegments * s), head.segmentObject.transform.position.z);
+                body.segmentObject.transform.position = new Vector3(baseLineSpawn.x, baseLineSpawn.y - (distanceBetweenSegments * s), baseLineSpawn.z);
                 body.segmentObject.transform.parent = gameObject.transform;
             }
             current.after = body;
@@ -222,6 +231,8 @@ public class Deathapillar : MonoBehaviour {
                 tempNew[y] = segments[y];
             }
             segments = tempNew;
+            CheckSplit();
+            return;
         }
 
         for(int i = 1; i < segments.Length; i++) {
@@ -366,6 +377,10 @@ public class Deathapillar : MonoBehaviour {
     }
 
     public void UpdateHealth() {
+        print(gameObject.name + " health is: " + (currentHealth / maxHealth));
+        if(currentHealth <= 0) {
+            print("nre");
+        }
         healthBarFill.fillAmount = currentHealth / maxHealth;
     }
 
@@ -375,8 +390,12 @@ public class Deathapillar : MonoBehaviour {
                 return false;
             }
         }
-        oldBody = this;
-        originalBody = null;
+        if (originalBody == this) {
+            oldBody = this;
+            originalBody = null;
+        } else {
+            Destroy(this.gameObject);
+        }
         return true;
     }
 

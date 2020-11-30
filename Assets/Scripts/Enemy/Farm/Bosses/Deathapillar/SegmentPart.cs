@@ -15,10 +15,14 @@ public class SegmentPart : Enemy {
 
 
     public override void TakeDamage(float amount) {
-        health -= amount;
-        Deathapillar.originalBody.currentHealth -= amount;
+
+        if (amount > health) {
+            Deathapillar.originalBody.currentHealth -= health;
+        } else {
+            Deathapillar.originalBody.currentHealth -= amount;
+        }
         Deathapillar.originalBody.UpdateHealth();
-        //healthBarFill.fillAmount = health / healthTotal;
+        health -= amount;
         if (health <= 0f) {
             Die();
         }

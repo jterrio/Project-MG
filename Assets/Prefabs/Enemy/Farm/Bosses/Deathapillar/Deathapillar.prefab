@@ -64,7 +64,7 @@ MonoBehaviour:
   state: 0
   idleTime: 3
   positionDivingFrom: {x: 0, y: 0, z: 0}
-  segmentHealth: 100
+  segmentHealth: 30
   healthBar: {fileID: 8698284875980997682}
   healthBarFill: {fileID: 7569559373985354997}
 --- !u!1001 &8110668231773179793
