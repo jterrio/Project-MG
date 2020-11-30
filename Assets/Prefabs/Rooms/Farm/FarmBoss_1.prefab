@@ -6416,11 +6416,10 @@ MonoBehaviour:
   blockades: []
   minMonsterSpawn: 0
   maxMonsterSpawn: 0
-  potentialMonsterSpawns:
-  - {fileID: 7428941775176541546, guid: 081e2574a5e0a8249853b23885ff5dfd, type: 3}
+  potentialMonsterSpawns: []
   monsters: []
   bosses:
-  - {fileID: 7428941775176541546, guid: d2f6f6d14b0246d478470ae1269819a0, type: 3}
+  - {fileID: 1003636419490271588, guid: aa880e63b3648cc438dba7e81d4c7ede, type: 3}
   shopKeeper: {fileID: 0}
   itemPlace: {fileID: 0}
   connectors:

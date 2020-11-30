@@ -50,23 +50,37 @@ MonoBehaviour:
     segmentObject: {fileID: 0}
     sp: {fileID: 0}
     startTime: 0
+  distanceBetweenSegments: 10
   segmentPrefab: {fileID: 7026462997350106651, guid: fe12eb51f4ca7f6488c30a796816fb9d,
     type: 3}
   deathapillarPrefab: {fileID: 1003636419490271588, guid: aa880e63b3648cc438dba7e81d4c7ede,
     type: 3}
   numberOfSegments: 20
+  attackSpot: {fileID: 8375695066231559616, guid: 0b481a3f41219064aafa6beacf82ba69,
+    type: 3}
   maxHealth: 0
   currentHealth: 0
-  distanceBetweenSegments: 10
+  segmentHealth: 30
   journeyTime: 5
   depth: -10
   height: 100
   state: 0
-  idleTime: 3
-  positionDivingFrom: {x: 0, y: 0, z: 0}
-  segmentHealth: 30
+  idleTimeMin: 1
+  idleTimeMax: 3
   healthBar: {fileID: 8698284875980997682}
   healthBarFill: {fileID: 7569559373985354997}
+  deathIntroVolume: 1
+  deathIntro: {fileID: 8300000, guid: dd22005bc2bdb2e4c98ba22c1dc90ca9, type: 3}
+  deathRiseVolume: 1
+  deathRise: {fileID: 8300000, guid: ac7ed26b5a339124f8521a7702253f5e, type: 3}
+  deathDiveVolume: 1
+  deathDive: {fileID: 8300000, guid: a4569da460d8adb49925f4a1b6a9f6d7, type: 3}
+  deathDieVolume: 1
+  deathDie: {fileID: 8300000, guid: a7dbb87f481acc64e92b7eda6bb342c7, type: 3}
+  deathShootVolume: 1
+  deathShoot: {fileID: 8300000, guid: b2e973c3f14ebc6479d088247fb3a8f9, type: 3}
+  deathRumbleVolume: 1
+  deathRumble: {fileID: 8300000, guid: 72b924ab68034574d883e5ccfb4a7558, type: 3}
 --- !u!1001 &8110668231773179793
 PrefabInstance:
   m_ObjectHideFlags: 0

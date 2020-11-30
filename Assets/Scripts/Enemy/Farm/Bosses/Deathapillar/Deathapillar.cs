@@ -5,40 +5,89 @@ using UnityEngine.UI;
 
 public class Deathapillar : MonoBehaviour {
 
+    [Header("Deathapillar Body")]
+    [Tooltip("The body of the monster")]
     public Segment[] segments;
+    [Tooltip("The segment that leads the rest")]
     public Segment headSegment;
-    [Header("Deathapillar Settings")]
-    public GameObject segmentPrefab;
+    [Tooltip("How much space should be between each segment")]
+    public float distanceBetweenSegments = 50f;
 
+    [Header("Deathapillar Settings")]
+    [Tooltip("Reference for creating new body parts")]
+    public GameObject segmentPrefab;
+    [Tooltip("Reference for when the monster splits")]
     public GameObject deathapillarPrefab;
+    [Tooltip("Number of segments to create in body")]
     public int numberOfSegments = 20;
+    public GameObject attackSpot;
+
 
     public static Deathapillar originalBody;
     public static Deathapillar oldBody;
 
+    [Header("Health Settings")]
     public float maxHealth;
     public float currentHealth;
-    public float distanceBetweenSegments = 50f;
+    [Tooltip("How much health each segment should have")]
+    public float segmentHealth;
+    [Header("Journey Settings")]
+    [Tooltip("How long it takes to complete from rise to dive")]
     public float journeyTime = 5f;
+    [Tooltip("How deep to dive into the ground")]
     public float depth = -30f;
+    [Tooltip("How high to go up when rising")]
     public float height = 100f;
     public State state = State.IDLE;
-    public float idleTime = 3f;
+    public float idleTimeMin = 1f;
+    public float idleTimeMax = 3f;
+    private float idleTime = 2f;
     private float startIdleTime;
 
     private Parabola parabola;
-    public Vector3 positionDivingFrom;
+    private Vector3 positionDivingFrom;
     private Vector3 positionToDive;
     private Vector3 centerPoint;
     private Vector3 startRelCenter;
     private Vector3 endRelCenter;
 
-    public float segmentHealth;
+    private Coroutine introCoroutine;
+    private Coroutine riseCoroutine;
+
+    [Header("UI Settings")]
     public RectTransform healthBar;
     public Image healthBarFill;
 
+    [Header("Sound Settings")]
+    [Tooltip("How loud the sound should be")]
+    [Range(0, 1)]
+    public float deathIntroVolume = 1f;
+    public AudioClip deathIntro;
+    [Tooltip("How loud the sound should be")]
+    [Range(0, 1)]
+    public float deathRiseVolume = 1f;
+    public AudioClip deathRise;
+    [Tooltip("How loud the sound should be")]
+    [Range(0, 1)]
+    public float deathDiveVolume = 1f;
+    public AudioClip deathDive;
+    [Tooltip("How loud the sound should be")]
+    [Range(0, 1)]
+    public float deathDieVolume = 1f;
+    public AudioClip deathDie;
+    [Tooltip("How loud the sound should be")]
+    [Range(0, 1)]
+    public float deathShootVolume = 1f;
+    public AudioClip deathShoot;
+    [Tooltip("How loud the sound should be")]
+    [Range(0, 1)]
+    public float deathRumbleVolume = 1f;
+    public AudioClip deathRumble;
+
     public enum State {
         CREATION,
+        INTRO,
+        WAIT,
         IDLE,
         DIVING,
         DEATH
@@ -74,6 +123,7 @@ public class Deathapillar : MonoBehaviour {
     }
 
     private void Start() {
+        transform.position += new Vector3(0, depth, 0);
         if(originalBody == null) {
             state = State.CREATION;
             originalBody = this;
@@ -98,39 +148,52 @@ public class Deathapillar : MonoBehaviour {
 
         switch (state) {
             case State.CREATION:
-                state = State.IDLE;
-                healthBar.gameObject.SetActive(true);
+                state = State.INTRO;
                 maxHealth = segmentHealth * numberOfSegments;
                 currentHealth = maxHealth;
                 CreateBody(numberOfSegments);
                 break;
             case State.IDLE:
                 if(Time.time >= startIdleTime + idleTime) {
-                    Rise();
+                    riseCoroutine = StartCoroutine(Rise());
                     state = State.DIVING;
                 }
                 break;
             case State.DIVING:
-                if (!CheckIfDiving()) {
+                if (!CheckIfDiving() && riseCoroutine == null) {
                     if (CheckDeath()) {
                         state = State.DEATH;
                         break;
                     }
                     CheckSplit();
-                    ResetSegments();
-                    startIdleTime = Time.time;
-                    state = State.IDLE;
+                    StartIdle();
                 }
                 break;
             case State.DEATH:
                 break;
-        }
+            case State.INTRO:
+                DisableCollisions();
+                introCoroutine = StartCoroutine(IntroSequence());
+                state = State.WAIT;
+                break;
+            case State.WAIT:
+                if(introCoroutine == null) {
+                    healthBar.gameObject.SetActive(true);
+                    EnableCollisions();
+                    StartIdle();
+                }
+                break;
 
-        //Rise();
+        }
     }
 
 
-
+    void StartIdle() {
+        ResetSegments();
+        startIdleTime = Time.time;
+        idleTime = Random.Range(idleTimeMin, idleTimeMax);
+        state = State.IDLE;
+    }
 
     void CreateBody(int i) {
         //CREATE SEGMENTS OF LENGTH i
@@ -276,6 +339,7 @@ public class Deathapillar : MonoBehaviour {
         int length2 = segments.Length - i - 1;
         print(length1 + " " + length2);
         GameObject g = Instantiate(deathapillarPrefab);
+        RoomManager.rm.currentRoom.monsters.Add(g);
         Deathapillar dp = g.GetComponent<Deathapillar>();
         dp.CreateBody(length2, segments);
         dp.CheckSplit();
@@ -294,18 +358,26 @@ public class Deathapillar : MonoBehaviour {
 
     }
 
-    void Rise() {
+    IEnumerator Rise() {
         //MOVE BASE TO START
         Vector3[] temp = RoomManager.rm.currentRoom.GetTwoRandomNodePosition();
         transform.position = new Vector3(temp[0].x, depth, temp[0].z);
-        
+
         //MOVE HEAD - SLERP
-        positionDivingFrom = transform.position; //head's position
-        if (this.gameObject == Deathapillar.originalBody) {
-            positionToDive = new Vector3(GameManager.gm.p.transform.position.x, depth, GameManager.gm.p.transform.position.z);
+        positionToDive = transform.position; //head's position
+        
+        if (this == Deathapillar.originalBody) {
+            positionDivingFrom = new Vector3(GameManager.gm.p.transform.position.x, depth, GameManager.gm.p.transform.position.z);
         } else {
-            positionToDive = new Vector3(temp[1].x, depth, temp[1].z);
+            positionDivingFrom = new Vector3(temp[1].x, depth, temp[1].z);
         }
+
+        GameObject attackSpotTemp = Instantiate(attackSpot);
+        attackSpotTemp.transform.position = new Vector3(positionDivingFrom.x, 0.75f, positionDivingFrom.z);
+
+        Destroy(attackSpotTemp, 1.5f);
+        AudioSource.PlayClipAtPoint(deathRumble, attackSpotTemp.transform.position, deathRumbleVolume);
+        yield return new WaitForSeconds(1.5f);
 
         headSegment.startTime = Time.time;
         headSegment.diveCoroutine = StartCoroutine(RiseEnum(headSegment));
@@ -319,10 +391,14 @@ public class Deathapillar : MonoBehaviour {
                 s.diveCoroutine = StartCoroutine(MoveToHeadPosition(s, i));
             }
         }
+
+        riseCoroutine = null;
         
     }
 
     IEnumerator RiseEnum(Segment s) {
+        AudioSource.PlayClipAtPoint(deathRise, positionDivingFrom + new Vector3(0, -depth, 0), deathRiseVolume);
+        bool soundPlayed = false;
         while (true) {
             float fracComplete = (Time.time - s.startTime) / journeyTime;
             if (s.segmentObject == null) {
@@ -330,10 +406,15 @@ public class Deathapillar : MonoBehaviour {
             }
             s.segmentObject.transform.position = parabola.Move(positionDivingFrom, positionToDive, height, fracComplete);
             yield return null;
+            if(fracComplete >= 0.8f && !soundPlayed) {
+                soundPlayed = true;
+                AudioSource.PlayClipAtPoint(deathDive, positionToDive + new Vector3(0, -depth, 0), deathDiveVolume);
+            }
             if(fracComplete >= 1) {
                 break;
             }
         }
+
         s.diveCoroutine = null;
     }
 
@@ -390,13 +471,69 @@ public class Deathapillar : MonoBehaviour {
                 return false;
             }
         }
+        RoomManager.rm.currentRoom.DefeatMonster(gameObject);
         if (originalBody == this) {
             oldBody = this;
             originalBody = null;
         } else {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
         return true;
+    }
+
+    IEnumerator IntroSequence() {
+        journeyTime /= 2f;
+        yield return new WaitForSeconds(3f);
+
+        //MOVE BASE TO START
+        transform.position = new Vector3(GameManager.gm.p.gameObject.transform.position.x + Random.Range(-300f, 300f), depth, GameManager.gm.p.gameObject.transform.position.z + Random.Range(-300f, 300f));
+
+        //MOVE HEAD - SLERP
+        positionDivingFrom = transform.position; //head's position
+        Vector3 temp = RoomManager.rm.currentRoom.roomArray[RoomManager.rm.currentRoom.xLength / 2, RoomManager.rm.currentRoom.yLength / 2].position;
+        positionToDive = new Vector3(temp.x, depth, temp.z);
+
+        headSegment.startTime = Time.time;
+        headSegment.diveCoroutine = StartCoroutine(RiseEnum(headSegment));
+
+        //MOVE EACH BODY SEGMENT TO THE LAST UNTIL AT THE HEAD'S POSITION
+        int i = -1;
+        foreach (Segment s in segments) {
+            i++;
+            if (!s.isHead) {
+                s.startTime = Time.time;
+                s.diveCoroutine = StartCoroutine(MoveToHeadPosition(s, i));
+            }
+        }
+
+        //yield return new WaitForSeconds(1.3f);
+        GameManager.gm.p.audioSource.PlayOneShot(deathIntro, deathIntroVolume);
+
+        while (CheckIfDiving()) {
+            yield return null;
+        }
+        journeyTime *= 2f;
+        introCoroutine = null;
+    }
+
+    void EnableCollisions() {
+        foreach (Segment s in segments) {
+            if (s.segmentObject == null) {
+                continue;
+            }
+            BoxCollider bc = s.segmentObject.GetComponent<BoxCollider>();
+            bc.isTrigger = false;
+        }
+    }
+
+    void DisableCollisions() {
+        foreach(Segment s in segments) {
+            if(s.segmentObject == null) {
+                continue;
+            }
+            BoxCollider bc = s.segmentObject.GetComponent<BoxCollider>();
+            bc.isTrigger = true;
+        }
     }
 
 
