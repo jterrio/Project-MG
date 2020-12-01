@@ -162,6 +162,29 @@ public class GameManager : MonoBehaviour {
         }
         Debug.DrawRay(hostPos, direction, Color.blue, 10f);
         return true;
-    } 
+    }
+
+    public bool IsBlockedByGroundToPlayer(GameObject monster) {
+        RaycastHit hit;
+        Vector3 hostPos = monster.transform.position;
+        Vector3 targetPos = player.transform.position;
+
+        Vector3 direction = targetPos - hostPos;
+        if (Physics.Raycast(hostPos, direction, out hit, Vector3.Distance(hostPos, targetPos), groundMask)) {
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Player")) {
+                //Debug.DrawRay(hostPos, direction, Color.green);
+                return false;
+            } else {
+                Debug.DrawRay(hostPos, direction, Color.red, 10f);
+                return true;
+            }
+        }
+        Debug.DrawRay(hostPos, direction, Color.blue, 10f);
+        return false;
+    }
+
+    public bool HasLineOfSightToPlayer(GameObject monster) {
+        return HasLineOfSight(monster, player);
+    }
 
 }

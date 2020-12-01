@@ -18,9 +18,20 @@ public class Deathapillar : MonoBehaviour {
     public GameObject segmentPrefab;
     [Tooltip("Reference for when the monster splits")]
     public GameObject deathapillarPrefab;
+    [Tooltip("Reference for shooting the laser")]
+    public GameObject laserPrefab;
+    public float laserSpeed = 10f;
     [Tooltip("Number of segments to create in body")]
     public int numberOfSegments = 20;
+    [Tooltip("Min delay for randomizing laser firing")]
+    public float laserFiringMinDelay = 1f;
+    [Tooltip("Max delay for randomizing laser firing")]
+    public float laserFiringMaxDelay = 5f;
     public GameObject attackSpot;
+
+    [Header("Damage Settings")]
+    public int collisionDamage = 2;
+    public int laserDamage = 1;
 
 
     public static Deathapillar originalBody;
@@ -50,6 +61,8 @@ public class Deathapillar : MonoBehaviour {
     private Vector3 centerPoint;
     private Vector3 startRelCenter;
     private Vector3 endRelCenter;
+
+    private bool HasEnteredGroundFirst = false;
 
     private Coroutine introCoroutine;
     private Coroutine riseCoroutine;
@@ -83,6 +96,10 @@ public class Deathapillar : MonoBehaviour {
     [Range(0, 1)]
     public float deathRumbleVolume = 1f;
     public AudioClip deathRumble;
+    [Tooltip("How loud the sound should be")]
+    [Range(0, 1)]
+    public float deathBreakVolume = 1f;
+    public AudioClip deathBreak;
 
     public enum State {
         CREATION,
@@ -189,6 +206,7 @@ public class Deathapillar : MonoBehaviour {
 
 
     void StartIdle() {
+        HasEnteredGroundFirst = false;
         ResetSegments();
         startIdleTime = Time.time;
         idleTime = Random.Range(idleTimeMin, idleTimeMax);
@@ -204,6 +222,11 @@ public class Deathapillar : MonoBehaviour {
             isHead = true
         };
         head.sp = head.segmentObject.GetComponent<SegmentPart>();
+
+        MeshRenderer mr = head.sp.GetComponent<MeshRenderer>();
+        Material[] newMats = new Material[] { head.sp.headMat };
+        mr.materials = newMats;
+
         head.sp.healthTotal = segmentHealth;
         head.sp.health = segmentHealth;
         head.segmentObject.name = "Head Original";
@@ -247,6 +270,9 @@ public class Deathapillar : MonoBehaviour {
             Destroy(head.segmentObject.gameObject);
             head.segmentObject = null;
         } else {
+            MeshRenderer mr = head.sp.GetComponent<MeshRenderer>();
+            Material[] newMats = new Material[] { head.sp.headMat };
+            mr.materials = newMats;
             head.sp.health = newBody[newBody.Length - i].sp.health;
             head.segmentObject.name = "New Head";
             head.segmentObject.transform.position = new Vector3(0, depth, 0);
@@ -321,6 +347,9 @@ public class Deathapillar : MonoBehaviour {
             if (segments[i].segmentObject != null) {
                 segments[i].isHead = true;
                 headSegment = segments[i];
+                MeshRenderer mr = headSegment.sp.GetComponent<MeshRenderer>();
+                Material[] newMats = new Material[] { headSegment.sp.headMat };
+                mr.materials = newMats;
                 temp = new Segment[segments.Length - i];
                 newHeadFound = true;
                 temp[y] = segments[i];
@@ -337,7 +366,6 @@ public class Deathapillar : MonoBehaviour {
     void Split(int i) {
         int length1 = i;
         int length2 = segments.Length - i - 1;
-        print(length1 + " " + length2);
         GameObject g = Instantiate(deathapillarPrefab);
         RoomManager.rm.currentRoom.monsters.Add(g);
         Deathapillar dp = g.GetComponent<Deathapillar>();
@@ -392,6 +420,7 @@ public class Deathapillar : MonoBehaviour {
             }
         }
 
+        AudioSource.PlayClipAtPoint(deathBreak, new Vector3(positionDivingFrom.x, 0.75f, positionDivingFrom.z), deathBreakVolume);
         riseCoroutine = null;
         
     }
@@ -410,11 +439,14 @@ public class Deathapillar : MonoBehaviour {
                 soundPlayed = true;
                 AudioSource.PlayClipAtPoint(deathDive, positionToDive + new Vector3(0, -depth, 0), deathDiveVolume);
             }
-            if(fracComplete >= 1) {
+            if (fracComplete >= 0.9f && !HasEnteredGroundFirst) {
+                AudioSource.PlayClipAtPoint(deathBreak, positionToDive + new Vector3(0, -depth, 0), deathBreakVolume);
+                HasEnteredGroundFirst = true;
+            }
+            if (fracComplete >= 1) {
                 break;
             }
         }
-
         s.diveCoroutine = null;
     }
 
@@ -458,10 +490,6 @@ public class Deathapillar : MonoBehaviour {
     }
 
     public void UpdateHealth() {
-        print(gameObject.name + " health is: " + (currentHealth / maxHealth));
-        if(currentHealth <= 0) {
-            print("nre");
-        }
         healthBarFill.fillAmount = currentHealth / maxHealth;
     }
 
@@ -482,11 +510,13 @@ public class Deathapillar : MonoBehaviour {
     }
 
     IEnumerator IntroSequence() {
-        journeyTime /= 2f;
-        yield return new WaitForSeconds(3f);
-
-        //MOVE BASE TO START
         transform.position = new Vector3(GameManager.gm.p.gameObject.transform.position.x + Random.Range(-300f, 300f), depth, GameManager.gm.p.gameObject.transform.position.z + Random.Range(-300f, 300f));
+
+        journeyTime /= 2f;
+        yield return new WaitForSeconds(1.5f);
+        AudioSource.PlayClipAtPoint(deathBreak, GameManager.gm.player.transform.position + ((transform.position - GameManager.gm.player.transform.position).normalized * 20f), deathBreakVolume);
+        
+        yield return new WaitForSeconds(1.5f);
 
         //MOVE HEAD - SLERP
         positionDivingFrom = transform.position; //head's position
@@ -512,6 +542,7 @@ public class Deathapillar : MonoBehaviour {
         while (CheckIfDiving()) {
             yield return null;
         }
+        yield return new WaitForSeconds(1.5f);
         journeyTime *= 2f;
         introCoroutine = null;
     }

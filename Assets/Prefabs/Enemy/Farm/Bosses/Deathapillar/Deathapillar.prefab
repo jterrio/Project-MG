@@ -55,12 +55,19 @@ MonoBehaviour:
     type: 3}
   deathapillarPrefab: {fileID: 1003636419490271588, guid: 1a405da49ba3c34478a2809ca9bd3044,
     type: 3}
+  laserPrefab: {fileID: 5700801043103299296, guid: e67f9d03122cc654f9a9a7b6f75ed15e,
+    type: 3}
+  laserSpeed: 120
   numberOfSegments: 20
+  laserFiringMinDelay: 0.5
+  laserFiringMaxDelay: 1.5
   attackSpot: {fileID: 8375695066231559616, guid: 0b481a3f41219064aafa6beacf82ba69,
     type: 3}
+  collisionDamage: 4
+  laserDamage: 2
   maxHealth: 0
   currentHealth: 0
-  segmentHealth: 30
+  segmentHealth: 200
   journeyTime: 5
   depth: -10
   height: 100
@@ -80,7 +87,9 @@ MonoBehaviour:
   deathShootVolume: 1
   deathShoot: {fileID: 8300000, guid: b2e973c3f14ebc6479d088247fb3a8f9, type: 3}
   deathRumbleVolume: 1
-  deathRumble: {fileID: 8300000, guid: 72b924ab68034574d883e5ccfb4a7558, type: 3}
+  deathRumble: {fileID: 8300000, guid: 5972168e352f7b1488d0b6c435606cf7, type: 3}
+  deathBreakVolume: 1
+  deathBreak: {fileID: 8300000, guid: 3778e2bc3ce094742a65b89b2a41794d, type: 3}
 --- !u!1001 &8110668231773179793
 PrefabInstance:
   m_ObjectHideFlags: 0

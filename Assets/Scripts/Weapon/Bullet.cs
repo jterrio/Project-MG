@@ -23,6 +23,9 @@ public class Bullet : MonoBehaviour
         if(collision.gameObject.layer == LayerMask.NameToLayer("Bullet") || collision.gameObject.layer == LayerMask.NameToLayer("Bounds")) {
             return;
         }
+        if(gameObject == null) {
+            return;
+        }
 
         Collider myCollider = collision.contacts[0].otherCollider;
  

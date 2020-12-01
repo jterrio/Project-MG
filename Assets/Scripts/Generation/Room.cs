@@ -166,7 +166,7 @@ public class Room : MonoBehaviour {
         GameObject shopKeep = Instantiate(shopKeeper);
         shopKeep.transform.position = floorBase.transform.position;
         shopKeep.transform.localScale = new Vector3(3f, 3f, 3f);
-        int pos = GetDirectionofEntrance(neighbors[0]);
+        int pos = GetDirectionofEntrance(neighbors[0]); //TODO: FIX INDEX WAS OUTSIDE THE BOUNDS OF THE ARRAY
 
         GameObject item1 = Instantiate(itemPlace);
         GameObject item2 = Instantiate(itemPlace);

@@ -75,11 +75,12 @@ public class Player : MonoBehaviour {
             return;
         }
         lastTimeTakenDMG = Time.time;
-        audioSource.PlayOneShot(damageSound);
         healthCurrent -= d;
         UpdateHealth();
         if (healthCurrent <= 0) {
             Die();
+        } else {
+            audioSource.PlayOneShot(damageSound);
         }
     }
 
