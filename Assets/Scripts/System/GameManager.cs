@@ -46,6 +46,12 @@ public class GameManager : MonoBehaviour {
     public LayerMask groundMask;
     public LayerMask groundEnemy;
 
+    public enum State {
+        MAINMENU,
+        GAMEPLAY
+    }
+
+
     private void Awake() {
         if(gm == null) {
             gm = this;
@@ -53,6 +59,7 @@ public class GameManager : MonoBehaviour {
             Destroy(this);
         }
         DontDestroyOnLoad(this);
+        AudioSource a;
     }
 
     private void Update() {
@@ -60,6 +67,8 @@ public class GameManager : MonoBehaviour {
             CheckPity();
         }
     }
+
+
 
 
     public void SetLastTimeDamaged() {

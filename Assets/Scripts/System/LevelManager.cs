@@ -8,6 +8,9 @@ public class LevelManager : MonoBehaviour {
 
     private Coroutine levelCoroutine;
 
+    public Animator musicaAnim;
+    private float waitTimeStart;
+
     [Header("Main Menu")]
     public Camera mainMenuCamera;
     public MainMenuCamera mmc;
@@ -65,19 +68,27 @@ public class LevelManager : MonoBehaviour {
     }
 
     IEnumerator LoadLevel(string level) {
+        waitTimeStart = Time.time;
+        musicaAnim.SetTrigger("FadeOut");
         UIManager.ui.loadScreenPanel.gameObject.SetActive(true);
         AsyncOperation a = SceneManager.LoadSceneAsync(level);
-        //a.allowSceneActivation = false;
-        while (a.progress < 0.9) {
+        a.allowSceneActivation = false;
+        while (a.progress < 0.9f) {
             UIManager.ui.loadBarFill.fillAmount = (a.progress / 1);
             yield return null;
         }
-        //a.allowSceneActivation = true;
+        UIManager.ui.loadBarFill.fillAmount = 1f;
+
+        while(Time.time < waitTimeStart + MusicManager.mm.waitTime) {
+            yield return null;
+        }
+        a.allowSceneActivation = true;
     }
 
 
     private void OnLevelWasLoaded(int level) {
         print("Level " + level.ToString() + " was loaded!");
+        MusicManager.mm.PlayBGM(MusicManager.mm.farmMusic);
         GameManager.gm.FindPlayer();
 
         RoomManager.rm.CreateFloorLayout();

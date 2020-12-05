@@ -58,7 +58,8 @@ public class SegmentPart : Enemy {
 
             SegmentLaser sl = laser.GetComponent<SegmentLaser>();
             sl.speed = Deathapillar.originalBody.laserSpeed;
-            AudioSource.PlayClipAtPoint(Deathapillar.originalBody.deathShoot, transform.position, Deathapillar.originalBody.deathShootVolume);
+            audioSource.PlayOneShot(Deathapillar.originalBody.deathShoot, Deathapillar.originalBody.deathShootVolume);
+            //AudioSource.PlayClipAtPoint(Deathapillar.originalBody.deathShoot, transform.position, Deathapillar.originalBody.deathShootVolume);
             Destroy(laser, 3f);
         }
 

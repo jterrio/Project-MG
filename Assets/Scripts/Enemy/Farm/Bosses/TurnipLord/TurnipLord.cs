@@ -162,7 +162,8 @@ public class TurnipLord : Enemy {
     IEnumerator SpawnAttackSpawn(int n) {
         int nCount = 0;
         while (nCount < n) {
-            PlaySound(spawnMinion, spawnMinionVolume);
+            audioSource.PlayOneShot(spawnMinion, spawnMinionVolume);
+            //PlaySound(spawnMinion, spawnMinionVolume);
             nCount++;
             float randomAngle = Random.Range(0f, Mathf.PI * 2f);
             Vector3 spawnPoint = minionSpawnPoint.transform.position + (new Vector3(Mathf.Sin(randomAngle), 0f, Mathf.Cos(randomAngle)).normalized * 10f);
@@ -222,6 +223,7 @@ public class TurnipLord : Enemy {
 
     IEnumerator Harvest() {
         yield return new WaitForSeconds(shakeBeforeRiseTime);
+        MusicManager.mm.PlayBGM(MusicManager.mm.turnipLordMusic);
         Vector3 originalCamPos = GameManager.gm.playerCamera.transform.localPosition;
         float elapsed = 0f;
         bool hasPlayedSound = false;

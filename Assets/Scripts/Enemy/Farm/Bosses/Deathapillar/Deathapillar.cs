@@ -28,6 +28,7 @@ public class Deathapillar : MonoBehaviour {
     [Tooltip("Max delay for randomizing laser firing")]
     public float laserFiringMaxDelay = 5f;
     public GameObject attackSpot;
+    public AudioSource audioSource;
 
     [Header("Damage Settings")]
     public int collisionDamage = 2;
@@ -195,6 +196,7 @@ public class Deathapillar : MonoBehaviour {
                 break;
             case State.WAIT:
                 if(introCoroutine == null) {
+                    MusicManager.mm.PlayBGM(MusicManager.mm.deathMusic);
                     healthBar.gameObject.SetActive(true);
                     EnableCollisions();
                     StartIdle();
@@ -389,22 +391,24 @@ public class Deathapillar : MonoBehaviour {
     IEnumerator Rise() {
         //MOVE BASE TO START
         Vector3[] temp = RoomManager.rm.currentRoom.GetTwoRandomNodePosition();
-        transform.position = new Vector3(temp[0].x, depth, temp[0].z);
 
         //MOVE HEAD - SLERP
-        positionToDive = transform.position; //head's position
+        positionToDive = new Vector3(temp[0].x, depth, temp[0].z); //head's position
         
         if (this == Deathapillar.originalBody) {
             positionDivingFrom = new Vector3(GameManager.gm.p.transform.position.x, depth, GameManager.gm.p.transform.position.z);
         } else {
             positionDivingFrom = new Vector3(temp[1].x, depth, temp[1].z);
         }
+        transform.position = positionDivingFrom;
 
         GameObject attackSpotTemp = Instantiate(attackSpot);
         attackSpotTemp.transform.position = new Vector3(positionDivingFrom.x, 0.75f, positionDivingFrom.z);
 
         Destroy(attackSpotTemp, 1.5f);
-        AudioSource.PlayClipAtPoint(deathRumble, attackSpotTemp.transform.position, deathRumbleVolume);
+
+        audioSource.PlayOneShot(deathRumble, deathRumbleVolume);
+        //.PlayClipAtPoint(deathRumble, attackSpotTemp.transform.position, deathRumbleVolume);
         yield return new WaitForSeconds(1.5f);
 
         headSegment.startTime = Time.time;
@@ -426,7 +430,8 @@ public class Deathapillar : MonoBehaviour {
     }
 
     IEnumerator RiseEnum(Segment s) {
-        AudioSource.PlayClipAtPoint(deathRise, positionDivingFrom + new Vector3(0, -depth, 0), deathRiseVolume);
+        //AudioSource.PlayClipAtPoint(deathRise, positionDivingFrom + new Vector3(0, -depth, 0), deathRiseVolume);
+        s.sp.audioSource.PlayOneShot(deathRise, deathRiseVolume);
         bool soundPlayed = false;
         while (true) {
             float fracComplete = (Time.time - s.startTime) / journeyTime;
@@ -437,10 +442,10 @@ public class Deathapillar : MonoBehaviour {
             yield return null;
             if(fracComplete >= 0.8f && !soundPlayed) {
                 soundPlayed = true;
-                AudioSource.PlayClipAtPoint(deathDive, positionToDive + new Vector3(0, -depth, 0), deathDiveVolume);
+                s.sp.audioSource.PlayOneShot(deathDive, deathDiveVolume); //(deathDive, positionToDive + new Vector3(0, -depth, 0), deathDiveVolume);
             }
             if (fracComplete >= 0.9f && !HasEnteredGroundFirst) {
-                AudioSource.PlayClipAtPoint(deathBreak, positionToDive + new Vector3(0, -depth, 0), deathBreakVolume);
+                s.sp.audioSource.PlayOneShot(deathRise, deathRiseVolume); //(deathBreak, positionToDive + new Vector3(0, -depth, 0), deathBreakVolume);
                 HasEnteredGroundFirst = true;
             }
             if (fracComplete >= 1) {

@@ -28,10 +28,14 @@ public class Enemy : MonoBehaviour {
 
     [Header("Physics")]
     public Rigidbody rb;
+    public bool canFly = false;
 
     [Header("Rewards")]
     public float minMoneyReward = 0f;
     public float maxMoneyReward = 0f;
+
+    [Header("Audio Source")]
+    public AudioSource audioSource;
 
 
     public enum EnemyType{

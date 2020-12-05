@@ -6443,7 +6443,7 @@ MonoBehaviour:
   - {fileID: 6330303041834662213}
   - {fileID: 2097174323010523552}
   neighbors: []
-  maxNeighbors: 4
+  maxNeighbors: 2
 --- !u!1 &5015161481713113082
 GameObject:
   m_ObjectHideFlags: 0

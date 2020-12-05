@@ -70,6 +70,21 @@ public class RoomManager : MonoBehaviour {
     void Start() {
         if (debugMode) {
             CreateFloorLayout();
+            DebugValidNodes();
+        }
+    }
+
+
+    void DebugValidNodes() {
+        //generate objects on nodes that are invalid
+        for (int u = 0; u < xLength; u++) {
+            for (int y = 0; y < yLength; y++) {
+                if(roomArray[u, y].isValid) {
+                    continue;
+                }
+                GameObject g = Instantiate(testObject);
+                g.transform.position = new Vector3(u * nodeLength, 0, y * nodeLength);
+            }
         }
     }
 
@@ -91,7 +106,9 @@ public class RoomManager : MonoBehaviour {
     /// </summary>
     /// <param name="r">Entered room</param>
     public void ChangeRoom(Room r) {
-        //cr.SetCull(currentRoom, r);
+        if(r.roomType == Room.RoomType.BOSS) {
+            MusicManager.mm.am.SetTrigger("FadeOut");
+        }
         currentRoom = r;
         currentRoom.AddGates();
         currentRoom.ActivateMonsters();
@@ -151,6 +168,7 @@ public class RoomManager : MonoBehaviour {
 
         //generate initial room / min
         int minNumberOfRooms = Random.Range(minMin, maxMin);
+        //print(minNumberOfRooms + " have been chosen to be created");
         int initialX = Random.Range(0, xLength - 1);
         int initialY = Random.Range(0, yLength - 1);
 
@@ -172,6 +190,9 @@ public class RoomManager : MonoBehaviour {
         //generate rooms
         Node currentNode = roomArray[initialX, initialY];
         currentNode.isTaken = true;
+
+        createdRooms.Add(currentNode);
+        endRoomNodes = new List<Node>();
         for (int i = 1; i < minNumberOfRooms;) {
             i += GenerateDoors(currentNode);
             currentNode = GetRandomEndNode();
@@ -187,10 +208,10 @@ public class RoomManager : MonoBehaviour {
 
 
         //generate boss
-        GenerateSpecialRoom(initialX, initialY, Room.RoomType.BOSS);
+        //GenerateSpecialRoom(initialX, initialY, Room.RoomType.BOSS);
 
         //generate other special rooms
-        GenerateSpecialRoom(initialX, initialY, Room.RoomType.SHOP);
+        //GenerateSpecialRoom(initialX, initialY, Room.RoomType.SHOP);
 
 
         //Camera
@@ -200,6 +221,7 @@ public class RoomManager : MonoBehaviour {
         //Validation
         ValidateNodeNeighbors();
         cr.ValidateStartRoom();
+        print(createdRooms.Count + " rooms have been created!");
 
     }
 
@@ -219,7 +241,7 @@ public class RoomManager : MonoBehaviour {
     void GenerateSpecialRoom(int intX, int intY, Room.RoomType rt) {
         GameObject room;
         if(rt == Room.RoomType.SHOP || rt == Room.RoomType.BOSS) {
-            List<Vector2> potentialLoc= GetPotentialEndRooms(intX, intY);
+            List<Vector2> potentialLoc= GetPotentialEndRoom(intX, intY);
             int pickedSpawn = Random.Range(0, potentialLoc.Count);
 
             if (rt == Room.RoomType.SHOP) {
@@ -252,47 +274,58 @@ public class RoomManager : MonoBehaviour {
 
 
     /// <summary>
-    /// Navigates through the floor to find coordinates that have open neighbors that dont connect to other rooms (empty spaces)
+    /// Navigates through the floor to find coordinates that have open neighbors that dont connect to more than 1 room. Returns the neighbors
     /// </summary>
     /// <param name="x">Initial X of start</param>
     /// <param name="y">Initial Y of start</param>
     /// <returns></returns>
-    List<Vector2> GetPotentialEndRooms(int x, int y) {
+    List<Vector2> GetPotentialEndRoom(int x, int y) {
         List<Vector2> toReturn = new List<Vector2>();
         foreach (Node n in createdRooms) {
-            Room nRoom = n.room.GetComponent<Room>();
-            if (nRoom.roomType != Room.RoomType.NORMAL) {
-                continue;
-            }
-            Vector2[] neighbors = GetNeighborNodesPositions(n);
-            for (int i = 0; i < neighbors.Length; i++) {
-                if (!IsValidCoordinate((int)neighbors[i].x, (int)neighbors[i].y)) {
-                    continue;
-                }
-                if (roomArray[(int)neighbors[i].x, (int)neighbors[i].y].isTaken) {
-                    continue;
-                }
-                int nCount = 0;
-                Vector2[] nextNeighbors = GetNeighborNodesPositions(roomArray[(int)neighbors[i].x, (int)neighbors[i].y]);
-                for (int t = 0; t < nextNeighbors.Length; t++) {
-                    if (IsValidCoordinate((int)nextNeighbors[t].x, (int)nextNeighbors[t].y)) {
-                        if (roomArray[(int)nextNeighbors[t].x, (int)nextNeighbors[t].y].isTaken) {
-                            Room r = roomArray[(int)nextNeighbors[t].x, (int)nextNeighbors[t].y].room.GetComponent<Room>();
-                            if (r.roomType != Room.RoomType.NORMAL) {
-                                nCount += 4;
-                                break;
-                            }
-                            nCount++;
-                        }
-                    }
-                }
-                if (nCount == 1) {
-                    toReturn.Add(new Vector2(neighbors[i].x, neighbors[i].y));
-                }
+            List<Vector2> temp = EndRoomsFromNode(n);
+            foreach(Vector2 v in temp) {
+                toReturn.Add(v);
             }
         }
         return toReturn;
     }
+
+    List<Vector2> EndRoomsFromNode(Node n) {
+        Room nRoom = n.room.GetComponent<Room>();
+        List<Vector2> toReturn = new List<Vector2>();
+        if (nRoom.roomType != Room.RoomType.NORMAL || nRoom.neighbors.Length >= nRoom.maxNeighbors) {
+            return toReturn;
+        }
+        Vector2[] neighbors = GetNeighborNodesPositions(n);
+        for (int i = 0; i < neighbors.Length; i++) {
+            if (!IsValidCoordinate((int)neighbors[i].x, (int)neighbors[i].y)) {
+                continue;
+            }
+            if (roomArray[(int)neighbors[i].x, (int)neighbors[i].y].isTaken) {
+                continue;
+            }
+            int nCount = 0;
+            Vector2[] nextNeighbors = GetNeighborNodesPositions(roomArray[(int)neighbors[i].x, (int)neighbors[i].y]);
+            for (int t = 0; t < nextNeighbors.Length; t++) {
+                if (IsValidCoordinate((int)nextNeighbors[t].x, (int)nextNeighbors[t].y)) {
+                    if (roomArray[(int)nextNeighbors[t].x, (int)nextNeighbors[t].y].isTaken) {
+                        Room r = roomArray[(int)nextNeighbors[t].x, (int)nextNeighbors[t].y].room.GetComponent<Room>();
+                        if (r.roomType != Room.RoomType.NORMAL) {
+                            nCount += 4;
+                            break;
+                        }
+                        nCount++;
+                    }
+                }
+            }
+            if (nCount == 1) {
+                toReturn.Add(new Vector2(neighbors[i].x, neighbors[i].y));
+            }
+        }
+        return toReturn;
+    }
+
+
 
     /// <summary>
     /// Sets neighbors closed where paths do not lead anywhere, blocking them
@@ -326,28 +359,45 @@ public class RoomManager : MonoBehaviour {
         Vector2[] toCheck = GetNeighborNodesPositions(n);
         List<Vector2> validRoomPositions = new List<Vector2>();
         List<Vector2> invalidRoomPositions = new List<Vector2>();
-        endRoomNodes = new List<Node>();
+
         Room room = n.room.GetComponent<Room>();
 
-        //Split valid and invalid rooms
+
+        //create random number of doors and their rooms
+        int doors = Mathf.FloorToInt((Random.Range(2, room.maxNeighbors + 1) + Random.Range(2, room.maxNeighbors + 1) + Random.Range(2, room.maxNeighbors + 1)) / 3);
+        List<GameObject> newRoomList = new List<GameObject>();
+        //print("Goal neighbors: " + doors);
+        //Split valid and invalid rooms and count existing neighbors
         for (int i = 0; i < 4; i++) {
             if(!IsValidCoordinate((int)toCheck[i].x, (int)toCheck[i].y)) {
                 SetClosedNeighbor(n, room, (int)toCheck[i].x, (int)toCheck[i].y, true);
                 continue;
             }
-            if(roomArray[(int)toCheck[i].x, (int)toCheck[i].y].isValid && !roomArray[(int)toCheck[i].x, (int)toCheck[i].y].isTaken) {
-                validRoomPositions.Add(toCheck[i]);
-                
+            if(roomArray[(int)toCheck[i].x, (int)toCheck[i].y].isValid) {
+                if(!roomArray[(int)toCheck[i].x, (int)toCheck[i].y].isTaken) {
+                    if (!CheckIfCreationWouldCauseInvalid(roomArray[(int)toCheck[i].x, (int)toCheck[i].y])) {
+                        validRoomPositions.Add(toCheck[i]);
+                    } else {
+                        doors--;
+                        newRoomList.Add(roomArray[(int)toCheck[i].x, (int)toCheck[i].y].room);
+                        invalidRoomPositions.Add(toCheck[i]);
+                    }
+                } else {
+                    doors--;
+                    newRoomList.Add(roomArray[(int)toCheck[i].x, (int)toCheck[i].y].room);
+                    invalidRoomPositions.Add(toCheck[i]);
+                }
             } else {
                 invalidRoomPositions.Add(toCheck[i]);
             }
         }
 
-        //create random number of doors and their rooms
-        int doors = Mathf.FloorToInt((Random.Range(1, room.maxNeighbors) + Random.Range(1, room.maxNeighbors) + Random.Range(1, room.maxNeighbors)) / 3);
-        List<GameObject> newRoomList = new List<GameObject>();
-        while(validRoomPositions.Count != 0) {
-            int randomRoomInt = Random.Range(0, validRoomPositions.Count - 1);
+        int newRoomsCreatedCount = 0;
+
+        //print(n.xPos + ", " + n.yPos + " has " + doors + " doors before generation with " + validRoomPositions.Count + " possible chocies, plus " + invalidRoomPositions.Count + " invalids");
+        while (validRoomPositions.Count > 0 && doors > 0) {
+            newRoomsCreatedCount++;
+            int randomRoomInt = Random.Range(0, validRoomPositions.Count);
             GameObject newRoom = GenerateRoom((int)validRoomPositions[randomRoomInt].x, (int)validRoomPositions[randomRoomInt].y);
             newRoomList.Add(newRoom);
             createdRooms.Add(roomArray[(int)validRoomPositions[randomRoomInt].x, (int)validRoomPositions[randomRoomInt].y]);
@@ -355,35 +405,35 @@ public class RoomManager : MonoBehaviour {
             roomArray[(int)validRoomPositions[randomRoomInt].x, (int)validRoomPositions[randomRoomInt].y].room = newRoom;
             CheckEndNode(roomArray[(int)validRoomPositions[randomRoomInt].x, (int)validRoomPositions[randomRoomInt].y]);
             validRoomPositions.RemoveAt(randomRoomInt);
+
             doors--;
-            if(doors <= 0) {
-                break;
-            }
         }
 
 
         //add rooms to node neighbors
         room.neighbors = newRoomList.ToArray();
+        //print(n.xPos + ", " + n.yPos + " has " + room.neighbors.Length + " neighbors after generation!");
 
         //add remaining potential spots to invalids
         foreach(Vector2 v in validRoomPositions) {
-            invalidRoomPositions.Add(v);
             roomArray[(int)v.x, (int)v.y].isValid = false;
         }
 
+        /*
+        //set node to not have doors to invalids
         //set node to not have doors to invalids
         foreach(Vector2 v in invalidRoomPositions) {
             SetClosedNeighbor(n, room, (int)v.x, (int)v.y, true);
             roomArray[(int)v.x, (int)v.y].isValid = false;
-        }
-
-        //Recheck end nodes
-        RecheckAllEndNodes();
+        }*/
 
         //Disable rooms for culling purposes
         cr.CullOutRoom(room);
+        //print("End nodes before re-checking: " + endRoomNodes.Count);
+        RecheckAllEndNodes();
+        //print("End nodes after re-checking: " + endRoomNodes.Count);
 
-        return newRoomList.Count;
+        return newRoomsCreatedCount;
     }
 
     /// <summary>
@@ -416,7 +466,7 @@ public class RoomManager : MonoBehaviour {
     /// Verifies the nodes in the end node list are, in fact, end nodes
     /// </summary>
     void RecheckAllEndNodes() {
-        foreach(Node n in new List<Node>(endRoomNodes)) {
+        foreach (Node n in new List<Node>(endRoomNodes)) {
             CheckEndNode(n);
         }
     }
@@ -426,31 +476,35 @@ public class RoomManager : MonoBehaviour {
     /// </summary>
     /// <returns>End Room node</returns>
     Node GetRandomEndNode() {
-        if(endRoomNodes.Count == 0) {
+        if (endRoomNodes.Count == 0) {
             return null;
         }
         return endRoomNodes[Random.Range(0, endRoomNodes.Count - 1)];
     }
-
     /// <summary>
-    /// Determines if a node is an end node (is empty and would only have 1 link to another room)
+    /// Determines if a node has room to expand with 1 empty spot
     /// </summary>
     /// <param name="n">Empty node</param>
     /// <returns></returns>
     bool CheckEndNode(Node n) {
-        Vector2[] neighbors = GetNeighborNodesPositions(n);
-        for(int i = 0; i < 4; i++) {
-            if (IsValidCoordinate((int)neighbors[i].x, (int)neighbors[i].y)) {
-                //print("Pair " + neighbors[i].x.ToString() + " " + neighbors[i].y.ToString());
-                Node b = roomArray[(int)neighbors[i].x, (int)neighbors[i].y];
-                if(!b.isTaken && b.isValid) {
-                    AddNodeEnd(n);
-                    return true;
-                }
+        List<Vector2> temp = EndRoomsFromNode(n);
+        //print(temp.Count + " end rooms found from the node of: " + n.xPos + ", " + n.yPos);
+        if (temp.Count > 0) {
+            AddNodeEnd(n);
+            return true;
             }
-        }
         RemoveNodeEnd(n);
         return false;
+    }
+
+    /// <summary>
+    /// Adds node to the list of end nodes
+    /// </summary>
+    /// <param name="n">Room node</param>
+    void AddNodeEnd(Node n) {
+        if (!endRoomNodes.Contains(n)) {
+            endRoomNodes.Add(n);
+        }
     }
 
     /// <summary>
@@ -464,16 +518,6 @@ public class RoomManager : MonoBehaviour {
             return true;
         }
         return false;
-    }
-
-    /// <summary>
-    /// Adds node to the list of end nodes
-    /// </summary>
-    /// <param name="n">Room node</param>
-    void AddNodeEnd(Node n) {
-        if (!endRoomNodes.Contains(n)) {
-            endRoomNodes.Add(n);
-        }
     }
 
     /// <summary>
@@ -531,10 +575,26 @@ public class RoomManager : MonoBehaviour {
     /// <param name="y">Position to create Y</param>
     /// <returns>Gameobject for the Room</returns>
     GameObject GenerateRoom(int x, int y) {
-        GameObject r = Instantiate(potentialRoomSpawns[0]);
+        GameObject r = Instantiate(potentialRoomSpawns[Random.Range(0, potentialRoomSpawns.Count)]);
         r.transform.position = new Vector3(x * nodeLength, 0, y * nodeLength);
         r.gameObject.name = "X: " + (x).ToString() + ", Y: " + (y).ToString();
         return r;
+    }
+
+    bool CheckIfCreationWouldCauseInvalid(Node n) {
+        Vector2[] v = GetNeighborNodesPositions(n);
+        for (int i = 0; i < 4; i++) {
+            if (!IsValidCoordinate((int)v[i].x, (int)v[i].y)) {
+                continue;
+            }
+            if(roomArray[(int)v[i].x, (int)v[i].y].isTaken) {
+                Room r = roomArray[(int)v[i].x, (int)v[i].y].room.GetComponent<Room>();
+                if(r.neighbors.Length + 1 > r.maxNeighbors) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /// <summary>

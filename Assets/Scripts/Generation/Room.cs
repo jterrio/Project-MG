@@ -11,8 +11,10 @@ public class Room : MonoBehaviour {
     public RoomType roomType = RoomType.NORMAL;
 
     [Header("Node Settings")]
-    [Tooltip("Number of nodes within the room in X and Z space")]
-    public int xLength, yLength;
+    [Tooltip("Number of nodes within the room in X space")]
+    public int xLength;
+    [Tooltip("Number of nodes within the room in Z space")]
+    public int yLength;
     [Tooltip("Size of node in world space")]
     public float nodeLength;
 
@@ -90,7 +92,8 @@ public class Room : MonoBehaviour {
     public GameObject[] blockers;
     [Tooltip("Neighbor rooms")]
     public GameObject[] neighbors;
-    [Tooltip("Max number of neighbors")]
+    [Tooltip("Max number of neighbors. WARNING: NEED AT LEAST ONE ROOM IN GENERATION THAT TAKES AT LEAST 2 NEIGHBORS")]
+    [Range(1, 4)]
     public int maxNeighbors;
 
     [System.Serializable]
@@ -98,7 +101,9 @@ public class Room : MonoBehaviour {
         public int xPos;
         public int yPos;
         public Vector3 position;
+        public GameObject grass;
         public bool isTaken = false;
+        public bool isHole = false;
     }
 
     public enum RoomType {
@@ -108,8 +113,9 @@ public class Room : MonoBehaviour {
         NORMAL
     }
 
-    private void Start() {
+    protected void Start() {
         CreateGrid();
+        InvalidateEntranceEnemySpawns();
         GenerateRoom();
     }
 
@@ -129,11 +135,14 @@ public class Room : MonoBehaviour {
                     yPos = t,
                     position = new Vector3(firstNode.x + (nodeLength * i), firstNode.y, firstNode.z - (nodeLength * t))
                 };
+
                 roomArray[i, t] = n;
                 GameObject grass = Instantiate(floorGrass);
+                roomArray[i, t].grass = grass;
                 grass.transform.parent = walls.transform;
                 grass.transform.position = new Vector3(firstNode.x + (nodeLength * i), 0.3f, firstNode.z - (nodeLength * t));
                 grass.transform.localScale = new Vector3(0.7f, 1f, 0.7f);
+                grass.name = "X: " + i.ToString() + ", Y: " + t.ToString();
             }
         }
     }
@@ -264,6 +273,98 @@ public class Room : MonoBehaviour {
             return 0;
         }
 
+    }
+
+
+    void InvalidateEntranceEnemySpawns() {
+        List<Vector2> coorToInvalidate = new List<Vector2>();
+        foreach(GameObject g in neighbors) {
+            int i = GetDirectionofEntrance(g);
+            switch (i) {
+                case 0:
+                    //print("SOUTH");
+                    coorToInvalidate.Add(new Vector2(((xLength - 1) / 2) - 1, yLength - 1));
+                    coorToInvalidate.Add(new Vector2((xLength - 1) / 2, yLength - 1));
+                    coorToInvalidate.Add(new Vector2(((xLength - 1) / 2) + 1, yLength - 1));
+                    coorToInvalidate.Add(new Vector2(((xLength - 1) / 2) + 2, yLength - 1));
+
+                    //coorToInvalidate.Add(new Vector2(((xLength - 1) / 2) - 1, yLength - 3));
+                    //coorToInvalidate.Add(new Vector2((xLength - 1) / 2, yLength - 3));
+                    //coorToInvalidate.Add(new Vector2(((xLength - 1) / 2) + 1, yLength - 3));
+                    //coorToInvalidate.Add(new Vector2(((xLength - 1) / 2) + 2, yLength - 3));
+
+                    coorToInvalidate.Add(new Vector2(((xLength - 1) / 2) - 1, yLength - 2));
+                    coorToInvalidate.Add(new Vector2((xLength - 1) / 2, yLength - 2));
+                    coorToInvalidate.Add(new Vector2(((xLength - 1) / 2) + 1, yLength - 2));
+                    coorToInvalidate.Add(new Vector2(((xLength - 1) / 2) + 2, yLength - 2));
+
+                    //SOUTH
+                    break;
+                case 1:
+                    //print("WEST");
+                    coorToInvalidate.Add(new Vector2(0, ((yLength - 1) / 2) - 1));
+                    coorToInvalidate.Add(new Vector2(1, ((yLength - 1) / 2) - 1));
+                    //coorToInvalidate.Add(new Vector2(2, ((yLength - 1) / 2) - 1));
+
+                    coorToInvalidate.Add(new Vector2(0, ((yLength - 1) / 2)));
+                    coorToInvalidate.Add(new Vector2(1, ((yLength - 1) / 2)));
+                    ///coorToInvalidate.Add(new Vector2(2, ((yLength - 1) / 2)));
+
+                    coorToInvalidate.Add(new Vector2(0, ((yLength - 1) / 2) +1 ));
+                    coorToInvalidate.Add(new Vector2(1, ((yLength - 1) / 2) +1 ));
+                    //coorToInvalidate.Add(new Vector2(2, ((yLength - 1) / 2) +1));
+
+                    coorToInvalidate.Add(new Vector2(0, ((yLength - 1) / 2) +2));
+                    coorToInvalidate.Add(new Vector2(1, ((yLength - 1) / 2) +2));
+                    //coorToInvalidate.Add(new Vector2(2, ((yLength - 1) / 2) +2));
+
+                    //WEST
+                    break;
+                case 2:
+                    //print("NORTH");
+                    coorToInvalidate.Add(new Vector2(((xLength - 1)/ 2) , 0));
+                    coorToInvalidate.Add(new Vector2(((xLength - 1)/ 2) , 1));
+                    //coorToInvalidate.Add(new Vector2(((xLength - 1)/ 2) , 2));
+
+                    coorToInvalidate.Add(new Vector2(((xLength - 1) / 2) -1, 0));
+                    coorToInvalidate.Add(new Vector2(((xLength - 1) / 2) -1, 1));
+                    //coorToInvalidate.Add(new Vector2(((xLength - 1) / 2) -1, 2));
+
+                    coorToInvalidate.Add(new Vector2(((xLength - 1) / 2) +1, 0));
+                    coorToInvalidate.Add(new Vector2(((xLength - 1) / 2) +1, 1));
+                    //coorToInvalidate.Add(new Vector2(((xLength - 1) / 2) +1, 2));
+
+                    coorToInvalidate.Add(new Vector2(((xLength - 1) / 2) +2, 0));
+                    coorToInvalidate.Add(new Vector2(((xLength - 1) / 2) +2, 1));
+                    //coorToInvalidate.Add(new Vector2(((xLength - 1) / 2) +2, 2));
+
+                    //NORTH
+                    break;
+                case 3:
+                    //print("EAST");
+                    coorToInvalidate.Add(new Vector2(xLength - 1, (yLength-1) / 2));
+                    coorToInvalidate.Add(new Vector2(xLength - 2, (yLength-1) / 2));
+                    //coorToInvalidate.Add(new Vector2(xLength - 3, (yLength-1) / 2));
+
+                    coorToInvalidate.Add(new Vector2(xLength - 1, ((yLength - 1) / 2) + 1));
+                    coorToInvalidate.Add(new Vector2(xLength - 2, ((yLength - 1) / 2) + 1));
+                    //coorToInvalidate.Add(new Vector2(xLength - 3, ((yLength - 1) / 2) + 1));
+
+                    coorToInvalidate.Add(new Vector2(xLength - 1, ((yLength - 1) / 2) + 2));
+                    coorToInvalidate.Add(new Vector2(xLength - 2, ((yLength - 1) / 2) + 2));
+                    //coorToInvalidate.Add(new Vector2(xLength - 3, ((yLength - 1) / 2) + 2));
+
+                    coorToInvalidate.Add(new Vector2(xLength - 1, ((yLength - 1) / 2) -1));
+                    coorToInvalidate.Add(new Vector2(xLength - 2, ((yLength - 1) / 2) -1));
+                    //coorToInvalidate.Add(new Vector2(xLength - 3, ((yLength - 1) / 2) -1));
+
+                    //EAST
+                    break;
+            }
+        }
+        foreach(Vector2 v in coorToInvalidate) {
+            roomArray[(int)v.x, (int)v.y].isTaken = true;
+        }
     }
 
     /// <summary>
@@ -552,7 +653,7 @@ public class Room : MonoBehaviour {
     /// Spawns a boss
     /// </summary>
     void SpawnBoss() {
-        GameObject boss = Instantiate(bosses[0]);
+        GameObject boss = Instantiate(bosses[Random.Range(0, bosses.Count)]);
         boss.transform.parent = this.gameObject.transform;
         boss.transform.position = roomArray[xLength / 2, yLength / 2].position;
         monsters.Add(boss);
@@ -581,6 +682,7 @@ public class Room : MonoBehaviour {
 
     public void ClearRoom() {
         if (roomType == RoomType.BOSS) {
+            MusicManager.mm.TransitionBGM(MusicManager.mm.farmMusic);
             ClearFloor();
         }
         if (roomType != RoomType.SHOP) {
