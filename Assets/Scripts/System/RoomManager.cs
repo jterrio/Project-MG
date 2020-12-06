@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class RoomManager : MonoBehaviour {
 
@@ -160,6 +161,8 @@ public class RoomManager : MonoBehaviour {
     /// </summary>
     public void CreateFloorLayout() {
 
+        float startTime = Time.time;
+
         //generate size
         xLength = Random.Range(min, max);
         yLength = Random.Range(min, max);
@@ -169,8 +172,8 @@ public class RoomManager : MonoBehaviour {
         //generate initial room / min
         int minNumberOfRooms = Random.Range(minMin, maxMin);
         //print(minNumberOfRooms + " have been chosen to be created");
-        int initialX = Random.Range(0, xLength - 1);
-        int initialY = Random.Range(0, yLength - 1);
+        int initialX = xLength / 2;
+        int initialY = yLength / 2;
 
 
         //generate nodes
@@ -191,7 +194,7 @@ public class RoomManager : MonoBehaviour {
         Node currentNode = roomArray[initialX, initialY];
         currentNode.isTaken = true;
 
-        createdRooms.Add(currentNode);
+        //createdRooms.Add(currentNode);
         endRoomNodes = new List<Node>();
         for (int i = 1; i < minNumberOfRooms;) {
             i += GenerateDoors(currentNode);
@@ -221,7 +224,9 @@ public class RoomManager : MonoBehaviour {
         //Validation
         ValidateNodeNeighbors();
         cr.ValidateStartRoom();
+
         print(createdRooms.Count + " rooms have been created!");
+        print("It took " + (Time.time - startTime));
 
     }
 
@@ -392,12 +397,15 @@ public class RoomManager : MonoBehaviour {
             }
         }
 
+        validRoomPositions = SortRoomsByEmptyNeighbors(validRoomPositions);
+
         int newRoomsCreatedCount = 0;
 
         //print(n.xPos + ", " + n.yPos + " has " + doors + " doors before generation with " + validRoomPositions.Count + " possible chocies, plus " + invalidRoomPositions.Count + " invalids");
         while (validRoomPositions.Count > 0 && doors > 0) {
             newRoomsCreatedCount++;
-            int randomRoomInt = Random.Range(0, validRoomPositions.Count);
+            //int randomRoomInt = Random.Range(0, validRoomPositions.Count);
+            int randomRoomInt = 0;
             GameObject newRoom = GenerateRoom((int)validRoomPositions[randomRoomInt].x, (int)validRoomPositions[randomRoomInt].y);
             newRoomList.Add(newRoom);
             createdRooms.Add(roomArray[(int)validRoomPositions[randomRoomInt].x, (int)validRoomPositions[randomRoomInt].y]);
@@ -428,12 +436,86 @@ public class RoomManager : MonoBehaviour {
         }*/
 
         //Disable rooms for culling purposes
-        cr.CullOutRoom(room);
+        //cr.CullOutRoom(room);
         //print("End nodes before re-checking: " + endRoomNodes.Count);
         RecheckAllEndNodes();
         //print("End nodes after re-checking: " + endRoomNodes.Count);
 
         return newRoomsCreatedCount;
+    }
+
+
+    List<Vector2> SortRoomsByEmptyNeighbors(List<Vector2> validRooms) {
+
+        List<Vector2> newRoomList = new List<Vector2>();
+
+        List<Vector2> newPos = new List<Vector2>();
+
+        for (int i = 0; i < validRooms.Count; i++) {
+            Node node = roomArray[(int)validRooms[i].x, (int)validRooms[i].y];
+            Vector2[] neighbors = GetNeighborNodesPositions(node);
+            int c = 0;
+            foreach (Vector2 v in neighbors) {
+                if (IsValidCoordinate((int)v.x, (int)v.y)) {
+                    if (roomArray[(int)v.x, (int)v.y].isTaken) {
+                        c++;
+                    }
+                }
+            }
+            newPos.Add(new Vector2(i, c));
+        }
+
+        List<Vector2> neighbors1 = new List<Vector2>();
+        List<Vector2> neighbors2 = new List<Vector2>();
+        List<Vector2> neighbors3 = new List<Vector2>();
+        List<Vector2> neighbors4 = new List<Vector2>();
+
+        foreach(Vector2 v in newPos) {
+            switch ((int)v.y) {
+                case 1:
+                    neighbors1.Add(v);
+                    break;
+                case 2:
+                    neighbors2.Add(v);
+                    break;
+                case 3:
+                    neighbors3.Add(v);
+                    break;
+                case 4:
+                    neighbors4.Add(v);
+                    break;
+
+            }
+        }
+        neighbors1 = ShuffleList(neighbors1);
+        neighbors2 = ShuffleList(neighbors2);
+        neighbors3 = ShuffleList(neighbors3);
+        neighbors4 = ShuffleList(neighbors4);
+
+        foreach(Vector2 v in neighbors1) {
+            newRoomList.Add(validRooms[(int)v.x]);
+        }
+        foreach (Vector2 v in neighbors2) {
+            newRoomList.Add(validRooms[(int)v.x]);
+        }
+        foreach (Vector2 v in neighbors3) {
+            newRoomList.Add(validRooms[(int)v.x]);
+        }
+        foreach (Vector2 v in neighbors4) {
+            newRoomList.Add(validRooms[(int)v.x]);
+        }
+
+        return newRoomList;
+    }
+
+    List<Vector2> ShuffleList(List<Vector2> v) {
+        for (int i = 0; i < v.Count; i++) {
+            Vector2 temp = v[i];
+            int randomIndex = Random.Range(i, v.Count);
+            v[i] = v[randomIndex];
+            v[randomIndex] = temp;
+        }
+        return v;
     }
 
     /// <summary>
