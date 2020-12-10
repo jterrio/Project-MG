@@ -35,6 +35,12 @@ public class Player : MonoBehaviour {
     public Image healthFill;
     public AudioSource audioSource;
 
+    private bool uplifting = false;
+    private float timeStartedUplifting = 0f;
+
+
+
+
     void Start() {
         //gun = GetComponentInChildren<Gun>();
         ammoCountText = UIManager.ui.ammoCount.GetComponent<TMPro.TextMeshProUGUI>();
@@ -48,6 +54,7 @@ public class Player : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         UpdateAmmoCount();
+        CheckIfLift();
     }
 
     /// <summary>
@@ -64,6 +71,23 @@ public class Player : MonoBehaviour {
         }
     }
 
+
+    public void SetUplift(bool v) {
+        uplifting = v;
+        if (v) {
+            timeStartedUplifting = Time.time;
+        }
+    }
+
+    void CheckIfLift() {
+        if(Time.time >= timeStartedUplifting + 0.5f) {
+            SetUplift(false);
+        }
+    }
+
+    public bool IsUplifting() {
+        return uplifting;
+    }
 
     /// <summary>
     /// Deals damage to the player and determines if they should die

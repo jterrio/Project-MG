@@ -65,8 +65,8 @@ MonoBehaviour:
   attackSpot: {fileID: 8375695066231559616, guid: 0b481a3f41219064aafa6beacf82ba69,
     type: 3}
   audioSource: {fileID: -8908307695784324969}
-  collisionDamage: 4
-  laserDamage: 2
+  collisionDamage: 2
+  laserDamage: 1
   maxHealth: 0
   currentHealth: 0
   segmentHealth: 200

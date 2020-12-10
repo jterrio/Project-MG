@@ -504,6 +504,7 @@ Transform:
   - {fileID: 8127636528944564905}
   - {fileID: 994518929782949417}
   - {fileID: 2232121606858876721}
+  - {fileID: 2246129506684642533}
   m_Father: {fileID: 5015161481089550339}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6397,6 +6398,9 @@ MonoBehaviour:
   nodeLength: 10
   floorBase: {fileID: 5015161481713113082}
   walls: {fileID: 787361921}
+  solidGroundParent: {fileID: 8017834785349371445}
+  solidGround: {fileID: 4667913806723643527, guid: 59b6178ed271ef240b8f3e85e98fa496,
+    type: 3}
   floorGrass: {fileID: 1076262714343606, guid: 68cbfa1438162b243ac02fb9e3e30581, type: 3}
   minimapObject: {fileID: 707513971}
   minEnvironment: 0
@@ -6414,6 +6418,10 @@ MonoBehaviour:
   blockadeSpawn: {fileID: 0}
   blockadeCornerSpawn: {fileID: 0}
   blockades: []
+  holes: []
+  holeWall: {fileID: 0}
+  holeDepth: -20
+  holeType: 0
   minMonsterSpawn: 0
   maxMonsterSpawn: 0
   potentialMonsterSpawns: []
@@ -9867,6 +9875,36 @@ Transform:
   - {fileID: 7046508283628484863}
   m_Father: {fileID: 787361922}
   m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8017834785349371445
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2246129506684642533}
+  m_Layer: 17
+  m_Name: FloorParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2246129506684642533
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8017834785349371445}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 787361922}
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8045442909514742231
 GameObject:

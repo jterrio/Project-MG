@@ -22,7 +22,8 @@ public class Room : MonoBehaviour {
     [Tooltip("Reference to size of the floor space for calculations and spawning")]
     public GameObject floorBase;
     public GameObject walls;
-    [Tooltip("Debug Object")]
+    public GameObject solidGroundParent;
+    public GameObject solidGround;
     public GameObject floorGrass;
     public GameObject minimapObject;
 
@@ -61,7 +62,19 @@ public class Room : MonoBehaviour {
     [Tooltip("Blockades that was spawned during generation")]
     public List<GameObject> blockades;
 
-
+    [Header("Hole Generation")]
+    [Tooltip("Where holes should be generated")]
+    public List<Vector2> holes;
+    [Tooltip("Reference to the object that will be used as a wall")]
+    public GameObject holeWall;
+    [Tooltip("Reference to the object that will be used as a wall hole to trigger uplift and damage")]
+    public GameObject holeFallTriger;
+    [Tooltip("Reference to the object that will be used to block LOS with enemies over holes")]
+    public GameObject holeWallLOS;
+    [Tooltip("How deep the pits/holes should be in the room")]
+    public float holeDepth = -20f;
+    [Tooltip("What the holes should consist of (for damage purposes)")]
+    public HoleType holeType = HoleType.NONE;
 
     [Header("Enemy Generation")]
     [Tooltip("Min monsters that will spawn")]
@@ -102,6 +115,7 @@ public class Room : MonoBehaviour {
         public int yPos;
         public Vector3 position;
         public GameObject grass;
+        public GameObject ground;
         public bool isTaken = false;
         public bool isHole = false;
     }
@@ -113,8 +127,16 @@ public class Room : MonoBehaviour {
         NORMAL
     }
 
+    public enum HoleType {
+        NONE,
+        FIRE,
+        SPIKES,
+        POISON
+    }
+
     protected void Start() {
         CreateGrid();
+        NullHoles();
         InvalidateEntranceEnemySpawns();
         GenerateRoom();
     }
@@ -126,6 +148,7 @@ public class Room : MonoBehaviour {
         roomArray = new Node[xLength, yLength];
         float roomRadius = floorBase.transform.localScale.x / 2;
         Vector3 firstNode = new Vector3(floorBase.transform.position.x - roomRadius + (nodeLength / 2), floorBase.transform.position.y + 1, floorBase.transform.position.z + roomRadius - (nodeLength / 2));
+        floorBase.gameObject.SetActive(false);
 
         //Floor generation
         for(int i = 0; i < xLength; i++) {
@@ -138,6 +161,12 @@ public class Room : MonoBehaviour {
 
                 roomArray[i, t] = n;
                 GameObject grass = Instantiate(floorGrass);
+
+                GameObject ground = Instantiate(solidGround);
+                ground.transform.position = new Vector3(firstNode.x + (nodeLength * i), 0f, firstNode.z - (nodeLength * t));
+                ground.transform.parent = solidGroundParent.transform;
+                roomArray[i, t].ground = ground;
+
                 roomArray[i, t].grass = grass;
                 grass.transform.parent = walls.transform;
                 grass.transform.position = new Vector3(firstNode.x + (nodeLength * i), 0.3f, firstNode.z - (nodeLength * t));
@@ -248,32 +277,7 @@ public class Room : MonoBehaviour {
         stand.transform.parent = shopKeep.transform;
     }
 
-    /// <summary>
-    /// Get the direction of the entrance of the room (for special rooms)
-    /// </summary>
-    /// <param name="entrance"></param>
-    /// <returns></returns>
-    int GetDirectionofEntrance(GameObject entrance) {
-        float difX = entrance.transform.position.x - this.gameObject.transform.position.x;
-        float difZ = entrance.transform.position.z - this.gameObject.transform.position.z;
-        if(difX > 0) {
-            //EAST
-            return 3;
-        }else if(difX < 0) {
-            //WEST
-            return 1;
-        }else if(difZ > 0) {
-            //NORTH
-            return 2;
-        }else if(difZ < 0) {
-            //SOUTH
-            return 0;
-        } else {
-            print("Warning! Coordinate math error!");
-            return 0;
-        }
 
-    }
 
 
     void InvalidateEntranceEnemySpawns() {
@@ -412,7 +416,7 @@ public class Room : MonoBehaviour {
         while (blockades.Count < blockToSpawn && timeout < ((xLength - 1) * (yLength - 1))) {
             int x = Random.Range(1, xLength - 1);
             int y = Random.Range(1, yLength - 1);
-            if (hs.Contains(new Vector2(x, y))) {
+            if (hs.Contains(new Vector2(x, y)) || holes.Contains(new Vector2(x, y))) {
                 timeout++;
                 continue;
             }
@@ -431,6 +435,10 @@ public class Room : MonoBehaviour {
                     for(int t = 0; t < 4; t++) {
                         int index = Random.Range(0, potPath.Count);
                         if(IsValidCoordinate((int)potPath[index].x, (int)potPath[index].y) && !hs.Contains(new Vector2((int)potPath[index].x, (int)potPath[index].y)) && (int)potPath[index].x < xLength - 1 && (int)potPath[index].y < yLength - 1 && (int)potPath[index].x >= 1 && (int)potPath[index].y >= 1) {
+                            if(roomArray[(int)potPath[index].x, (int)potPath[index].y].isHole) {
+                                potPath.RemoveAt(index);
+                                continue;
+                            }
                             hs.Add(new Vector2((int)potPath[index].x, (int)potPath[index].y));
                             validPath.Add(new Vector2((int)potPath[index].x, (int)potPath[index].y));
                             xCoord = (int)potPath[index].x;
@@ -538,7 +546,7 @@ public class Room : MonoBehaviour {
     /// <param name="y">New y</param>
     /// <param name="xx">Old x</param>
     /// <param name="yy">Old y</param>
-    /// <returns></returns>
+    /// <returns>0 = south; 1 = west; 2 = north; 3 = east</returns>
     int GetDirection(int x, int y, int xx, int yy) {
         int difX = xx - x;
         int difY = yy - y;
@@ -547,21 +555,52 @@ public class Room : MonoBehaviour {
         switch (difX) {
 
             case -1:
+                //west
                 return 3;
             case 0:
                 switch (difY) {
                     case -1:
+                        //NORTH
                         return 2;
                     case 1:
+                        //SOUTH
                         return 0;
                 }
                 break;
             case 1:
+                //east
                 return 1;
             default:
                 return 0;
         }
         return 0;
+    }
+
+        /// <summary>
+    /// Get the direction of the entrance of the room (for special rooms)
+    /// </summary>
+    /// <param name="entrance"></param>
+    /// <returns></returns>
+    int GetDirectionofEntrance(GameObject entrance) {
+        float difX = entrance.transform.position.x - this.gameObject.transform.position.x;
+        float difZ = entrance.transform.position.z - this.gameObject.transform.position.z;
+        if(difX > 0) {
+            //WEST
+            return 3;
+        }else if(difX < 0) {
+            //EAST
+            return 1;
+        }else if(difZ > 0) {
+            //NORTH
+            return 2;
+        }else if(difZ < 0) {
+            //SOUTH
+            return 0;
+        } else {
+            print("Warning! Coordinate math error!");
+            return 0;
+        }
+
     }
 
     bool IsValidCoordinate(int x, int y) {
@@ -594,7 +633,7 @@ public class Room : MonoBehaviour {
         while (monsters.Count < monstersToSpawn || timeout >= ((xLength - 1) * (yLength - 1))) {
             int x = Random.Range(0, xLength - 1);
             int y = Random.Range(0, yLength - 1);
-            if (roomArray[x, y].isTaken) {
+            if (roomArray[x, y].isTaken || roomArray[x, y].isHole) {
                 timeout++;
                 continue;
             }
@@ -679,6 +718,7 @@ public class Room : MonoBehaviour {
         }
         return false;
     }
+
 
     public void ClearRoom() {
         if (roomType == RoomType.BOSS) {
@@ -808,4 +848,51 @@ public class Room : MonoBehaviour {
         }
  
     }
+
+
+    public void NullHoles() {
+        foreach (Vector2 v in holes) {
+            roomArray[(int)v.x, (int)v.y].isHole = true;
+            Destroy(roomArray[(int)v.x, (int)v.y].grass);
+            roomArray[(int)v.x, (int)v.y].ground.transform.position += new Vector3(0, holeDepth, 0);
+            roomArray[(int)v.x, (int)v.y].grass = null;
+            Vector2[] neighbors = GetNeighborNodesPositions(roomArray[(int)v.x, (int)v.y]);
+
+            GameObject trigger = Instantiate(holeFallTriger);
+            trigger.transform.position = roomArray[(int)v.x, (int)v.y].ground.transform.position + new Vector3(0f, holeDepth * -0.75f, 0f);
+            trigger.transform.parent = roomArray[(int)v.x, (int)v.y].ground.transform;
+
+            BoxCollider bc = trigger.GetComponent<BoxCollider>();
+            bc.size = new Vector3(nodeLength, 1f, nodeLength);
+
+
+            foreach (Vector2 n in neighbors) {
+                if(!holes.Contains(n)) {
+                    GameObject wall = Instantiate(holeWall);
+                    wall.transform.position = roomArray[(int)v.x, (int)v.y].ground.transform.position;
+                    int i = GetDirection((int)v.x, (int)v.y, (int)n.x, (int)n.y);
+                    wall.name = n.x + ", " + n.y + ": " + i;
+                    wall.transform.parent = roomArray[(int)v.x, (int)v.y].ground.transform;
+                    switch (i) {
+                        case 0:
+                            wall.transform.position += new Vector3(0f, 0f, nodeLength / -2);
+                            break;
+                        case 1:
+                            wall.transform.Rotate(0f, 90f, 0f);
+                            wall.transform.position += new Vector3(nodeLength / 2, 0f, 0f);
+                            break;
+                        case 2:
+                            wall.transform.position += new Vector3(0f, 0f, nodeLength / 2);
+                            break;
+                        case 3:
+                            wall.transform.Rotate(0f, 90f, 0f);
+                            wall.transform.position += new Vector3(nodeLength / -2, 0f, 0f);
+                            break;
+                    }
+                    wall.transform.localScale = new Vector3(wall.transform.localScale.x, holeDepth * -2, wall.transform.localScale.z);
+                }
+            }
+        }
+    }
+
 }

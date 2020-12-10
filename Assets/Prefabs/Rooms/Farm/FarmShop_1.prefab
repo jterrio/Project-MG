@@ -2543,6 +2543,9 @@ MonoBehaviour:
   nodeLength: 10
   floorBase: {fileID: 1501441185771461335}
   walls: {fileID: 5859005021426417068}
+  solidGroundParent: {fileID: 1709174013547512682}
+  solidGround: {fileID: 4667913806723643527, guid: 59b6178ed271ef240b8f3e85e98fa496,
+    type: 3}
   floorGrass: {fileID: 1076262714343606, guid: 68cbfa1438162b243ac02fb9e3e30581, type: 3}
   minimapObject: {fileID: 5859005021834547758}
   minEnvironment: 500
@@ -2563,6 +2566,10 @@ MonoBehaviour:
   blockadeCornerSpawn: {fileID: 4491641775454652310, guid: 223191d10846e2f408943ac279254b90,
     type: 3}
   blockades: []
+  holes: []
+  holeWall: {fileID: 0}
+  holeDepth: -20
+  holeType: 0
   minMonsterSpawn: 0
   maxMonsterSpawn: 0
   potentialMonsterSpawns: []
@@ -3001,6 +3008,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasCleared: 0
+--- !u!1 &1709174013547512682
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1140102054008501283}
+  m_Layer: 17
+  m_Name: FloorParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1140102054008501283
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1709174013547512682}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5859005021426417071}
+  m_RootOrder: 16
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1762271523121873041
 GameObject:
   m_ObjectHideFlags: 0
@@ -7730,6 +7767,7 @@ Transform:
   - {fileID: 2415183230250321796}
   - {fileID: 6666000027194395396}
   - {fileID: 5743576889553578524}
+  - {fileID: 1140102054008501283}
   m_Father: {fileID: 1501441186192639278}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

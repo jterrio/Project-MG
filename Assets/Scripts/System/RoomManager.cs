@@ -16,6 +16,7 @@ public class RoomManager : MonoBehaviour {
     public int min, max;
     [Tooltip("Numbers used for min and max generation of rooms")]
     public int minMin, maxMin;
+    public GameObject startingRoom;
     [Space(10)]
     [HideInInspector]
     public int xLength, yLength;
@@ -211,10 +212,10 @@ public class RoomManager : MonoBehaviour {
 
 
         //generate boss
-        //GenerateSpecialRoom(initialX, initialY, Room.RoomType.BOSS);
+        GenerateSpecialRoom(initialX, initialY, Room.RoomType.BOSS);
 
         //generate other special rooms
-        //GenerateSpecialRoom(initialX, initialY, Room.RoomType.SHOP);
+        GenerateSpecialRoom(initialX, initialY, Room.RoomType.SHOP);
 
 
         //Camera
@@ -265,7 +266,7 @@ public class RoomManager : MonoBehaviour {
             room.GetComponent<Room>().roomType = rt;
             room.gameObject.SetActive(false);
         } else if(rt == Room.RoomType.START) {
-            room = Instantiate(potentialRoomSpawns[0]);
+            room = Instantiate(startingRoom);
             room.transform.position = new Vector3(intX * nodeLength, 0, intY * nodeLength);
             GameManager.gm.playerMovement.Warp(new Vector3(room.transform.position.x, 2, room.transform.position.z));
             currentRoom = room.GetComponent<Room>();
@@ -298,6 +299,10 @@ public class RoomManager : MonoBehaviour {
     List<Vector2> EndRoomsFromNode(Node n) {
         Room nRoom = n.room.GetComponent<Room>();
         List<Vector2> toReturn = new List<Vector2>();
+        if (nRoom.neighbors.Length >= nRoom.maxNeighbors) {
+            return toReturn;
+        }
+
         if (nRoom.roomType != Room.RoomType.NORMAL || nRoom.neighbors.Length >= nRoom.maxNeighbors) {
             return toReturn;
         }
@@ -436,7 +441,7 @@ public class RoomManager : MonoBehaviour {
         }*/
 
         //Disable rooms for culling purposes
-        //cr.CullOutRoom(room);
+        cr.CullOutRoom(room);
         //print("End nodes before re-checking: " + endRoomNodes.Count);
         RecheckAllEndNodes();
         //print("End nodes after re-checking: " + endRoomNodes.Count);

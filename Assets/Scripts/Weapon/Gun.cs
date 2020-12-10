@@ -160,7 +160,7 @@ public class Gun : MonoBehaviour {
 
         //If the player is aiming at something, the bullet will towards that object (not directly straight), unless there is nothing to aim at, then it will go directly straight
         if (Physics.Raycast(GameManager.gm.playerCamera.transform.position, GameManager.gm.playerCamera.transform.forward, out hit, Mathf.Infinity, hitLayerMask)) {
-            print(hit.collider.gameObject.name);
+            //print(hit.collider.gameObject.name);
             v = hit.point;
         } else {
             v = GameManager.gm.playerCamera.transform.position + (GameManager.gm.playerCamera.transform.forward * 50f);

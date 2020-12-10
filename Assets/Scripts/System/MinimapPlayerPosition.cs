@@ -19,7 +19,7 @@ public class MinimapPlayerPosition : MonoBehaviour {
             if(hit.collider.gameObject != old) {
                 GameManager.gm.playerMinimapObject.transform.position = hit.collider.gameObject.transform.position + new Vector3(0, 10f, 0);
                 GameManager.gm.playerMinimapObject.SetActive(true);
-                RoomManager.rm.cr.SetCull(old.transform.parent.parent.gameObject, hit.collider.gameObject.transform.parent.parent.gameObject);
+                RoomManager.rm.cr.SetCull(old.transform.parent.gameObject, hit.collider.gameObject.transform.parent.gameObject);
                 old = hit.collider.gameObject;
                 return;
             }

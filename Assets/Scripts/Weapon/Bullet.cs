@@ -19,31 +19,30 @@ public class Bullet : MonoBehaviour
         ItemManager.im.bulletVelocityDelegate?.Invoke(this.gameObject);
     }
 
-    private void OnCollisionEnter(Collision collision) {
-        if(collision.gameObject.layer == LayerMask.NameToLayer("Bullet") || collision.gameObject.layer == LayerMask.NameToLayer("Bounds")) {
+    
+    private void OnTriggerEnter(Collider collider) {
+        if(collider.gameObject.layer == LayerMask.NameToLayer("Bullet") || collider.gameObject.layer == LayerMask.NameToLayer("Bounds")) {
             return;
         }
         if(gameObject == null) {
             return;
         }
-
-        Collider myCollider = collision.contacts[0].otherCollider;
  
 
-        if (myCollider.gameObject.layer == LayerMask.NameToLayer("Enemy")) {
-            Enemy e = myCollider.gameObject.GetComponent<Enemy>();
+        if (collider.gameObject.layer == LayerMask.NameToLayer("Enemy")) {
+            Enemy e = collider.gameObject.GetComponent<Enemy>();
             if(e != null) {
-                if (myCollider.gameObject == monsterToIgnore) {
+                if (collider.gameObject == monsterToIgnore) {
                     return;
                 }
                 //Debug.Log("Hit: " + myCollider.gameObject.name + "... Health: " + e.health);
                 e.TakeDamage(GameManager.gm.p.gun.GetDamage());
                 ItemManager.im.bulletHitDelegate?.Invoke(this.gameObject, this, e.gameObject);
             } else {
-                if (myCollider.gameObject.transform.parent.gameObject == monsterToIgnore) {
+                if (collider.gameObject.transform.parent.gameObject == monsterToIgnore) {
                     return;
                 }
-                e = myCollider.gameObject.GetComponentInParent<Enemy>();
+                e = collider.gameObject.GetComponentInParent<Enemy>();
                 if(e != null) {
                     //Debug.Log("Hit: " + myCollider.gameObject.name + "... Health: " + e.health);
                     e.TakeDamage(GameManager.gm.p.gun.GetDamage());
@@ -51,11 +50,48 @@ public class Bullet : MonoBehaviour
                 }
             }
         }
-
-
-        GameObject g = Instantiate(hitEffect, collision.contacts[0].point, Quaternion.LookRotation(collision.contacts[0].normal));
-        Destroy(g, 4f);
+        //Destroy(g, 4f);
         Destroy(this.gameObject);
-    }
+    } 
+
+    /*
+   private void OnCollisionEnter(Collision collision) {
+       if(collision.gameObject.layer == LayerMask.NameToLayer("Bullet") || collision.gameObject.layer == LayerMask.NameToLayer("Bounds")) {
+           return;
+       }
+       if(gameObject == null) {
+           return;
+       }
+
+       Collider myCollider = collision.contacts[0].otherCollider;
+
+
+       if (myCollider.gameObject.layer == LayerMask.NameToLayer("Enemy")) {
+           Enemy e = myCollider.gameObject.GetComponent<Enemy>();
+           if(e != null) {
+               if (myCollider.gameObject == monsterToIgnore) {
+                   return;
+               }
+               //Debug.Log("Hit: " + myCollider.gameObject.name + "... Health: " + e.health);
+               e.TakeDamage(GameManager.gm.p.gun.GetDamage());
+               ItemManager.im.bulletHitDelegate?.Invoke(this.gameObject, this, e.gameObject);
+           } else {
+               if (myCollider.gameObject.transform.parent.gameObject == monsterToIgnore) {
+                   return;
+               }
+               e = myCollider.gameObject.GetComponentInParent<Enemy>();
+               if(e != null) {
+                   //Debug.Log("Hit: " + myCollider.gameObject.name + "... Health: " + e.health);
+                   e.TakeDamage(GameManager.gm.p.gun.GetDamage());
+                   ItemManager.im.bulletHitDelegate?.Invoke(this.gameObject, this, e.gameObject);
+               }
+           }
+       }
+
+
+       GameObject g = Instantiate(hitEffect, collision.contacts[0].point, Quaternion.LookRotation(collision.contacts[0].normal));
+       Destroy(g, 4f);
+       Destroy(this.gameObject);
+   } */
 
 }
