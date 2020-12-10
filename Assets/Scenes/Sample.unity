@@ -13805,10 +13805,14 @@ MonoBehaviour:
   potentialRoomSpawns:
   - {fileID: 5015161481089550336, guid: bd9c94660c926414a828d43a63439bcb, type: 3}
   - {fileID: 5015161481089550336, guid: ad8a64cb726339d418d061716957fd63, type: 3}
+  - {fileID: 5015161481089550336, guid: 423eaac579382ed44aa49e5328b619ff, type: 3}
+  roomSpawnWeights: 3c0000001e0000000a000000
   potentialBossRoomSpawns:
   - {fileID: 5015161481089550336, guid: 5dd06b21df2045341b0172fefa263b78, type: 3}
+  bossSpawnWeights: []
   potentialShopRoomSpawns:
   - {fileID: 1501441186192639277, guid: 2cb3e675e183dfd48aafedfb544eb605, type: 3}
+  shopSpawnWeights: []
   createdRooms: []
   testObject: {fileID: 1743956916}
   currentRoom: {fileID: 0}
@@ -19313,7 +19317,7 @@ MonoBehaviour:
     m_Bits: 4096
   LOS:
     serializedVersion: 2
-    m_Bits: 16640
+    m_Bits: 278784
   minimap:
     serializedVersion: 2
     m_Bits: 2048

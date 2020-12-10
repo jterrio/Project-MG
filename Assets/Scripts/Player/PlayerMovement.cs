@@ -63,6 +63,7 @@ public class PlayerMovement : MonoBehaviour {
         rb.AddForce(rb.rotation * move, ForceMode.Impulse);
         if (!IsGrounded && rb.velocity.y <= airTime) {
             Vector3 newGravity = new Vector3(0, -1 * playerGravity * (fallMultiplier - 1), 0);
+            //Vector3 newGravity = new Vector3(0, -1 * Physics.gravity.y * (fallMultiplier - 1), 0);
             rb.AddForce(newGravity, fallForce);
         }
     }

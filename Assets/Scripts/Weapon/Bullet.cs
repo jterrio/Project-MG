@@ -21,7 +21,7 @@ public class Bullet : MonoBehaviour
 
     
     private void OnTriggerEnter(Collider collider) {
-        if(collider.gameObject.layer == LayerMask.NameToLayer("Bullet") || collider.gameObject.layer == LayerMask.NameToLayer("Bounds")) {
+        if(collider.gameObject.layer == LayerMask.NameToLayer("Bullet") || collider.gameObject.layer == LayerMask.NameToLayer("Bounds") || collider.gameObject.layer == LayerMask.NameToLayer("InvisibleLOSWall")) {
             return;
         }
         if(gameObject == null) {

@@ -282,8 +282,6 @@ MonoBehaviour:
     m_Bits: 4627
   shotsPerTrigger: 1
   burstDelay: 0
-  timesToBounceOffEnemies: 0
-  piercingShots: 0
   reloadTime: 0.85
   isReloading: 0
   damage: 10
@@ -389,6 +387,8 @@ MonoBehaviour:
   wepFireMulti: 1
   wepDMGMulti: 1
   wepAmmoMulti: 1
+  numberOfBulletBounces: 0
+  piercingShots: 0
   ammoCountText: {fileID: 0}
   moneyCountText: {fileID: 0}
   pm: {fileID: 7254095393575450620}

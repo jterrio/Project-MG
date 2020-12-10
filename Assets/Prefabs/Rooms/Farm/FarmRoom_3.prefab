@@ -6278,7 +6278,7 @@ GameObject:
   - component: {fileID: 5015161481089550339}
   - component: {fileID: 4239509631743635887}
   m_Layer: 0
-  m_Name: FarmRoom_1
+  m_Name: FarmRoom_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6323,9 +6323,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomType: 3
-  spawnMonster: 1
-  spawnBlockades: 1
-  spawnHoles: 0
+  spawnMonster: 0
+  spawnBlockades: 0
+  spawnHoles: 1
   xLength: 10
   yLength: 10
   nodeLength: 10
@@ -6356,11 +6356,22 @@ MonoBehaviour:
     type: 3}
   blockades: []
   holes: []
+  holesSquares:
+  - {x: 0, y: 0}
+  - {x: 3, y: 3}
+  - {x: 6, y: 0}
+  - {x: 9, y: 3}
+  - {x: 0, y: 6}
+  - {x: 3, y: 9}
+  - {x: 6, y: 6}
+  - {x: 9, y: 9}
   holeWall: {fileID: 2677867284772700428, guid: 37ec6f69256a4fe4b87264ac0cec41c1,
     type: 3}
-  holeFallTriger: {fileID: 0}
-  holeWallLOS: {fileID: 0}
-  holeDepth: -20
+  holeFallTriger: {fileID: 8057391037001122245, guid: 21129e292ce6b4949bb2dffc8d5e1c2e,
+    type: 3}
+  holeWallLOS: {fileID: 8057391037001122245, guid: 40d829a8d68691047ba8f513ffabd890,
+    type: 3}
+  holeDepth: -50
   holeType: 0
   minMonsterSpawn: 3
   maxMonsterSpawn: 7
@@ -6392,7 +6403,7 @@ MonoBehaviour:
   - {fileID: 3997971360268792337}
   - {fileID: 6365258280878258490}
   neighbors: []
-  maxNeighbors: 4
+  maxNeighbors: 2
 --- !u!1 &5015161481713113082
 GameObject:
   m_ObjectHideFlags: 0

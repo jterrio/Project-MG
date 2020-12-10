@@ -6323,6 +6323,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomType: 3
+  spawnMonster: 1
+  spawnBlockades: 0
+  spawnHoles: 1
   xLength: 10
   yLength: 10
   nodeLength: 10

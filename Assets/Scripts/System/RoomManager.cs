@@ -24,10 +24,13 @@ public class RoomManager : MonoBehaviour {
     [Header("Room Settings")]
     [Tooltip("Rooms that can be used during generation in place of a node")]
     public List<GameObject> potentialRoomSpawns;
+    public List<int> roomSpawnWeights;
     [Tooltip("Boss rooms that can be used during generation in place of a node")]
     public List<GameObject> potentialBossRoomSpawns;
+    public List<float> bossSpawnWeights;
     [Tooltip("Shop rooms that can be used during generation in place of a node")]
     public List<GameObject> potentialShopRoomSpawns;
+    public List<float> shopSpawnWeights;
     [Tooltip("Rooms that have already been generated")]
     public List<Node> createdRooms;
     [Tooltip("Debug spawn object")]
@@ -114,7 +117,6 @@ public class RoomManager : MonoBehaviour {
         currentRoom = r;
         currentRoom.AddGates();
         currentRoom.ActivateMonsters();
-        SetEnemiesRemainingText();
         GameManager.gm.SetLastTimeDamaged();
     }
 
@@ -662,7 +664,22 @@ public class RoomManager : MonoBehaviour {
     /// <param name="y">Position to create Y</param>
     /// <returns>Gameobject for the Room</returns>
     GameObject GenerateRoom(int x, int y) {
-        GameObject r = Instantiate(potentialRoomSpawns[Random.Range(0, potentialRoomSpawns.Count)]);
+        int vibeCheck = 0;
+        foreach(int i in roomSpawnWeights) {
+            vibeCheck += i;
+        }
+        int chosen = Random.Range(0, vibeCheck);
+
+        int total = 0;
+        for(int i = 0; i < potentialRoomSpawns.Count; i++) {
+            total += roomSpawnWeights[i];
+            if(total >= chosen) {
+                print("Chosen was: " + chosen + " with a selection of " + i);
+                chosen = i;
+                break;
+            }
+        }
+        GameObject r = Instantiate(potentialRoomSpawns[chosen]);
         r.transform.position = new Vector3(x * nodeLength, 0, y * nodeLength);
         r.gameObject.name = "X: " + (x).ToString() + ", Y: " + (y).ToString();
         return r;

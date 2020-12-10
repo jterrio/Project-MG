@@ -9,6 +9,9 @@ public class Room : MonoBehaviour {
 
     [Header("Room Settings")]
     public RoomType roomType = RoomType.NORMAL;
+    public bool spawnMonster = true;
+    public bool spawnBlockades = false;
+    public bool spawnHoles = false;
 
     [Header("Node Settings")]
     [Tooltip("Number of nodes within the room in X space")]
@@ -65,6 +68,7 @@ public class Room : MonoBehaviour {
     [Header("Hole Generation")]
     [Tooltip("Where holes should be generated")]
     public List<Vector2> holes;
+    public List<Vector2> holesSquares;
     [Tooltip("Reference to the object that will be used as a wall")]
     public GameObject holeWall;
     [Tooltip("Reference to the object that will be used as a wall hole to trigger uplift and damage")]
@@ -410,6 +414,9 @@ public class Room : MonoBehaviour {
     /// Spawns walls around the room
     /// </summary>
     void SpawnBlockades() {
+        if (!spawnBlockades) {
+            return;
+        }
         int timeout = 0;
         int blockToSpawn = Random.Range(minBlockade, maxBlockade);
         HashSet<Vector2> hs = new HashSet<Vector2>();
@@ -627,7 +634,9 @@ public class Room : MonoBehaviour {
     /// Spawns monsters within the room at random positions
     /// </summary>
     void SpawnMonsters() {
-
+        if (!spawnMonster) {
+            return;
+        }
         int timeout = 0;
         int monstersToSpawn = Random.Range(minMonsterSpawn, maxMonsterSpawn);
         while (monsters.Count < monstersToSpawn || timeout >= ((xLength - 1) * (yLength - 1))) {
@@ -766,9 +775,14 @@ public class Room : MonoBehaviour {
     }
 
     public void ActivateMonsters() {
+        if(monsters.Count == 0) {
+            ClearRoom();
+            return;
+        }
         foreach (GameObject m in monsters) {
             m.SetActive(true);
         }
+        RoomManager.rm.SetEnemiesRemainingText();
     }
 
     public void RemoveGates() {
@@ -851,6 +865,17 @@ public class Room : MonoBehaviour {
 
 
     public void NullHoles() {
+        if (!spawnHoles) {
+            return;
+        }
+        for(int i = 0; i < holesSquares.Count;) {
+            for(int t = (int)holesSquares[i].x; t <= holesSquares[i+1].x; t++) {
+                for (int y = (int)holesSquares[i].y; y <= holesSquares[i + 1].y; y++) {
+                    holes.Add(new Vector2(t, y));
+                }
+            }
+            i += 2;
+        }
         foreach (Vector2 v in holes) {
             roomArray[(int)v.x, (int)v.y].isHole = true;
             Destroy(roomArray[(int)v.x, (int)v.y].grass);
@@ -865,6 +890,8 @@ public class Room : MonoBehaviour {
             BoxCollider bc = trigger.GetComponent<BoxCollider>();
             bc.size = new Vector3(nodeLength, 1f, nodeLength);
 
+            
+
 
             foreach (Vector2 n in neighbors) {
                 if(!holes.Contains(n)) {
@@ -873,6 +900,8 @@ public class Room : MonoBehaviour {
                     int i = GetDirection((int)v.x, (int)v.y, (int)n.x, (int)n.y);
                     wall.name = n.x + ", " + n.y + ": " + i;
                     wall.transform.parent = roomArray[(int)v.x, (int)v.y].ground.transform;
+
+
                     switch (i) {
                         case 0:
                             wall.transform.position += new Vector3(0f, 0f, nodeLength / -2);

@@ -15915,7 +15915,7 @@ MonoBehaviour:
     m_Bits: 4096
   LOS:
     serializedVersion: 2
-    m_Bits: 24832
+    m_Bits: 286976
   minimap:
     serializedVersion: 2
     m_Bits: 2048
