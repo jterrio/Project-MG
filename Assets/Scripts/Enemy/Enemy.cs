@@ -4,17 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Enemy : MonoBehaviour {
+public class Enemy : Actor {
 
     [Header("Spawn Settings")]
     public EnemyType et;
     [Min(0)]
     public int maxSpawn = 0;
     public int enemyID;
-
-    [Header("Health")]
-    public float healthTotal = 50f;
-    public float health = 50f;
 
     [Header("Health Bar References")]
     public RectTransform healthBar;

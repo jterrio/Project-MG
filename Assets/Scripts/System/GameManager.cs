@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour {
     public LayerMask enemyPlayerLayers;
     public LayerMask enemyLayers;
     public LayerMask LOS;
+    public LayerMask flyingLOS;
     public LayerMask minimap;
     public LayerMask groundMask;
     public LayerMask groundEnemy;
@@ -50,6 +51,7 @@ public class GameManager : MonoBehaviour {
         MAINMENU,
         GAMEPLAY
     }
+
 
 
     private void Awake() {
@@ -160,16 +162,30 @@ public class GameManager : MonoBehaviour {
         Vector3 targetPos = target.transform.position;
 
         Vector3 direction = targetPos - hostPos;
+        Enemy e = host.GetComponent<Enemy>();
+        if (e != null) {
+            if (e.canFly) {
+                if (Physics.Raycast(hostPos, direction, out hit, Vector3.Distance(hostPos, targetPos), flyingLOS)) {
+                    if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Player")) {
+                        //Debug.DrawRay(hostPos, direction, Color.green);
+                        return true;
+                    } else {
+                        //Debug.DrawRay(hostPos, direction, Color.red, 10f);
+                        return false;
+                    }
+                }
+            }
+        }
         if (Physics.Raycast(hostPos, direction, out hit, Vector3.Distance(hostPos, targetPos), LOS)) {
             if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Player")) {
                 //Debug.DrawRay(hostPos, direction, Color.green);
                 return true;
             } else {
-                Debug.DrawRay(hostPos, direction, Color.red, 10f);
+                //Debug.DrawRay(hostPos, direction, Color.red, 10f);
                 return false;
             }
         }
-        Debug.DrawRay(hostPos, direction, Color.blue, 10f);
+        //Debug.DrawRay(hostPos, direction, Color.blue, 10f);
         return true;
     }
 
@@ -194,6 +210,14 @@ public class GameManager : MonoBehaviour {
 
     public bool HasLineOfSightToPlayer(GameObject monster) {
         return HasLineOfSight(monster, player);
+    }
+
+    public void HaveActorTakeDamageFromStatus(Actor a, float dam) {
+        if(a.gameObject == player) {
+            p.TakeStatusDamage(dam);
+        } else {
+            a.gameObject.GetComponent<Enemy>().TakeDamage(dam);
+        }
     }
 
 }

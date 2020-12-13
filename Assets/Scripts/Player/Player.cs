@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Player : MonoBehaviour {
+public class Player : Actor {
 
-    [Header("Health")]
-    public float healthTotal = 8f;
-    public float healthCurrent = 8f;
+    [Header("Damage")]
     public AudioClip damageSound;
     public float lastTimeTakenDMG;
     public float invDMGSecs = 1f;
@@ -93,18 +91,27 @@ public class Player : MonoBehaviour {
     /// Deals damage to the player and determines if they should die
     /// </summary>
     /// <param name="d">Damage</param>
-    public void TakeDamage(int d) {
+    public bool TakeDamage(float d) {
         //Checks to see if the player still has invicibility frames
         if (lastTimeTakenDMG + invDMGSecs >= Time.time) {
-            return;
+            return false;
         }
         lastTimeTakenDMG = Time.time;
-        healthCurrent -= d;
+        health -= d;
         UpdateHealth();
-        if (healthCurrent <= 0) {
+        if (health <= 0) {
             Die();
         } else {
             audioSource.PlayOneShot(damageSound);
+        }
+        return true;
+    }
+
+    public void TakeStatusDamage(float d) {
+        health -= d;
+        UpdateHealth();
+        if (health <= 0) {
+            Die();
         }
     }
 
@@ -123,7 +130,7 @@ public class Player : MonoBehaviour {
     /// Updates the health bar
     /// </summary>
     void UpdateHealth() {
-        healthFill.fillAmount = healthCurrent / healthTotal;
+        healthFill.fillAmount = health / healthTotal;
     }
 
     /// <summary>

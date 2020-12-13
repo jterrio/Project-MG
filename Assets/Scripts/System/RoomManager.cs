@@ -9,6 +9,9 @@ public class RoomManager : MonoBehaviour {
     public CullingRooms cr;
     public Node[,] roomArray;
 
+    [HideInInspector]
+    public bool hasFinishedLoading = false;
+
     [Header("Floor Settings")]
     [Tooltip("Size of each room plus the connectors")]
     public float nodeLength = 120f;
@@ -230,7 +233,7 @@ public class RoomManager : MonoBehaviour {
 
         print(createdRooms.Count + " rooms have been created!");
         print("It took " + (Time.time - startTime));
-
+        hasFinishedLoading = true;
     }
 
     void ValidateNodeNeighbors() {
@@ -674,7 +677,7 @@ public class RoomManager : MonoBehaviour {
         for(int i = 0; i < potentialRoomSpawns.Count; i++) {
             total += roomSpawnWeights[i];
             if(total >= chosen) {
-                print("Chosen was: " + chosen + " with a selection of " + i);
+                //print("Chosen was: " + chosen + " with a selection of " + i);
                 chosen = i;
                 break;
             }

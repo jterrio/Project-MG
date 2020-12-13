@@ -2,14 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SegmentLaser : MonoBehaviour {
+public class EnemyProjectile : MonoBehaviour {
 
-    public float speed;
+    public float bulletLifetime;
+    public HazardManager.StatusEffect statusEffect;
+    private int damage = 1;
+    private float speed  = 1f;
+
+
+    private void Start() {
+        Destroy(this.gameObject, bulletLifetime);
+    }
+
+    public void SetProjectile(int d, float s) {
+        damage = d;
+        speed = s;
+    }
 
     void Update() {
         transform.position += (transform.forward * speed * Time.deltaTime);
     }
-
 
     private void OnTriggerEnter(Collider collider) {
         if (collider.gameObject.layer == LayerMask.NameToLayer("Bullet") || collider.gameObject.layer == LayerMask.NameToLayer("Bounds") || collider.gameObject.layer == LayerMask.NameToLayer("InvisibleLOSWall")) {
@@ -20,13 +32,10 @@ public class SegmentLaser : MonoBehaviour {
         }
         //Collider myCollider = collision.contacts[0].otherCollider;
         if (collider.gameObject.layer == LayerMask.NameToLayer("Player")) {
-            if (Deathapillar.originalBody == null) {
-                GameManager.gm.p.TakeDamage(1);
-            } else {
-                GameManager.gm.p.TakeDamage(Deathapillar.originalBody.laserDamage);
+            if(GameManager.gm.p.TakeDamage(damage)){
+                HazardManager.hm.ApplyStatusEffect(statusEffect, GameManager.gm.player);
             }
         }
+        
     }
-
-
 }

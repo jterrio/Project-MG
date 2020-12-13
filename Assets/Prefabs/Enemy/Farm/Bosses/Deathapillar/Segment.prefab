@@ -128,7 +128,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   et: 0
   maxSpawn: 0
-  enemyID: 10
+  enemyID: 5
   healthTotal: 100
   health: 100
   healthBar: {fileID: 0}

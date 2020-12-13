@@ -239,7 +239,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   et: 0
   maxSpawn: 0
-  enemyID: 3
+  enemyID: 4
   healthTotal: 20
   health: 20
   healthBar: {fileID: 745673879451717196}
@@ -247,8 +247,10 @@ MonoBehaviour:
   timeToDisplay: 3
   alwaysDisplay: 0
   rb: {fileID: -6638744318300094623}
+  canFly: 0
   minMoneyReward: 0
   maxMoneyReward: 0
+  audioSource: {fileID: 0}
   growState: 2
   range: 1000
   growth: 2

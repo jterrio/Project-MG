@@ -6355,11 +6355,10 @@ MonoBehaviour:
   blockadeCornerSpawn: {fileID: 4491641775454652310, guid: 223191d10846e2f408943ac279254b90,
     type: 3}
   blockades: []
-  holes:
-  - {x: 4, y: 4}
-  - {x: 4, y: 5}
-  - {x: 5, y: 4}
-  - {x: 5, y: 5}
+  holes: []
+  holesSquares:
+  - {x: 3, y: 3}
+  - {x: 6, y: 6}
   holeWall: {fileID: 2677867284772700428, guid: 37ec6f69256a4fe4b87264ac0cec41c1,
     type: 3}
   holeFallTriger: {fileID: 8057391037001122245, guid: 21129e292ce6b4949bb2dffc8d5e1c2e,
@@ -6370,11 +6369,9 @@ MonoBehaviour:
   holeType: 0
   minMonsterSpawn: 3
   maxMonsterSpawn: 7
-  potentialMonsterSpawns:
-  - {fileID: 7428941775176541546, guid: 081e2574a5e0a8249853b23885ff5dfd, type: 3}
-  - {fileID: 5106471218992762128, guid: 0bc2322be7caf1544acc2d87965efa37, type: 3}
+  potentialMonsterSpawns: 000000000100000002000000
   monsters: []
-  bosses: []
+  bosses: 
   shopKeeper: {fileID: 0}
   itemPlace: {fileID: 0}
   connectors:

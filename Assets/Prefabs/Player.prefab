@@ -10229,7 +10229,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthTotal: 10
-  healthCurrent: 10
+  health: 10
   damageSound: {fileID: 8300000, guid: c331ff8d1319cff448e4a56d10c46177, type: 3}
   lastTimeTakenDMG: 0
   invDMGSecs: 1
@@ -10646,7 +10646,7 @@ MonoBehaviour:
   bulletSpeed: 50
   hitLayerMask:
     serializedVersion: 2
-    m_Bits: 4627
+    m_Bits: 4626
   shotsPerTrigger: 1
   burstDelay: 0
   reloadTime: 0.85

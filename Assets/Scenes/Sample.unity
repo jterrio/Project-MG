@@ -1901,6 +1901,69 @@ Transform:
   m_Father: {fileID: 2035668799}
   m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!1 &180764817
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 180764818}
+  - component: {fileID: 180764819}
+  m_Layer: 0
+  m_Name: HazardManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &180764818
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 180764817}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.0560101, y: 13.298012, z: 10.094095}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &180764819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 180764817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a523f8c64c7d3734c9b9ce1a788e2aad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hasFinishedLoading: 0
+  monstersList:
+  - {fileID: 7428941775176541546, guid: 081e2574a5e0a8249853b23885ff5dfd, type: 3}
+  - {fileID: 5106471218992762128, guid: 0bc2322be7caf1544acc2d87965efa37, type: 3}
+  - {fileID: 5106471218992762128, guid: 58329cbe9d9745f42aeafb7c50db18c5, type: 3}
+  - {fileID: 7428941775176541546, guid: d2f6f6d14b0246d478470ae1269819a0, type: 3}
+  - {fileID: 4033008300267642909, guid: 4d0880a562a21fc43bbc3aea59aabda6, type: 3}
+  - {fileID: 7026462997350106651, guid: fe12eb51f4ca7f6488c30a796816fb9d, type: 3}
+  - {fileID: 1003636419490271588, guid: aa880e63b3648cc438dba7e81d4c7ede, type: 3}
+  burnDamage: 0.2
+  burnTime: 1
+  burnStep: 0.2
+  poisonDamage: 0
+  poisonTime: 0
+  curseDamage: 0
+  curseTime: 0
+  blindTime: 0
+  snareTime: 0
+  bleedDamage: 0
+  bleedTime: 0
 --- !u!1 &184782807
 GameObject:
   m_ObjectHideFlags: 0
@@ -2103,11 +2166,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23d8e8858d4c4714db919118ac5eab77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthTotal: 50
+  health: 50
   et: 0
   maxSpawn: 0
   enemyID: 0
-  healthTotal: 50
-  health: 50
   healthBar: {fileID: 0}
   healthBarFill: {fileID: 0}
   timeToDisplay: 3
@@ -7845,7 +7908,7 @@ PrefabInstance:
     - target: {fileID: 1501441186192639278, guid: 2cb3e675e183dfd48aafedfb544eb605,
         type: 3}
       propertyPath: m_RootOrder
-      value: 13
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 1501441186192639278, guid: 2cb3e675e183dfd48aafedfb544eb605,
         type: 3}
@@ -8650,17 +8713,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dabd05d6d44e4c6499bb33838c7e71a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  commonItems:
-  - {fileID: 4087508236805503906, guid: c2c4d1ac44dcd9c45a57e24b4dba0a0d, type: 3}
+  hasFinishedLoading: 0
+  allItemReferences:
   - {fileID: 7078041583660112804, guid: 3a9dfa75bb171ac47bb7c133ef1efa40, type: 3}
-  uncommonItems:
+  - {fileID: 4087508236805503906, guid: c2c4d1ac44dcd9c45a57e24b4dba0a0d, type: 3}
+  - {fileID: 1754331820224389650, guid: 6878a066788f1de47b0f0e2eb965381b, type: 3}
+  - {fileID: 7785254229861440569, guid: 132e58e5ffa9c5e49a0b1b3e88f72b3e, type: 3}
+  - {fileID: 4590020064037517981, guid: fa970cf537a87d040a2a5230d30d07b3, type: 3}
   - {fileID: 8323369861739032763, guid: b7f5692c54bc54240866f4972e561370, type: 3}
   - {fileID: 6260633448120735373, guid: 6043beea330f8df4d8c5c1e15592947b, type: 3}
-  rareItems:
-  - {fileID: 4590020064037517981, guid: fa970cf537a87d040a2a5230d30d07b3, type: 3}
-  epicItems:
-  - {fileID: 1754331820224389650, guid: 6878a066788f1de47b0f0e2eb965381b, type: 3}
-  legendaryItems: []
+  commonItems: 
+  uncommonItems: 
+  rareItems: 
+  epicItems: 
+  legendaryItems: 
+  shopItems: 
+  bossItems: 
   commonItemChance: 20
   uncommonItemChance: 15
   rareItemChance: 10
@@ -12130,7 +12198,7 @@ PrefabInstance:
     - target: {fileID: 5015161481089550339, guid: 5dd06b21df2045341b0172fefa263b78,
         type: 3}
       propertyPath: m_RootOrder
-      value: 14
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5015161481089550339, guid: 5dd06b21df2045341b0172fefa263b78,
         type: 3}
@@ -13793,11 +13861,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cr: {fileID: 1397138103}
+  hasFinishedLoading: 0
   nodeLength: 120
   min: 100
   max: 101
-  minMin: 8
-  maxMin: 20
+  minMin: 3
+  maxMin: 6
   startingRoom: {fileID: 5015161481089550336, guid: bd9c94660c926414a828d43a63439bcb,
     type: 3}
   xLength: 0
@@ -13806,7 +13875,7 @@ MonoBehaviour:
   - {fileID: 5015161481089550336, guid: bd9c94660c926414a828d43a63439bcb, type: 3}
   - {fileID: 5015161481089550336, guid: ad8a64cb726339d418d061716957fd63, type: 3}
   - {fileID: 5015161481089550336, guid: 423eaac579382ed44aa49e5328b619ff, type: 3}
-  roomSpawnWeights: 3c0000001e0000000a000000
+  roomSpawnWeights: 280000002800000014000000
   potentialBossRoomSpawns:
   - {fileID: 5015161481089550336, guid: 5dd06b21df2045341b0172fefa263b78, type: 3}
   bossSpawnWeights: []
@@ -16408,7 +16477,7 @@ Transform:
   - {fileID: 587342991}
   - {fileID: 1133098381}
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1603476959
 GameObject:
@@ -16773,7 +16842,7 @@ Transform:
   m_Children:
   - {fileID: 1301787385}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1618659304
 MonoBehaviour:
@@ -17724,11 +17793,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23d8e8858d4c4714db919118ac5eab77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthTotal: 50
+  health: 50
   et: 0
   maxSpawn: 0
   enemyID: 0
-  healthTotal: 50
-  health: 50
   healthBar: {fileID: 0}
   healthBarFill: {fileID: 0}
   timeToDisplay: 3
@@ -19318,6 +19387,9 @@ MonoBehaviour:
   LOS:
     serializedVersion: 2
     m_Bits: 278784
+  flyingLOS:
+    serializedVersion: 2
+    m_Bits: 16640
   minimap:
     serializedVersion: 2
     m_Bits: 2048
@@ -19343,7 +19415,7 @@ Transform:
   - {fileID: 5365284}
   - {fileID: 1172537846}
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1906214637
 MonoBehaviour:

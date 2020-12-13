@@ -55,7 +55,8 @@ public class RockMonster : Enemy {
 
 
     // Start is called before the first frame update
-    void Start() {
+    new void Start() {
+        health = healthTotal;
         transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
     }
 

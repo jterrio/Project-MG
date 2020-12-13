@@ -6323,7 +6323,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomType: 3
-  spawnMonster: 0
+  spawnMonster: 1
   spawnBlockades: 0
   spawnHoles: 1
   xLength: 10
@@ -6375,11 +6375,9 @@ MonoBehaviour:
   holeType: 0
   minMonsterSpawn: 3
   maxMonsterSpawn: 7
-  potentialMonsterSpawns:
-  - {fileID: 7428941775176541546, guid: 081e2574a5e0a8249853b23885ff5dfd, type: 3}
-  - {fileID: 5106471218992762128, guid: 0bc2322be7caf1544acc2d87965efa37, type: 3}
+  potentialMonsterSpawns: 02000000
   monsters: []
-  bosses: []
+  bosses: 
   shopKeeper: {fileID: 0}
   itemPlace: {fileID: 0}
   connectors:

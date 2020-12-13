@@ -475,7 +475,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: TEST BUILD v0.152-DP Pre-Alpha
+  m_text: TEST BUILD v0.285-DP Pre-Alpha
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -10761,17 +10761,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dabd05d6d44e4c6499bb33838c7e71a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  commonItems:
-  - {fileID: 4087508236805503906, guid: c2c4d1ac44dcd9c45a57e24b4dba0a0d, type: 3}
-  - {fileID: 7078041583660112804, guid: 3a9dfa75bb171ac47bb7c133ef1efa40, type: 3}
-  uncommonItems:
-  - {fileID: 8323369861739032763, guid: b7f5692c54bc54240866f4972e561370, type: 3}
-  - {fileID: 6260633448120735373, guid: 6043beea330f8df4d8c5c1e15592947b, type: 3}
-  rareItems:
-  - {fileID: 4590020064037517981, guid: fa970cf537a87d040a2a5230d30d07b3, type: 3}
-  epicItems:
-  - {fileID: 1754331820224389650, guid: 6878a066788f1de47b0f0e2eb965381b, type: 3}
-  legendaryItems: []
+  hasFinishedLoading: 0
+  allItemReferences: []
+  commonItems: 0000000000000000
+  uncommonItems: 0000000000000000
+  rareItems: 00000000
+  epicItems: 00000000
+  legendaryItems: 
+  shopItems: 
+  bossItems: 
   commonItemChance: 20
   uncommonItemChance: 15
   rareItemChance: 10
@@ -15916,6 +15914,9 @@ MonoBehaviour:
   LOS:
     serializedVersion: 2
     m_Bits: 286976
+  flyingLOS:
+    serializedVersion: 2
+    m_Bits: 16640
   minimap:
     serializedVersion: 2
     m_Bits: 2048

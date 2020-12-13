@@ -198,11 +198,9 @@ MonoBehaviour:
   bulletSpeed: 50
   hitLayerMask:
     serializedVersion: 2
-    m_Bits: 4627
+    m_Bits: 21008
   shotsPerTrigger: 3
   burstDelay: 0.1
-  timesToBounceOffEnemies: 0
-  piercingShots: 0
   reloadTime: 0.85
   isReloading: 0
   damage: 10

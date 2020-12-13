@@ -163,9 +163,10 @@ public class Gun : MonoBehaviour {
 
         
         if (Physics.Raycast(GameManager.gm.playerCamera.transform.position, GameManager.gm.playerCamera.transform.forward, out hit, Mathf.Infinity, hitLayerMask)) {
-            //print(hit.collider.gameObject.name);
+            print(hit.collider.gameObject.name);
             v = hit.point;
         } else {
+            print("No object found in raycast!");
             v = GameManager.gm.playerCamera.transform.position + (GameManager.gm.playerCamera.transform.forward * 50f);
         }
         

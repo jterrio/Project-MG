@@ -6393,6 +6393,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomType: 3
+  spawnMonster: 1
+  spawnBlockades: 0
+  spawnHoles: 0
   xLength: 10
   yLength: 10
   nodeLength: 10
@@ -6419,15 +6422,17 @@ MonoBehaviour:
   blockadeCornerSpawn: {fileID: 0}
   blockades: []
   holes: []
+  holesSquares: []
   holeWall: {fileID: 0}
+  holeFallTriger: {fileID: 0}
+  holeWallLOS: {fileID: 0}
   holeDepth: -20
   holeType: 0
   minMonsterSpawn: 0
   maxMonsterSpawn: 0
-  potentialMonsterSpawns: []
+  potentialMonsterSpawns: 
   monsters: []
-  bosses:
-  - {fileID: 1003636419490271588, guid: aa880e63b3648cc438dba7e81d4c7ede, type: 3}
+  bosses: 0300000006000000
   shopKeeper: {fileID: 0}
   itemPlace: {fileID: 0}
   connectors:

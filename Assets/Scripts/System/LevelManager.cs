@@ -74,27 +74,60 @@ public class LevelManager : MonoBehaviour {
         AsyncOperation a = SceneManager.LoadSceneAsync(level);
         a.allowSceneActivation = false;
         while (a.progress < 0.9f) {
-            UIManager.ui.loadBarFill.fillAmount = (a.progress / 1);
+            UIManager.ui.loadBarFill.fillAmount = (a.progress / 1) / 2;
             yield return null;
         }
-        UIManager.ui.loadBarFill.fillAmount = 1f;
+        UIManager.ui.loadBarFill.fillAmount = 0.5f;
 
-        while(Time.time < waitTimeStart + MusicManager.mm.waitTime) {
-            yield return null;
-        }
         a.allowSceneActivation = true;
     }
 
 
     private void OnLevelWasLoaded(int level) {
         print("Level " + level.ToString() + " was loaded!");
-        MusicManager.mm.PlayBGM(MusicManager.mm.farmMusic);
-        GameManager.gm.FindPlayer();
+        StartCoroutine(LevelLoading());
+    }
 
+    IEnumerator LevelLoading() {
+        bool monstersLoaded = false;
+        bool itemsLoaded = false;
+
+        GameManager.gm.FindPlayer();
         RoomManager.rm.CreateFloorLayout();
         GameManager.gm.currentFloor++;
-        UIManager.ui.loadScreenPanel.gameObject.SetActive(false);
         GameManager.gm.LoadWeapon(GameManager.gm.wepID);
+        UIManager.ui.loadBarFill.fillAmount += 0.2f; //total now 0.7
+
+        while (true) {
+            if (HazardManager.hm != null) {
+                if (HazardManager.hm.hasFinishedLoading && !monstersLoaded) {
+                    monstersLoaded = true;
+                    UIManager.ui.loadBarFill.fillAmount += 0.1f;
+                }
+            }
+            if (ItemManager.im != null) {
+                if (ItemManager.im.hasFinishedLoading && !itemsLoaded) {
+                    itemsLoaded = true;
+                    UIManager.ui.loadBarFill.fillAmount += 0.1f;
+                }
+            }
+            if(monstersLoaded && itemsLoaded) {
+                break;
+            }
+            yield return null;
+        }
+
+        UIManager.ui.loadBarFill.fillAmount = 1.0f;
+        while (Time.time < waitTimeStart + MusicManager.mm.waitTime) {
+            yield return null;
+        }
+
+
+
+        MusicManager.mm.PlayBGM(MusicManager.mm.farmMusic);
+        UIManager.ui.loadScreenPanel.gameObject.SetActive(false);
+
+
     }
 
 }

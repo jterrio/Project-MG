@@ -86,11 +86,11 @@ public class Room : MonoBehaviour {
     [Tooltip("Max monsters that will spawn")]
     public int maxMonsterSpawn;
     [Tooltip("Potential enemy spawns during generation")]
-    public List<GameObject> potentialMonsterSpawns;
+    public List<int> potentialMonsterSpawns;
     [Tooltip("Enemies that were spawned during generation")]
     public List<GameObject> monsters;
     [Tooltip("Bosses that can be spawned in a boss room")]
-    public List<GameObject> bosses;
+    public List<int> bosses;
 
     [Header("Shop Generation")]
     [Tooltip("Model used for the shopkeeper")]
@@ -640,17 +640,22 @@ public class Room : MonoBehaviour {
         int timeout = 0;
         int monstersToSpawn = Random.Range(minMonsterSpawn, maxMonsterSpawn);
         while (monsters.Count < monstersToSpawn || timeout >= ((xLength - 1) * (yLength - 1))) {
+            int m = Random.Range(0, potentialMonsterSpawns.Count);
+            Enemy e = HazardManager.hm.GetMonsterByID(potentialMonsterSpawns[m]).GetComponent<Enemy>();
+
             int x = Random.Range(0, xLength - 1);
             int y = Random.Range(0, yLength - 1);
-            if (roomArray[x, y].isTaken || roomArray[x, y].isHole) {
+            if (roomArray[x, y].isTaken) {
+                timeout++;
+                continue;
+            }
+            if(roomArray[x, y].isHole && !e.canFly) {
                 timeout++;
                 continue;
             }
 
             roomArray[x, y].isTaken = true;
             timeout = 0;
-            int m = Random.Range(0, potentialMonsterSpawns.Count);
-            Enemy e = potentialMonsterSpawns[m].GetComponent<Enemy>();
             if(e.maxSpawn > 0) {
                 int count = 0;
                 foreach(GameObject mon in monsters) {
@@ -663,7 +668,7 @@ public class Room : MonoBehaviour {
                     m = Random.Range(0, potentialMonsterSpawns.Count);
                 }
             }
-            GameObject monster = Instantiate(potentialMonsterSpawns[m]);
+            GameObject monster = Instantiate(HazardManager.hm.GetMonsterByID(potentialMonsterSpawns[m]));
             e = monster.GetComponent<Enemy>();
             Vector3 spawnPoint = Vector3.zero;
             if(e.et == Enemy.EnemyType.NORMAL) {
@@ -701,7 +706,8 @@ public class Room : MonoBehaviour {
     /// Spawns a boss
     /// </summary>
     void SpawnBoss() {
-        GameObject boss = Instantiate(bosses[Random.Range(0, bosses.Count)]);
+        int idPos = bosses[Random.Range(0, bosses.Count)];
+        GameObject boss = Instantiate(HazardManager.hm.GetMonsterByID(idPos));
         boss.transform.parent = this.gameObject.transform;
         boss.transform.position = roomArray[xLength / 2, yLength / 2].position;
         monsters.Add(boss);
